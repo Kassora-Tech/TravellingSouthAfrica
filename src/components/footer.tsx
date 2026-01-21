@@ -66,7 +66,7 @@ export const Footer = () => {
             &copy; {new Date().getFullYear()} Travelling South Africa Reborn. All
             rights reserved.
           </p>
-          <p className="mt-4 sm:mt-0">Email: ddvprivate@gmail.com</p>
+          <p className="mt-4 sm:mt-0">Email: maryke@travellingsouthafrica.co.za</p>
         </div>
       </div>
     </footer>
