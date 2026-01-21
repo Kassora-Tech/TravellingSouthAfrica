@@ -3,7 +3,7 @@ import { sights } from '@/lib/data/sights';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
@@ -29,27 +29,27 @@ export default function SightsPage() {
                     const image = PlaceHolderImages.find(p => p.id === sight.imageId);
                     return (
                         <Link href={`/sights/${sight.slug}`} key={sight.slug}>
-                            <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 h-full flex flex-col">
-                                {image && (
-                                    <div className="relative h-64 w-full">
+                            <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 h-full">
+                                <div className="relative h-64 w-full">
+                                    {image && (
                                         <Image
                                             src={image.imageUrl}
                                             alt={image.description}
                                             fill
-                                            className="object-cover"
+                                            className="object-cover transition-transform duration-300 group-hover:scale-105"
                                             data-ai-hint={image.imageHint}
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                    <div className="absolute bottom-0 left-0 w-full p-4 text-white">
+                                        <Badge variant="secondary"><Translatable text={sight.category} /></Badge>
+                                        <h3 className="font-headline text-xl font-bold mt-2"><Translatable text={sight.name} /></h3>
+                                        <p className="text-sm flex items-center mt-1">
+                                            <MapPin className="w-4 h-4 mr-1" />
+                                            <Translatable text={sight.location} />
+                                        </p>
                                     </div>
-                                )}
-                                <CardContent className="p-4 absolute bottom-0 left-0 text-white w-full">
-                                    <Badge variant="secondary"><Translatable text={sight.category} /></Badge>
-                                    <h3 className="font-headline text-xl font-bold mt-2"><Translatable text={sight.name} /></h3>
-                                    <p className="text-sm flex items-center mt-1">
-                                        <MapPin className="w-4 h-4 mr-1" />
-                                        <Translatable text={sight.location} />
-                                    </p>
-                                </CardContent>
+                                </div>
                             </Card>
                         </Link>
                     );
