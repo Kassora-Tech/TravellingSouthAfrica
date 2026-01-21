@@ -39,7 +39,7 @@ export const Footer = () => {
               <Logo className="w-48" />
             </Link>
             <p className="mt-4 text-sm max-w-xs">
-              <Translatable text="Your free, comprehensive guide to travelling South Africa." />
+              <Translatable text="Discover the Rainbow Nation – Your Free Comprehensive Guide" />
             </p>
           </div>
           {footerNavs.map((nav) => (

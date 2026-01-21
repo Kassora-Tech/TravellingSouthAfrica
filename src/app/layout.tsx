@@ -7,7 +7,7 @@ import { LanguageProvider } from '@/contexts/language-context';
 
 export const metadata: Metadata = {
   title: 'Travelling South Africa Reborn',
-  description: 'Your free, comprehensive guide to travelling South Africa',
+  description: 'Discover the Rainbow Nation – Your Free Comprehensive Guide',
 };
 
 export default function RootLayout({
