@@ -22,20 +22,22 @@ export function FeaturedProvinces() {
                 return (
                     <Link href={`/provinces/${province.slug}`} key={province.slug}>
                         <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
-                            {image && (
+                            <CardContent className="p-0">
                                 <div className="relative h-64 w-full">
-                                    <Image
-                                        src={image.imageUrl}
-                                        alt={image.description}
-                                        fill
-                                        className="object-cover"
-                                        data-ai-hint={image.imageHint}
-                                    />
+                                    {image && (
+                                        <Image
+                                            src={image.imageUrl}
+                                            alt={image.description}
+                                            fill
+                                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                            data-ai-hint={image.imageHint}
+                                        />
+                                    )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                    <div className="p-4 absolute bottom-0 left-0 text-white w-full">
+                                        <h3 className="font-headline text-2xl font-bold"><Translatable text={province.name} /></h3>
+                                    </div>
                                 </div>
-                            )}
-                             <CardContent className="p-4 absolute bottom-0 left-0 text-white">
-                                <h3 className="font-headline text-2xl font-bold"><Translatable text={province.name} /></h3>
                             </CardContent>
                         </Card>
                     </Link>
