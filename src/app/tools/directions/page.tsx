@@ -9,12 +9,15 @@ import { useState } from 'react';
 export default function DirectionsPage() {
   const [origin, setOrigin] = useState('Cape Town, South Africa');
   const [destination, setDestination] = useState('Johannesburg, South Africa');
-  const [mapUrl, setMapUrl] = useState('');
+  
+  // Default to a view of South Africa. The embed API for 'view' is less strict about keys.
+  const [mapUrl, setMapUrl] = useState(`https://www.google.com/maps/embed/v1/view?center=-30.5595,22.9375&zoom=5&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}`);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (origin && destination) {
-      const url = `https://www.google.com/maps/embed/v1/directions?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+      // The 'directions' part of the embed API is stricter and will show an error inside the iframe without a valid key.
+      const url = `https://www.google.com/maps/embed/v1/directions?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
       setMapUrl(url);
     }
   };
@@ -44,30 +47,20 @@ export default function DirectionsPage() {
         </form>
 
          <div className="mt-8">
-            {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
-                <>
-                {mapUrl ? (
-                    <div className="aspect-video bg-muted rounded-lg overflow-hidden border">
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            loading="lazy"
-                            allowFullScreen
-                            src={mapUrl}>
-                        </iframe>
-                    </div>
-                ) : (
-                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                        <p className="text-muted-foreground"><Translatable text="Enter an origin and destination to see the route."/></p>
-                    </div>
-                )}
-                </>
-            ) : (
-                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center text-center p-4">
-                    <p className="text-destructive font-semibold"><Translatable text="Google Maps API Key is not configured."/><br/><Translatable text="Please set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your environment to use this feature."/></p>
-                </div>
-            )}
+            <div className="aspect-video bg-muted rounded-lg overflow-hidden border">
+                <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={mapUrl}>
+                </iframe>
+            </div>
+             <p className="text-center text-xs text-muted-foreground mt-2">
+                Note: Full directions functionality requires a valid Google Maps API key to be configured.
+            </p>
         </div>
       </div>
     </div>
