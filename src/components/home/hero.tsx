@@ -3,7 +3,6 @@ import Logo from '@/components/logo';
 import { Translatable } from '@/components/translatable';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { AnimatedTagline } from '../animated-tagline';
 
 export function Hero() {
   const heroImage = PlaceHolderImages.find((p) => p.id === 'hero-1');
@@ -26,9 +25,6 @@ export function Hero() {
         <p className="mt-4 text-xl font-light tracking-wide md:text-2xl">
           <Translatable text="Your Free Comprehensive Guide to Travelling South Africa" />
         </p>
-        <div className="mt-8 w-full max-w-2xl">
-          <AnimatedTagline />
-        </div>
       </div>
     </section>
   );
