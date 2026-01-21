@@ -31,7 +31,6 @@ const navLinks = [
 
 const toolsLinks = [
     { href: '/tools/currency-converter', label: 'Currency' },
-    { href: '/tools/directions', label: 'Directions' },
 ]
 
 export function Header() {

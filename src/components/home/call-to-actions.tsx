@@ -15,17 +15,10 @@ const ctaItems = [
     buttonText: 'Start Planning',
   },
   {
-    icon: Map,
-    title: 'Get Directions',
-    description: 'Find the best routes between any two points in South Africa.',
-    href: '/directions',
-    buttonText: 'Find Route',
-  },
-  {
     icon: Calculator,
     title: 'Convert Currency',
     description: 'Use our handy tool for up-to-date exchange rates.',
-    href: '/currency-converter',
+    href: '/tools/currency-converter',
     buttonText: 'Convert Now',
   },
 ];
@@ -34,7 +27,7 @@ export function CallToActions() {
   return (
     <section id="cta" className="bg-background py-16 lg:py-24">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {ctaItems.map((item) => (
             <Card key={item.title} className="flex flex-col">
               <CardHeader className="items-center text-center">
