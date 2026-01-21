@@ -1,14 +1,14 @@
 import { Hero } from '@/components/home/hero';
-import { QuickNav } from '@/components/home/quick-nav';
-import { FeaturedDestinations } from '@/components/home/featured-destinations';
 import { CallToActions } from '@/components/home/call-to-actions';
+import { FeaturedProvinces } from '@/components/home/featured-provinces';
+import { AnimatedStats } from '@/components/home/animated-stats';
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <QuickNav />
-      <FeaturedDestinations />
+      <AnimatedStats />
+      <FeaturedProvinces />
       <CallToActions />
     </>
   );

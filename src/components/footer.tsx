@@ -8,16 +8,16 @@ const footerNavs = [
     items: [
       { href: '/provinces', name: 'Provinces' },
       { href: '/towns', name: 'Towns' },
-      { href: '/sights', name: 'Sights to See' },
-      { href: '/routes', name: 'Major Routes' },
+      { href: '/sights', name: 'Sights' },
+      { href: '/routes', name: 'Routes' },
     ],
   },
   {
     label: 'Tools',
     items: [
       { href: '/plan-your-trip', name: 'Plan Your Trip' },
-      { href: '/currency-converter', name: 'Currency Converter' },
-      { href: '/directions', name: 'Get Directions' },
+      { href: '/tools/currency-converter', name: 'Currency Converter' },
+      { href: '/tools/directions', name: 'Get Directions' },
     ],
   },
   {
@@ -39,7 +39,7 @@ export const Footer = () => {
               <Logo className="w-48" />
             </Link>
             <p className="mt-4 text-sm max-w-xs">
-              <Translatable text="Discover the Rainbow Nation – Your Free Comprehensive Guide" />
+              <Translatable text="Your Free Comprehensive Guide to Travelling South Africa" />
             </p>
           </div>
           {footerNavs.map((nav) => (

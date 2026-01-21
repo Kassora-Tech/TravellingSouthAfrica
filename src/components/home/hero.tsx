@@ -23,9 +23,9 @@ export function Hero() {
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex flex-col items-center px-4">
         <Logo className="w-72 md:w-96" />
-        <h1 className="mt-4 text-xl font-light tracking-wide md:text-2xl">
-          <Translatable text="Discover the Rainbow Nation – Your Free Comprehensive Guide" />
-        </h1>
+        <p className="mt-4 text-xl font-light tracking-wide md:text-2xl">
+          <Translatable text="Your Free Comprehensive Guide to Travelling South Africa" />
+        </p>
         <div className="mt-8 w-full max-w-2xl">
           <AnimatedTagline />
         </div>

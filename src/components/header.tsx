@@ -19,6 +19,7 @@ import {
 import { LanguageSwitcher } from './language-switcher';
 import { cn } from '@/lib/utils';
 import { useScroll } from '@/hooks/use-scroll';
+import { Translatable } from './translatable';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -26,10 +27,12 @@ const navLinks = [
   { href: '/towns', label: 'Towns' },
   { href: '/sights', label: 'Sights' },
   { href: '/routes', label: 'Routes' },
-  { href: '/currency-converter', label: 'Currency' },
-  { href: '/directions', label: 'Directions' },
-  { href: '/contact', label: 'Contact' },
 ];
+
+const toolsLinks = [
+    { href: '/tools/currency-converter', label: 'Currency' },
+    { href: '/tools/directions', label: 'Directions' },
+]
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,33 +52,36 @@ export function Header() {
           </Link>
 
           <nav className="hidden items-center space-x-1 lg:space-x-2 md:flex">
-            {navLinks.slice(0, 4).map((link) => (
+            {navLinks.map((link) => (
               <Button key={link.href} variant="ghost" asChild>
                 <Link href={link.href}>
-                  {link.label}
+                  <Translatable text={link.label} />
                 </Link>
               </Button>
             ))}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost">
-                  More <ChevronDown className="ml-1 h-4 w-4" />
+                  <Translatable text="Tools" /> <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {navLinks.slice(4).map((link) => (
+                {toolsLinks.map((link) => (
                   <DropdownMenuItem key={link.href} asChild>
-                    <Link href={link.href}>{link.label}</Link>
+                    <Link href={link.href}><Translatable text={link.label} /></Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <Button variant="ghost" asChild>
+                <Link href="/contact"><Translatable text="Contact" /></Link>
+            </Button>
           </nav>
 
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <Button asChild className="hidden md:inline-flex">
-              <Link href="/plan-your-trip">Plan Your Trip</Link>
+              <Link href="/plan-your-trip"><Translatable text="Plan Your Trip" /></Link>
             </Button>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild className="md:hidden">
@@ -96,18 +102,25 @@ export function Header() {
                         </Button>
                     </div>
                   <nav className="flex flex-col space-y-4">
-                    {navLinks.map((link) => (
+                    {[...navLinks, ...toolsLinks].map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
                         onClick={() => setIsOpen(false)}
                         className="text-lg font-medium"
                       >
-                        {link.label}
+                        <Translatable text={link.label} />
                       </Link>
                     ))}
+                     <Link
+                        href="/contact"
+                        onClick={() => setIsOpen(false)}
+                        className="text-lg font-medium"
+                      >
+                        <Translatable text="Contact" />
+                      </Link>
                     <Button asChild size="lg" className="mt-4">
-                        <Link href="/plan-your-trip" onClick={() => setIsOpen(false)}>Plan Your Trip</Link>
+                        <Link href="/plan-your-trip" onClick={() => setIsOpen(false)}><Translatable text="Plan Your Trip" /></Link>
                     </Button>
                   </nav>
                 </div>
