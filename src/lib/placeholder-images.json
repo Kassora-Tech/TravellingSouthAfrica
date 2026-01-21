@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-1",
+      "description": "A stunning landscape of South Africa, possibly Drakensberg mountains.",
+      "imageUrl": "https://images.unsplash.com/photo-1730101703305-e5e8bbef48d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzb3V0aCUyMGFmcmljYSUyMGxhbmRzY2FwZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "south africa landscape"
+    },
+    {
+      "id": "cape-town-featured",
+      "description": "View of Table Mountain in Cape Town.",
+      "imageUrl": "https://images.unsplash.com/photo-1545510120-66374ff70e4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2FwZSUyMHRvd258ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cape town"
+    },
+    {
+      "id": "kruger-featured",
+      "description": "An elephant in Kruger National Park.",
+      "imageUrl": "https://images.unsplash.com/photo-1612703252506-e2f1f674752d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxrcnVnZXIlMjBuYXRpb25hbCUyMHBhcmt8ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "kruger national park"
+    },
+    {
+      "id": "drakensberg-featured",
+      "description": "The Drakensberg mountain range.",
+      "imageUrl": "https://images.unsplash.com/photo-1697536440277-66c6a9ab45aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkcmFrZW5zYmVyZyUyMG1vdW50YWluc3xlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "drakensberg mountains"
+    },
+    {
+      "id": "johannesburg-featured",
+      "description": "The skyline of Johannesburg.",
+      "imageUrl": "https://images.unsplash.com/photo-1498824392822-1ad333fc6cc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxqb2hhbm5lc2J1cmclMjBza3lsaW5lfGVufDB8fHx8MTc2OTAwMzkwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "johannesburg skyline"
+    },
+    {
+      "id": "garden-route-featured",
+      "description": "A scenic view of the Garden Route.",
+      "imageUrl": "https://images.unsplash.com/photo-1639990234861-01089e31ded9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z2FyZGVuJTIwcm91dGV8ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "garden route"
+    }
+  ]
 }
