@@ -42,12 +42,13 @@ export default function TownsPage() {
 
   return (
     <>
-      <section className="bg-secondary py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold font-headline text-primary md:text-5xl">
+      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/7tDhbF45/20484249406-c92d5b103a-k.jpg')" }}>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container relative mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold font-headline text-white md:text-5xl">
             <Translatable text="Towns of South Africa" />
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-200">
             <Translatable text="Explore the hundreds of towns and cities, from bustling metropolises to charming small villages, that form the heart of the nation." />
           </p>
         </div>
