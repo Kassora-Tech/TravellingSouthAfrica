@@ -21,8 +21,8 @@ const slidesData = [
   },
   {
     id: 'hero-slide-town',
-    headline: 'Wildlife Wonders Await',
-    subheadline: 'Unforgettable moments at a classic waterhole',
+    headline: 'Discover Charming Towns',
+    subheadline: 'Explore vibrant local culture and history',
   },
   {
     id: 'hero-slide-paragliding',
@@ -31,8 +31,8 @@ const slidesData = [
   },
   {
     id: 'hero-slide-wildlife',
-    headline: 'Encounter Wild Africa',
-    subheadline: 'Safari adventures in world-class reserves',
+    headline: 'Wildlife Wonders Await',
+    subheadline: 'Unforgettable moments at a classic waterhole',
   },
 ];
 

@@ -8,9 +8,9 @@
     },
     {
       "id": "hero-slide-town",
-      "description": "Wildlife gathering at a waterhole in Talamati during a drought.",
-      "imageUrl": "https://i.ibb.co/1Ytrm7Dw/stock-photo-talamati-waterhole-during-a-drought-mixed-game-gather-at-a-waterhole-during-a-long-droug.jpg",
-      "imageHint": "wildlife waterhole"
+      "description": "A picturesque street in Stellenbosch",
+      "imageUrl": "https://images.unsplash.com/photo-1623051877717-33a411327773?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdGVsbGVuYm9zY2glMjBzdHJlZXR8ZW58MHx8fHwxNzY5MTIyMjQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "stellenbosch street"
     },
     {
       "id": "hero-slide-paragliding",
@@ -20,9 +20,9 @@
     },
     {
       "id": "hero-slide-wildlife",
-      "description": "A herd of elephants in a savanna.",
-      "imageUrl": "https://images.unsplash.com/photo-1557050543-4d5f4e07d7c2?q=80&w=1974&auto=format&fit=crop",
-      "imageHint": "wildlife safari"
+      "description": "Wildlife gathering at a waterhole in Talamati during a drought.",
+      "imageUrl": "https://i.ibb.co/1Ytrm7Dw/stock-photo-talamati-waterhole-during-a-drought-mixed-game-gather-at-a-waterhole-during-a-long-droug.jpg",
+      "imageHint": "wildlife waterhole"
     },
     {
       "id": "featured-1",
@@ -105,7 +105,7 @@
     {
       "id": "province-northern-cape",
       "description": "Namaqualand flowers in bloom.",
-      "imageUrl": "https://images.unsplash.com/photo-1641566403450-0e67a9d33d27?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxuYW1hcXVhbGFuZCUyMGZsb3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1641566403450-0e67a9d33d27?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxuYW1hcXVhbGFuZCUyMGZsb3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "namaqualand flowers"
     },
     {
@@ -123,19 +123,19 @@
     {
       "id": "town-durban",
       "description": "Durban beachfront",
-      "imageUrl": "https://images.unsplash.com/photo-1626951876321-3b7137628f83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkdXJiYW4lMjBiZWFjaHxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1626951876321-3b7137628f83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkdXJiYW4lMjBiZWFjaHxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "durban beach"
     },
     {
       "id": "town-pretoria",
       "description": "Jacaranda trees in Pretoria",
-      "imageUrl": "https://images.unsplash.com/photo-1698052842701-8368f97c255a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcmV0b3JpYSUyMGphY2FyYW5kYXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1698052842701-8368f97c255a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcmV0b3JpYSUyMGphY2FyYW5kYXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "pretoria jacaranda"
     },
     {
       "id": "town-port-elizabeth",
       "description": "Gqeberha harbor",
-      "imageUrl": "https://images.unsplash.com/photo-1709730411805-b77bc98aea82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0JTIwZWxpemFiZXRoJTIwaGFyYm9yfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1709730411805-b77bc98aea82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0JTIwZWxpemFiZXRoJTIwaGFyYm9yfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "port elizabeth harbor"
     },
     {
@@ -147,37 +147,37 @@
     {
       "id": "town-mbombela",
       "description": "Lowveld Botanical Garden",
-      "imageUrl": "https://images.unsplash.com/photo-1713030394152-1f2b68904907?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bG93dmVsZCUyMGdhcmRlbnxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1713030394152-1f2b68904907?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bG93dmVsZCUyMGdhcmRlbnxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "lowveld garden"
     },
     {
       "id": "town-kimberley",
       "description": "The Big Hole in Kimberley",
-      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "kimberley big hole"
     },
     {
       "id": "town-polokwane",
       "description": "Polokwane Game Reserve",
-      "imageUrl": "https://images.unsplash.com/photo-1503853486570-6efac3939915?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwb2xva3dhbmUlMjByZXNlcnZlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1503853486570-6efac3939915?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwb2xva3dhbmUlMjByZXNlcnZlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "polokwane reserve"
     },
     {
       "id": "town-stellenbosch",
       "description": "Stellenbosch vineyards",
-      "imageUrl": "https://images.unsplash.com/photo-1704037178699-8d9d9bedcb52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzdGVsbGVuYm9zY2glMjB2aW5leWFyZHN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1704037178699-8d9d9bedcb52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzdGVsbGVuYm9zY2glMjB2aW5leWFyZHN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "stellenbosch vineyards"
     },
     {
       "id": "town-knysna",
       "description": "The Knysna Heads",
-      "imageUrl": "https://images.unsplash.com/photo-1660938545360-7261a873d84b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxrbnlzbmElMjBoZWFkc3xlbnwwfHx8fDE3NjkwMDc5MTh8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1660938545360-7261a873d84b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxrbnlzbmElMjBoZWFkc3xlbnwwfHx8fDE3NjkwMDc5MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "knysna heads"
     },
     {
       "id": "town-oudtshoorn",
       "description": "Ostrich farm in Oudtshoorn",
-      "imageUrl": "https://images.unsplash.com/photo-1695237888915-c1d69fe19d23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvdWR0c2hvb3JuJTIwb3N0cmljaHxlbnwwfHx8fDE3NjkwMDc5MTh8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1695237888915-c1d69fe19d23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvdWR0c2hvb3JuJTIwb3N0cmljaHxlbnwwfHx8fDE3NjkwMDc5MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "oudtshoorn ostrich"
     },
     {
@@ -195,25 +195,25 @@
     {
       "id": "town-george",
       "description": "Outeniqua Mountains near George",
-      "imageUrl": "https://images.unsplash.com/photo-1702562964205-5ea8f4551bcd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxvdXRlbmlxdWElMjBtb3VudGFpbnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1702562964205-5ea8f4551bcd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxvdXRlbmlxdWElMjBtb3VudGFpbnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "outeniqua mountains"
     },
     {
       "id": "town-plettenberg-bay",
       "description": "Beach in Plettenberg Bay",
-      "imageUrl": "https://images.unsplash.com/photo-1578909517279-ae3e8c5050a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwbGV0dGVuYmVyZyUyMGJheXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1578909517279-ae3e8c5050a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwbGV0dGVuYmVyZyUyMGJheXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "plettenberg bay"
     },
     {
       "id": "town-mossel-bay",
       "description": "Mossel Bay harbor",
-      "imageUrl": "https://images.unsplash.com/photo-1562651139-6da329aafdd6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bW9zc2VsJTIwYmF5fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1562651139-6da329aafdd6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bW9zc2VsJTIwYmF5fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mossel bay"
     },
     {
       "id": "town-graskop",
       "description": "View from Graskop",
-      "imageUrl": "https://images.unsplash.com/photo-1743062660367-0b2e1074889c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxncmFza29wJTIwdmlld3xlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1743062660367-0b2e1074889c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxncmFza29wJTIwdmlld3xlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "graskop view"
     },
     {
@@ -249,7 +249,7 @@
     {
       "id": "sight-drakensberg",
       "description": "Drakensberg Amphitheatre",
-      "imageUrl": "https://images.unsplash.com/photo-1721541351625-06f33685d3f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkcmFrZW5zYmVyZyUyMGFtcGhpdGVhdHJlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1721541351625-06f33685d3f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkcmFrZW5zYmVyZyUyMGFtcGhpdGVhdHJlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "drakensberg amphiteatre"
     },
     {
