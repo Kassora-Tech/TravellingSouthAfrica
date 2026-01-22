@@ -10,12 +10,13 @@ import { ArrowRight } from 'lucide-react';
 export default function ProvincesPage() {
   return (
     <>
-      <section className="bg-secondary py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold font-headline text-primary md:text-5xl">
+      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/1Ycpf7ZZ/Nine-provinces-South-Africa-top.jpg')" }}>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container relative mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold font-headline text-white md:text-5xl">
             <Translatable text="The Nine Provinces" />
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-200">
             <Translatable text="From the sun-drenched beaches of the Western Cape to the wild bushveld of Limpopo, discover the unique character and beauty of each of South Africa's nine provinces." />
           </p>
         </div>
