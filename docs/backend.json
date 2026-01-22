@@ -1,0 +1,501 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the Travelling South Africa website.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user.",
+          "format": "uuid"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user."
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the user (e.g., free, premium).",
+          "format": "string"
+        },
+        "profileImageUrl": {
+          "type": "string",
+          "description": "URL of the user's profile image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "name",
+        "role"
+      ]
+    },
+    "Trip": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Trip",
+      "type": "object",
+      "description": "Represents a user's planned trip.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the trip."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Trip)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the trip."
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date of the trip.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date of the trip.",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the trip."
+        },
+        "provinceIds": {
+          "type": "array",
+          "description": "References to Provinces. (Relationship: Province N:N Trip)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "townIds": {
+          "type": "array",
+          "description": "References to Towns. (Relationship: Town N:N Trip)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sightIds": {
+          "type": "array",
+          "description": "References to Sights. (Relationship: Sight N:N Trip)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "routeIds": {
+          "type": "array",
+          "description": "References to Routes. (Relationship: Route N:N Trip)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "accommodationIds": {
+          "type": "array",
+          "description": "References to Accommodations. (Relationship: Accommodation N:N Trip)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "startDate",
+        "endDate"
+      ]
+    },
+    "Booking": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Booking",
+      "type": "object",
+      "description": "Represents a user's booking of an accommodation.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the booking."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Booking)"
+        },
+        "accommodationId": {
+          "type": "string",
+          "description": "Reference to Accommodation. (Relationship: Accommodation 1:N Booking)"
+        },
+        "checkInDate": {
+          "type": "string",
+          "description": "Check-in date for the booking.",
+          "format": "date-time"
+        },
+        "checkOutDate": {
+          "type": "string",
+          "description": "Check-out date for the booking.",
+          "format": "date-time"
+        },
+        "numberOfGuests": {
+          "type": "number",
+          "description": "Number of guests for the booking."
+        },
+        "totalPrice": {
+          "type": "number",
+          "description": "Total price for the booking."
+        },
+        "bookingDate": {
+          "type": "string",
+          "description": "Date the booking was made.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "accommodationId",
+        "checkInDate",
+        "checkOutDate",
+        "numberOfGuests",
+        "totalPrice",
+        "bookingDate"
+      ]
+    },
+    "Province": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Province",
+      "type": "object",
+      "description": "Represents a province in South Africa.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the province."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the province."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the province."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the province's image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "imageUrl"
+      ]
+    },
+    "Town": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Town",
+      "type": "object",
+      "description": "Represents a town in South Africa.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the town."
+        },
+        "provinceId": {
+          "type": "string",
+          "description": "Reference to Province. (Relationship: Province 1:N Town)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the town."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the town."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the town's image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "provinceId",
+        "name",
+        "description",
+        "imageUrl"
+      ]
+    },
+    "Sight": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Sight",
+      "type": "object",
+      "description": "Represents a sight to see in South Africa.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the sight."
+        },
+        "provinceId": {
+          "type": "string",
+          "description": "Reference to Province. (Relationship: Province 1:N Sight)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the sight."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the sight."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the sight's image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "provinceId",
+        "name",
+        "description",
+        "imageUrl"
+      ]
+    },
+    "Route": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Route",
+      "type": "object",
+      "description": "Represents a major route in South Africa.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the route."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the route (e.g., N1, N2)."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the route."
+        },
+        "townIds": {
+          "type": "array",
+          "description": "References to Towns along the route. (Relationship: Route 1:N Town)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "Accommodation": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Accommodation",
+      "type": "object",
+      "description": "Represents an accommodation option.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the accommodation."
+        },
+        "provinceId": {
+          "type": "string",
+          "description": "Reference to Province. (Relationship: Province 1:N Accommodation)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the accommodation."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the accommodation."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the accommodation's image.",
+          "format": "uri"
+        },
+        "pricePerNight": {
+          "type": "number",
+          "description": "Price per night for the accommodation."
+        },
+        "amenities": {
+          "type": "array",
+          "description": "List of amenities offered by the accommodation.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "provinceId",
+        "name",
+        "description",
+        "imageUrl",
+        "pricePerNight"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile data. Accessible only to the authenticated user (path-based ownership).",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/trips/{tripId}",
+        "definition": {
+          "entityName": "Trip",
+          "schema": {
+            "$ref": "#/backend/entities/Trip"
+          },
+          "description": "Stores user's planned trips. Accessible only to the authenticated user (path-based ownership).",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "tripId",
+              "description": "The unique identifier for the trip."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/bookings/{bookingId}",
+        "definition": {
+          "entityName": "Booking",
+          "schema": {
+            "$ref": "#/backend/entities/Booking"
+          },
+          "description": "Stores user's accommodation bookings. Accessible only to the authenticated user (path-based ownership).",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "bookingId",
+              "description": "The unique identifier for the booking."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/provinces/{provinceId}",
+        "definition": {
+          "entityName": "Province",
+          "schema": {
+            "$ref": "#/backend/entities/Province"
+          },
+          "description": "Stores province data. Publicly readable.",
+          "params": [
+            {
+              "name": "provinceId",
+              "description": "The unique identifier for the province."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/towns/{townId}",
+        "definition": {
+          "entityName": "Town",
+          "schema": {
+            "$ref": "#/backend/entities/Town"
+          },
+          "description": "Stores town data. Publicly readable.",
+          "params": [
+            {
+              "name": "townId",
+              "description": "The unique identifier for the town."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/sights/{sightId}",
+        "definition": {
+          "entityName": "Sight",
+          "schema": {
+            "$ref": "#/backend/entities/Sight"
+          },
+          "description": "Stores sight data. Publicly readable.",
+          "params": [
+            {
+              "name": "sightId",
+              "description": "The unique identifier for the sight."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/routes/{routeId}",
+        "definition": {
+          "entityName": "Route",
+          "schema": {
+            "$ref": "#/backend/entities/Route"
+          },
+          "description": "Stores route data. Publicly readable.",
+          "params": [
+            {
+              "name": "routeId",
+              "description": "The unique identifier for the route."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/accommodations/{accommodationId}",
+        "definition": {
+          "entityName": "Accommodation",
+          "schema": {
+            "$ref": "#/backend/entities/Accommodation"
+          },
+          "description": "Stores accommodation data. Publicly readable.",
+          "params": [
+            {
+              "name": "accommodationId",
+              "description": "The unique identifier for the accommodation."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support user authentication, booking, trip planning, and personalization features for the \"Travelling South Africa\" website. It prioritizes security, scalability, and ease of debugging, adhering to the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).\n\n**Authorization Independence:** The structure avoids hierarchical authorization dependencies by using path-based ownership and denormalization. For example, user-specific data like trips and bookings are stored under `/users/{userId}`. There is no need to get() parent documents to check authorization. \n\n**Structural Segregation:** Collections are segregated based on security requirements. User-specific data (trips, bookings) is kept separate from global data (provinces, towns, sights, routes, accommodations).\n\n**Access Modeling:** Path-based ownership (`/users/{userId}/trips/{tripId}`, `/users/{userId}/bookings/{bookingId}`) is used for private user data. Global data (provinces, towns, etc.) can have different access rules as needed.\n\n**Data Clarity and Predictability:** Explicit state modeling is used (e.g., the `role` field in the `User` document). The schema is predictable, avoiding dynamic keys. Consistent naming conventions are used for authorization fields (e.g., `userId`).\n\n**QAPs (Rules are not Filters):** The structure supports secure `list` operations. For example, listing trips is done within the scope of a user's trips collection (`/users/{userId}/trips`). This ensures that only the trips belonging to the authenticated user are listed.\n\n**Denormalization Strategy:** This structure currently assumes all content (provinces, towns, sights, routes, accommodations) are publicly readable, and that user-specific data (trips, bookings) require authentication and ownership validation (i.e., the `userId` in the document matches `request.auth.uid`). If access control is added to global content entities, the membership model would be applied.\n\nThis structure ensures that security rules can be written in a straightforward manner, without the need for complex `get()` calls or nested conditions. It also simplifies debugging and maintenance by making authorization intent explicit in the data structure."
+  }
+}
