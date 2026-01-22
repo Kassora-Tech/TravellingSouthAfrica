@@ -72,3 +72,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .calendar-grid {
+    border-top: 1px solid theme('colors.border');
+    border-left: 1px solid theme('colors.border');
+  }
+}

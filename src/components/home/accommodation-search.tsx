@@ -5,17 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { routes } from '@/lib/data/routes';
+import { CustomCalendar } from '@/components/ui/custom-calendar';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
-  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
-  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
+  const [routeOutDate, setRouteOutDate] = useState<Date | undefined>();
+  const [routeHomeDate, setRouteHomeDate] = useState<Date | undefined>();
   const [guests, setGuests] = useState({ adults: 2, children: 0, rooms: 1 });
+  const [isOutCalendarOpen, setIsOutCalendarOpen] = useState(false);
+  const [isHomeCalendarOpen, setIsHomeCalendarOpen] = useState(false);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +36,7 @@ export function AccommodationSearch() {
   };
 
   return (
-    <section style={{ backgroundColor: '#003366' }} className="py-8 md:py-12 text-white">
+    <section className="py-8 md:py-12 text-white" style={{ background: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(22,22,112,1) 25%, rgba(0,128,0,1) 50%, rgba(255,215,0,1) 75%, rgba(224,30,30,1) 100%)' }}>
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold font-headline">
           <Translatable text="Find your next stay in South Africa" />
@@ -45,7 +48,7 @@ export function AccommodationSearch() {
         <form
             onSubmit={handleSubmit}
             className="mt-8 max-w-6xl mx-auto bg-transparent p-1 rounded-lg"
-            style={{ borderColor: '#F5A623', borderWidth: '3px' }}
+            style={{ borderColor: 'hsl(var(--accent))', borderWidth: '3px' }}
         >
           <div className="flex flex-col lg:flex-row items-center bg-white rounded-md overflow-hidden">
             {/* Location */}
@@ -68,23 +71,24 @@ export function AccommodationSearch() {
             {/* Date Out */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
                <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-               <Popover>
+               <Popover open={isOutCalendarOpen} onOpenChange={setIsOutCalendarOpen}>
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
-                      {checkInDate ? (
-                        format(checkInDate, "LLL dd, y")
+                      {routeOutDate ? (
+                        format(routeOutDate, "PPP")
                       ) : (
-                        <span className="text-gray-500">Route Out</span>
+                        <span className="text-gray-500"><Translatable text="Route Out" /></span>
                       )}
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
-                    <CalendarComponent
-                        initialFocus
-                        mode="single"
-                        selected={checkInDate}
-                        onSelect={setCheckInDate}
-                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    <CustomCalendar
+                      selectedDate={routeOutDate}
+                      onDateSelect={(date) => {
+                        setRouteOutDate(date);
+                        setIsOutCalendarOpen(false);
+                      }}
+                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                     />
                  </PopoverContent>
                </Popover>
@@ -93,25 +97,24 @@ export function AccommodationSearch() {
             {/* Date Home */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
                <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-               <Popover>
+               <Popover open={isHomeCalendarOpen} onOpenChange={setIsHomeCalendarOpen}>
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
-                      {checkOutDate ? (
-                        format(checkOutDate, "LLL dd, y")
+                      {routeHomeDate ? (
+                        format(routeHomeDate, "PPP")
                       ) : (
-                        <span className="text-gray-500">Route Home</span>
+                        <span className="text-gray-500"><Translatable text="Route Home" /></span>
                       )}
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
-                    <CalendarComponent
-                        initialFocus
-                        mode="single"
-                        selected={checkOutDate}
-                        onSelect={setCheckOutDate}
-                        disabled={(date) =>
-                            checkInDate ? date <= checkInDate : date < new Date(new Date().setHours(0, 0, 0, 0))
-                        }
+                    <CustomCalendar
+                        selectedDate={routeHomeDate}
+                        onDateSelect={(date) => {
+                          setRouteHomeDate(date);
+                          setIsHomeCalendarOpen(false);
+                        }}
+                        disabled={(date) => routeOutDate ? date <= routeOutDate : date < new Date(new Date().setHours(0, 0, 0, 0))}
                     />
                  </PopoverContent>
                </Popover>
@@ -124,7 +127,7 @@ export function AccommodationSearch() {
                 <PopoverTrigger asChild>
                   <button type="button" className="flex items-center justify-between w-full h-14 px-4 py-2 text-base text-gray-900 text-left pl-12 rounded-none border-0 focus:outline-none focus:ring-2 focus:ring-ring">
                     <span>
-                      {guests.adults} adult{guests.adults !== 1 ? 's' : ''} · {guests.children} children · {guests.rooms} room{guests.rooms !== 1 ? 's' : ''}
+                      {guests.adults} <Translatable text="adult" />{guests.adults !== 1 ? 's' : ''} · {guests.children} <Translatable text="children" /> · {guests.rooms} <Translatable text="room" />{guests.rooms !== 1 ? 's' : ''}
                     </span>
                     <ChevronDown className="h-5 w-5 opacity-70" />
                   </button>
@@ -132,14 +135,14 @@ export function AccommodationSearch() {
                 <PopoverContent className="w-80 text-black">
                     <div className="grid gap-4">
                         <div className="space-y-2">
-                            <h4 className="font-medium leading-none">Guests</h4>
+                            <h4 className="font-medium leading-none"><Translatable text="Guests" /></h4>
                             <p className="text-sm text-muted-foreground">
-                                Adjust the number of guests and rooms.
+                                <Translatable text="Adjust the number of guests and rooms." />
                             </p>
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="adults">Adults</Label>
+                                <Label htmlFor="adults"><Translatable text="Adults" /></Label>
                                 <div className="flex items-center gap-2">
                                     <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('adults', 'decrement')} disabled={guests.adults <= 1}><Minus className="h-4 w-4" /></Button>
                                     <span className="w-10 text-center">{guests.adults}</span>
@@ -147,7 +150,7 @@ export function AccommodationSearch() {
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="children">Children</Label>
+                                <Label htmlFor="children"><Translatable text="Children" /></Label>
                                 <div className="flex items-center gap-2">
                                     <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('children', 'decrement')} disabled={guests.children <= 0}><Minus className="h-4 w-4" /></Button>
                                     <span className="w-10 text-center">{guests.children}</span>
@@ -155,7 +158,7 @@ export function AccommodationSearch() {
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="rooms">Rooms</Label>
+                                <Label htmlFor="rooms"><Translatable text="Rooms" /></Label>
                                 <div className="flex items-center gap-2">
                                     <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('rooms', 'decrement')} disabled={guests.rooms <= 1}><Minus className="h-4 w-4" /></Button>
                                     <span className="w-10 text-center">{guests.rooms}</span>
@@ -170,7 +173,7 @@ export function AccommodationSearch() {
 
             {/* Search Button */}
             <div className="p-2 w-full lg:w-auto bg-white border-t lg:border-t-0">
-                <Button type="submit" className="w-full h-10 text-base font-bold px-8" style={{ backgroundColor: '#003366' }}>
+                <Button type="submit" className="w-full h-10 text-base font-bold px-8 bg-blue-900 hover:bg-blue-800">
                     <Translatable text="Search" />
                 </Button>
             </div>
