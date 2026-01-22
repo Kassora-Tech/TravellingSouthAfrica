@@ -2,7 +2,6 @@
 
 import { Bed, Calendar, Users, ChevronDown, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -10,6 +9,8 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { type DateRange } from 'react-day-picker';
 import { format } from 'date-fns';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { routes } from '@/lib/data/routes';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
@@ -50,13 +51,18 @@ export function AccommodationSearch() {
             {/* Location */}
             <div className="relative flex items-center flex-grow w-full">
               <Bed className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-              <Input
-                type="text"
-                placeholder="Pick your route"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                className="pl-12 text-gray-900 w-full h-14 border-0 lg:border-r focus-visible:ring-0 rounded-none text-base"
-              />
+              <Select value={destination} onValueChange={setDestination}>
+                <SelectTrigger className="w-full h-14 pl-12 text-base border-0 lg:border-r rounded-none focus:ring-0 focus:ring-offset-0 text-left justify-start gap-2">
+                  <SelectValue placeholder="Pick your route" />
+                </SelectTrigger>
+                <SelectContent>
+                  {routes.map((route) => (
+                    <SelectItem key={route.slug} value={route.slug}>
+                      <Translatable text={route.name} />
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Date Range */}
