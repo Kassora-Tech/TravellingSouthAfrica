@@ -1,15 +1,34 @@
 "use client";
 
-import { Bed, Calendar, Users, ChevronDown } from 'lucide-react';
+import { Bed, Calendar, Users, ChevronDown, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Translatable } from '@/components/translatable';
+import { useState } from 'react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { type DateRange } from 'react-day-picker';
+import { format } from 'date-fns';
+import { Label } from '@/components/ui/label';
 
 export function AccommodationSearch() {
+  const [destination, setDestination] = useState('');
+  const [date, setDate] = useState<DateRange | undefined>();
+  const [guests, setGuests] = useState({ adults: 2, children: 0, rooms: 1 });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app this would trigger a search, for now it redirects.
+    // In a real app this would trigger a search with state values.
+    // For now it just redirects.
     window.location.href = '/accommodations';
+  };
+
+  const handleGuestChange = (type: 'adults' | 'children' | 'rooms', operation: 'increment' | 'decrement') => {
+    setGuests(prev => {
+      const newCount = operation === 'increment' ? prev[type] + 1 : prev[type] - 1;
+      const value = Math.max(type === 'adults' || type === 'rooms' ? 1 : 0, newCount); // Adults/rooms >= 1, children >= 0
+      return { ...prev, [type]: value };
+    });
   };
 
   return (
@@ -34,6 +53,8 @@ export function AccommodationSearch() {
               <Input
                 type="text"
                 placeholder="Where are you going?"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
                 className="pl-12 text-gray-900 w-full h-14 border-0 lg:border-r focus-visible:ring-0 rounded-none text-base"
               />
             </div>
@@ -41,18 +62,85 @@ export function AccommodationSearch() {
             {/* Date Range */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
                <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-               <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-500 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
-                Check-in date — Check-out date
-               </button>
+               <Popover>
+                 <PopoverTrigger asChild>
+                    <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, "LLL dd, y")} -{" "}
+                            {format(date.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(date.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span className="text-gray-500">Check-in date — Check-out date</span>
+                      )}
+                    </button>
+                 </PopoverTrigger>
+                 <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                        initialFocus
+                        mode="range"
+                        defaultMonth={date?.from}
+                        selected={date}
+                        onSelect={setDate}
+                        numberOfMonths={2}
+                    />
+                 </PopoverContent>
+               </Popover>
             </div>
             
             {/* Guests */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
               <Users className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-              <button type="button" className="flex items-center justify-between w-full h-14 px-4 py-2 text-base text-gray-900 text-left pl-12 rounded-none border-0 focus:outline-none focus:ring-2 focus:ring-ring">
-                <span>2 adults · 0 children · 1 room</span>
-                <ChevronDown className="h-5 w-5 opacity-70" />
-              </button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button type="button" className="flex items-center justify-between w-full h-14 px-4 py-2 text-base text-gray-900 text-left pl-12 rounded-none border-0 focus:outline-none focus:ring-2 focus:ring-ring">
+                    <span>
+                      {guests.adults} adult{guests.adults !== 1 ? 's' : ''} · {guests.children} children · {guests.rooms} room{guests.rooms !== 1 ? 's' : ''}
+                    </span>
+                    <ChevronDown className="h-5 w-5 opacity-70" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 text-black">
+                    <div className="grid gap-4">
+                        <div className="space-y-2">
+                            <h4 className="font-medium leading-none">Guests</h4>
+                            <p className="text-sm text-muted-foreground">
+                                Adjust the number of guests and rooms.
+                            </p>
+                        </div>
+                        <div className="grid gap-2">
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="adults">Adults</Label>
+                                <div className="flex items-center gap-2">
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('adults', 'decrement')} disabled={guests.adults <= 1}><Minus className="h-4 w-4" /></Button>
+                                    <span className="w-10 text-center">{guests.adults}</span>
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('adults', 'increment')}><Plus className="h-4 w-4" /></Button>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="children">Children</Label>
+                                <div className="flex items-center gap-2">
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('children', 'decrement')} disabled={guests.children <= 0}><Minus className="h-4 w-4" /></Button>
+                                    <span className="w-10 text-center">{guests.children}</span>
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('children', 'increment')}><Plus className="h-4 w-4" /></Button>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="rooms">Rooms</Label>
+                                <div className="flex items-center gap-2">
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('rooms', 'decrement')} disabled={guests.rooms <= 1}><Minus className="h-4 w-4" /></Button>
+                                    <span className="w-10 text-center">{guests.rooms}</span>
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('rooms', 'increment')}><Plus className="h-4 w-4" /></Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </PopoverContent>
+              </Popover>
             </div>
             
             {/* Search Button */}
