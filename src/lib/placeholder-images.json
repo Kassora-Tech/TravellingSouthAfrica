@@ -7,6 +7,24 @@
       "imageHint": "south africa landscape"
     },
     {
+      "id": "hero-slide-town",
+      "description": "Colorful houses in Bo-Kaap, Cape Town.",
+      "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb122c294?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "charming town"
+    },
+    {
+      "id": "hero-slide-paragliding",
+      "description": "Paragliding over the coast of Cape Town.",
+      "imageUrl": "https://images.unsplash.com/photo-1522163182522-518c7d692113?q=80&w=2072&auto=format&fit=crop",
+      "imageHint": "paragliding flight"
+    },
+    {
+      "id": "hero-slide-wildlife",
+      "description": "A herd of elephants in a savanna.",
+      "imageUrl": "https://images.unsplash.com/photo-1557050543-4d5f4e07d7c2?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "wildlife safari"
+    },
+    {
       "id": "featured-1",
       "description": "View of Table Mountain in Cape Town.",
       "imageUrl": "https://images.unsplash.com/photo-1585061528750-3baca2cb6a10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjYXBlJTIwdG93bnxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -237,103 +255,103 @@
     {
       "id": "sight-soweto",
       "description": "Orlando Towers in Soweto",
-      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "soweto towers"
     },
     {
       "id": "sight-durban-beaches",
       "description": "Durban Golden Mile",
-      "imageUrl": "https://images.unsplash.com/photo-1644486555356-631b41622e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkdXJiYW4lMjBiZWFjaHxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1644486555356-631b41622e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkdXJiYW4lMjBiZWFjaHxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "durban beach"
     },
     {
       "id": "sight-cradle-of-humankind",
       "description": "Maropeng visitor centre",
-      "imageUrl": "https://images.unsplash.com/photo-1630144920580-b62fe5ee198d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjcmFkbGUlMjBodW1hbmtpbmR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1630144920580-b62fe5ee198d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjcmFkbGUlMjBodW1hbmtpbmR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "cradle humankind"
     },
     {
       "id": "sight-addo-elephant-park",
       "description": "Elephants in Addo Park",
-      "imageUrl": "https://images.unsplash.com/photo-1683529887016-8a89c672b21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhZGRvJTIwZWxlcGhhbnRzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1683529887016-8a89c672b21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhZGRvJTIwZWxlcGhhbnRzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "addo elephants"
     },
     {
       "id": "sight-namaqualand-flowers",
       "description": "Flowers in Namaqualand",
-      "imageUrl": "https://images.unsplash.com/photo-1696436686609-bba4f3fbe29b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmFtYXF1YWxhbmQlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1696436686609-bba4f3fbe29b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmFtYXF1YWxhbmQlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "namaqualand flowers"
     },
     {
       "id": "sight-sun-city",
       "description": "Palace of the Lost City",
-      "imageUrl": "https://images.unsplash.com/photo-1726302011092-e85cdafa7e5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW4lMjBjaXR5JTIwcGFsYWNlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1726302011092-e85cdafa7e5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW4lMjBjaXR5JTIwcGFsYWNlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "sun city palace"
     },
     {
       "id": "sight-kimberley-big-hole",
       "description": "The Big Hole",
-      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "kimberley big hole"
     },
     {
       "id": "sight-gods-window",
       "description": "View from God's Window",
-      "imageUrl": "https://images.unsplash.com/photo-1746295660130-ca366cfe7dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnb2RzJTIwd2luZG93fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1746295660130-ca366cfe7dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnb2RzJTIwd2luZG93fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "gods window"
     },
     {
       "id": "sight-tsitsikamma",
       "description": "Storms River Mouth bridge",
-      "imageUrl": "https://images.unsplash.com/photo-1704034451908-cb1b500900bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2l0c2lrYW1tYSUyMGJyaWRnZXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1704034451908-cb1b500900bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2l0c2lrYW1tYSUyMGJyaWRnZXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "tsitsikamma bridge"
     },
     {
       "id": "route-garden-route",
       "description": "Storms River Mouth, Garden Route",
-      "imageUrl": "https://images.unsplash.com/photo-1520796412393-db86e624492e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1520796412393-db86e624492e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "garden route"
     },
     {
       "id": "route-panorama-route",
       "description": "Three Rondavels on Panorama Route",
-      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "panorama route"
     },
     {
       "id": "route-route-62",
       "description": "Road sign on Route 62",
-      "imageUrl": "https://images.unsplash.com/photo-1649798992644-25c74faf19b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyb3V0ZSUyMDYyfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1649798992644-25c74faf19b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyb3V0ZSUyMDYyfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "route 62"
     },
     {
       "id": "route-wild-coast",
       "description": "Cows on the beach, Wild Coast",
-      "imageUrl": "https://images.unsplash.com/photo-1566317866591-1ca369ef4cb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2lsZCUyMGNvYXN0fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1566317866591-1ca369ef4cb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2lsZCUyMGNvYXN0fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "wild coast"
     },
     {
       "id": "route-midlands-meander",
       "description": "Rolling hills of the Midlands",
-      "imageUrl": "https://images.unsplash.com/photo-1667153271259-3b425f57f24b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtaWRsYW5kcyUyMG1lYW5kZXJ8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1667153271259-3b425f57f24b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtaWRsYW5kcyUyMG1lYW5kZXJ8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "midlands meander"
     },
     {
       "id": "route-west-coast-flower-route",
       "description": "Flower fields on West Coast",
-      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "west coast flowers"
     },
     {
       "id": "route-waterberg-meander",
       "description": "Sunset over the Waterberg",
-      "imageUrl": "https://images.unsplash.com/photo-1638978693414-c84ca052fa00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlcmJlcmclMjBzdW5zZXR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1638978693414-c84ca052fa00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlcmJlcmclMjBzdW5zZXR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "waterberg sunset"
     },
     {
       "id": "route-clarens-golden-gate-route",
       "description": "Golden Gate sandstone cliffs",
-      "imageUrl": "https://images.unsplash.com/photo-1720670275485-12c8371ff5c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnb2xkZW4lMjBnYXRlJTIwY2xpZmZzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1720670275485-12c8371ff5c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnb2xkZW4lMjBnYXRlJTIwY2xpZmZzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "golden gate cliffs"
     }
   ]

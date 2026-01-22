@@ -71,6 +71,20 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .embla {
+    overflow: hidden;
+  }
+  .embla__container {
+    display: flex;
+    backface-visibility: hidden;
+    touch-action: pan-y;
+  }
+  .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    position: relative;
+  }
 }
 
 @layer components {
