@@ -11,12 +11,13 @@ import { Badge } from '@/components/ui/badge';
 export default function SightsPage() {
   return (
     <>
-      <section className="bg-secondary py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold font-headline text-primary md:text-5xl">
+      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/bj4CV8rW/578251416429199326767899.jpg')" }}>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container relative mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold font-headline text-white md:text-5xl">
             <Translatable text="Sights to See" />
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-200">
             <Translatable text="From majestic mountains and sprawling national parks to vibrant cultural hubs, explore the attractions that make South Africa unforgettable." />
           </p>
         </div>
