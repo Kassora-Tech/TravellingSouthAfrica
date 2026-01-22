@@ -36,8 +36,9 @@ export function AccommodationSearch() {
   };
 
   return (
-    <section className="py-8 md:py-12 text-white" style={{ background: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(22,22,112,1) 25%, rgba(0,128,0,1) 50%, rgba(255,215,0,1) 75%, rgba(224,30,30,1) 100%)' }}>
-      <div className="container mx-auto px-4 text-center">
+    <section className="relative py-8 md:py-12 text-white bg-cover bg-center" style={{ backgroundImage: "url('https://i.ibb.co/0yspg012/south-africa-travel-facts-banner.jpg')" }}>
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="container relative mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold font-headline">
           <Translatable text="Find your next stay in South Africa" />
         </h2>
