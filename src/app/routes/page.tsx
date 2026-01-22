@@ -10,12 +10,13 @@ import { ArrowRight, Map } from 'lucide-react';
 export default function RoutesPage() {
   return (
     <>
-      <section className="bg-secondary py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold font-headline text-primary md:text-5xl">
+      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/YTWNRJJH/South-Africa-Images-for-Landing-Pages-3-1024x696.webp')" }}>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container relative mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold font-headline text-white md:text-5xl">
             <Translatable text="Iconic Routes" />
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-200">
             <Translatable text="Embark on an unforgettable journey. South Africa's scenic routes offer some of the most breathtaking drives in the world." />
           </p>
         </div>
