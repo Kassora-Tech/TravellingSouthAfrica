@@ -57,7 +57,7 @@ export function Hero() {
         />
       )}
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 flex flex-col items-center px-4">
+      <div className="relative z-10 flex flex-col items-center px-4 -translate-y-10">
         <Logo className="w-72 md:w-96" />
         <motion.p
           className="mt-4 text-2xl font-light tracking-wide md:text-4xl"
