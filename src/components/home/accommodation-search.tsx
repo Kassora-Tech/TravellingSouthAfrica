@@ -6,7 +6,6 @@ import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { type DateRange } from 'react-day-picker';
 import { format } from 'date-fns';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -14,7 +13,8 @@ import { routes } from '@/lib/data/routes';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
   const [guests, setGuests] = useState({ adults: 2, children: 0, rooms: 1 });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,9 +42,9 @@ export function AccommodationSearch() {
           <Translatable text="Search deals on guesthouses, hotels, lodges, self-catering, B&Bs, and more from local owners..." />
         </p>
 
-        <form 
+        <form
             onSubmit={handleSubmit}
-            className="mt-8 max-w-6xl mx-auto bg-transparent p-1 rounded-lg" 
+            className="mt-8 max-w-6xl mx-auto bg-transparent p-1 rounded-lg"
             style={{ borderColor: '#F5A623', borderWidth: '3px' }}
         >
           <div className="flex flex-col lg:flex-row items-center bg-white rounded-md overflow-hidden">
@@ -65,39 +65,58 @@ export function AccommodationSearch() {
               </Select>
             </div>
 
-            {/* Date Range */}
+            {/* Date Out */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
                <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
                <Popover>
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
-                      {date?.from ? (
-                        date.to ? (
-                          <>
-                            {format(date.from, "LLL dd, y")} -{" "}
-                            {format(date.to, "LLL dd, y")}
-                          </>
-                        ) : (
-                          format(date.from, "LLL dd, y")
-                        )
+                      {checkInDate ? (
+                        format(checkInDate, "LLL dd, y")
                       ) : (
-                        <span className="text-gray-500">Select your dates</span>
+                        <span className="text-gray-500">Route Out</span>
                       )}
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
                     <CalendarComponent
                         initialFocus
-                        mode="range"
-                        defaultMonth={date?.from}
-                        selected={date}
-                        onSelect={setDate}
-                        numberOfMonths={2}
+                        mode="single"
+                        selected={checkInDate}
+                        onSelect={setCheckInDate}
+                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                     />
                  </PopoverContent>
                </Popover>
             </div>
-            
+
+            {/* Date Home */}
+            <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
+               <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
+               <Popover>
+                 <PopoverTrigger asChild>
+                    <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
+                      {checkOutDate ? (
+                        format(checkOutDate, "LLL dd, y")
+                      ) : (
+                        <span className="text-gray-500">Route Home</span>
+                      )}
+                    </button>
+                 </PopoverTrigger>
+                 <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                        initialFocus
+                        mode="single"
+                        selected={checkOutDate}
+                        onSelect={setCheckOutDate}
+                        disabled={(date) =>
+                            checkInDate ? date <= checkInDate : date < new Date(new Date().setHours(0, 0, 0, 0))
+                        }
+                    />
+                 </PopoverContent>
+               </Popover>
+            </div>
+
             {/* Guests */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
               <Users className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
@@ -148,7 +167,7 @@ export function AccommodationSearch() {
                 </PopoverContent>
               </Popover>
             </div>
-            
+
             {/* Search Button */}
             <div className="p-2 w-full lg:w-auto bg-white border-t lg:border-t-0">
                 <Button type="submit" className="w-full h-10 text-base font-bold px-8" style={{ backgroundColor: '#003366' }}>
