@@ -52,7 +52,7 @@ export function AccommodationSearch() {
               <Bed className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
               <Input
                 type="text"
-                placeholder="Where are you going?"
+                placeholder="Pick your route"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
                 className="pl-12 text-gray-900 w-full h-14 border-0 lg:border-r focus-visible:ring-0 rounded-none text-base"
