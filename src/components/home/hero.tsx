@@ -1,12 +1,48 @@
 "use client";
 import Logo from '@/components/logo';
-import { Translatable } from '@/components/translatable';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/hooks/use-language';
+import { useEffect, useState } from 'react';
 
 export function Hero() {
   const heroImage = PlaceHolderImages.find((p) => p.id === 'hero-1');
+  const { language, translate } = useLanguage();
+  
+  const originalText = "Your Free Comprehensive Guide to Travelling South Africa";
+  const [displayText, setDisplayText] = useState(originalText);
+
+  useEffect(() => {
+    let isMounted = true;
+    const doTranslate = async () => {
+      const newText = language === 'en' ? originalText : await translate(originalText);
+      if (isMounted) {
+        setDisplayText(newText);
+      }
+    };
+    doTranslate();
+    return () => { isMounted = false; };
+  }, [language, translate, originalText]);
+
+  const sentence = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.5,
+        staggerChildren: 0.04, // Controls the speed of typing
+      },
+    },
+  };
+
+  const letter = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1,
+      y: 0,
+    },
+  };
 
   return (
     <section className="relative flex h-screen items-center justify-center text-center text-white">
@@ -25,11 +61,16 @@ export function Hero() {
         <Logo className="w-72 md:w-96" />
         <motion.p
           className="mt-4 text-xl font-light tracking-wide md:text-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          variants={sentence}
+          initial="hidden"
+          animate="visible"
+          key={language} // Re-trigger animation on language change
         >
-          <Translatable text="Your Free Comprehensive Guide to Travelling South Africa" />
+          {displayText.split("").map((char, index) => (
+            <motion.span key={`${char}-${index}`} variants={letter}>
+              {char}
+            </motion.span>
+          ))}
         </motion.p>
       </div>
     </section>
