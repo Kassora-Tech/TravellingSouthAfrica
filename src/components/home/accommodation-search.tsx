@@ -81,7 +81,7 @@ export function AccommodationSearch() {
                           format(date.from, "LLL dd, y")
                         )
                       ) : (
-                        <span className="text-gray-500">Check-in date — Check-out date</span>
+                        <span className="text-gray-500">Select your dates</span>
                       )}
                     </button>
                  </PopoverTrigger>
