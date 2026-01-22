@@ -10,6 +10,7 @@ const footerNavs = [
       { href: '/towns', name: 'Towns' },
       { href: '/sights', name: 'Sights' },
       { href: '/routes', name: 'Routes' },
+      { href: '/accommodations', name: 'Accommodations' },
     ],
   },
   {

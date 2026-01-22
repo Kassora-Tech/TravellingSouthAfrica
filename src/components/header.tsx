@@ -27,6 +27,7 @@ const navLinks = [
   { href: '/towns', label: 'Towns' },
   { href: '/sights', label: 'Sights' },
   { href: '/routes', label: 'Routes' },
+  { href: '/accommodations', label: 'Accommodations' },
 ];
 
 const toolsLinks = [
