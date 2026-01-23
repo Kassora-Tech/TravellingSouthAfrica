@@ -8,8 +8,8 @@ export default function Home() {
     <>
       <Hero />
       <AnimatedStats />
-      <FeaturedProvinces />
       <CallToActions />
+      <FeaturedProvinces />
     </>
   );
 }
