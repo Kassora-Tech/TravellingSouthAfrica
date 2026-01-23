@@ -3,13 +3,23 @@
 import { Translatable } from '@/components/translatable';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useUser } from '@/firebase';
 import { Lock } from 'lucide-react';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function PlanYourTripPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, isUserLoading } = useUser();
+  const router = useRouter();
 
-  if (!isLoggedIn) {
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push('/login?redirect=/plan-your-trip');
+    }
+  }, [user, isUserLoading, router]);
+
+  if (isUserLoading || !user) {
     return (
       <div className="container mx-auto px-4 py-16 flex items-center justify-center">
         <Card className="max-w-md text-center">
@@ -25,8 +35,10 @@ export default function PlanYourTripPage() {
             <p className="text-muted-foreground">
               <Translatable text="Please log in to plan your trip and save your favorite destinations." />
             </p>
-            <Button className="mt-6" onClick={() => alert('Login functionality coming soon!')}>
-              <Translatable text="Login or Register" />
+            <Button asChild className="mt-6">
+                <Link href="/login?redirect=/plan-your-trip">
+                    <Translatable text="Login or Register" />
+                </Link>
             </Button>
           </CardContent>
         </Card>

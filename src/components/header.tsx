@@ -20,6 +20,8 @@ import { LanguageSwitcher } from './language-switcher';
 import { cn } from '@/lib/utils';
 import { useScroll } from '@/hooks/use-scroll';
 import { Translatable } from './translatable';
+import { useUser } from '@/firebase';
+import { UserNav } from './auth/user-nav';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -37,6 +39,7 @@ const toolsLinks = [
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const scrolled = useScroll(50);
+  const { user, isUserLoading } = useUser();
 
   return (
     <header
@@ -80,9 +83,20 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <Button asChild className="hidden md:inline-flex">
-              <Link href="/plan-your-trip"><Translatable text="Plan Your Trip" /></Link>
-            </Button>
+            {isUserLoading ? (
+                <div className="h-8 w-20 bg-gray-200 rounded animate-pulse" />
+            ) : user ? (
+                <UserNav />
+            ) : (
+                <div className="hidden md:flex items-center gap-2">
+                    <Button variant="ghost" asChild>
+                        <Link href="/login"><Translatable text="Login" /></Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href="/signup"><Translatable text="Sign Up" /></Link>
+                    </Button>
+                </div>
+            )}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild className="md:hidden">
                 <Button variant="ghost" size="icon">
@@ -119,9 +133,23 @@ export function Header() {
                       >
                         <Translatable text="Contact" />
                       </Link>
-                    <Button asChild size="lg" className="mt-4">
-                        <Link href="/plan-your-trip" onClick={() => setIsOpen(false)}><Translatable text="Plan Your Trip" /></Link>
-                    </Button>
+                    
+                    {isUserLoading ? (
+                        <div className="h-10 w-full bg-gray-200 rounded animate-pulse mt-4" />
+                    ) : user ? (
+                         <Button asChild size="lg" className="mt-4">
+                            <Link href="/dashboard" onClick={() => setIsOpen(false)}><Translatable text="My Dashboard" /></Link>
+                        </Button>
+                    ) : (
+                        <div className="flex flex-col space-y-2 mt-4">
+                             <Button asChild size="lg" variant="outline">
+                                <Link href="/login" onClick={() => setIsOpen(false)}><Translatable text="Login" /></Link>
+                            </Button>
+                             <Button asChild size="lg">
+                                <Link href="/signup" onClick={() => setIsOpen(false)}><Translatable text="Sign Up" /></Link>
+                            </Button>
+                        </div>
+                    )}
                   </nav>
                 </div>
               </SheetContent>
