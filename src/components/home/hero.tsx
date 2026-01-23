@@ -6,6 +6,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Logo from '@/components/logo';
@@ -138,6 +139,13 @@ export function Hero() {
                       </p>
                     </div>
                   )}
+                  <div className="mt-8">
+                    <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-300 bg-transparent backdrop-blur-sm">
+                        <Link href="/plan-your-trip">
+                            <Translatable text="Plan Your Trip" />
+                        </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             );
