@@ -1,5 +1,6 @@
 import { AccommodationSearch } from '@/components/home/accommodation-search';
 import { Translatable } from '@/components/translatable';
+import { ListYourAccommodationForm } from '@/components/accommodations/list-your-accommodation-form';
 
 export default function AccommodationsPage() {
   return (
@@ -13,6 +14,7 @@ export default function AccommodationsPage() {
           <Translatable text="Accommodation listings are currently under development. Please check back soon!" />
         </p>
       </div>
+      <ListYourAccommodationForm />
     </>
   );
 }
