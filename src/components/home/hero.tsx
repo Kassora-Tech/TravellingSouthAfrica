@@ -49,7 +49,7 @@ const sentence = {
 };
 const letter = {
   hidden: { opacity: 0, y: 10 },
-  visible: { 
+  visible: {
     opacity: 1,
     y: 0,
   },
@@ -130,7 +130,7 @@ export function Hero() {
                       loop
                       muted
                       playsInline
-                      className="w-72 md:w-96 grayscale contrast-200 brightness-150 mix-blend-multiply"
+                      className="w-72 md:w-96"
                       src="https://files.catbox.moe/2zg4ox.mp4"
                     ></video>
                   {slide.isOriginal ? (
