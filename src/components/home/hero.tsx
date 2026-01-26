@@ -130,7 +130,7 @@ export function Hero() {
                       loop
                       muted
                       playsInline
-                      className="w-72 md:w-96"
+                      className="w-72 md:w-96 grayscale contrast-200 brightness-150 mix-blend-multiply"
                       src="https://files.catbox.moe/2zg4ox.mp4"
                     ></video>
                   {slide.isOriginal ? (
