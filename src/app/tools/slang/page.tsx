@@ -86,28 +86,36 @@ const slangData = [
 
 export default function SlangPage() {
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold font-headline text-center text-primary">
-          <Translatable text="South African Slang" />
-        </h1>
-        <p className="mt-4 text-center text-muted-foreground">
-          <Translatable text="Brush up on some local lingo! Here are some common (and not-so-common) slang terms you might hear on your travels." />
-        </p>
-
-        <Accordion type="single" collapsible className="w-full mt-12">
-            {slangData.map((item) => (
-                <AccordionItem value={item.term} key={item.term}>
-                    <AccordionTrigger className="text-lg font-semibold text-left">
-                        <Translatable text={item.term} />
-                    </AccordionTrigger>
-                    <AccordionContent className="text-base text-muted-foreground">
-                        <Translatable text={item.definition} />
-                    </AccordionContent>
-                </AccordionItem>
-            ))}
-        </Accordion>
-      </div>
-    </div>
+    <>
+      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/L5BqnN9/pexels-mat-brown-1118439.jpg')" }}>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container relative mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold font-headline text-white md:text-5xl">
+            <Translatable text="South African Slang" />
+          </h1>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-200">
+            <Translatable text="Brush up on some local lingo! Here are some common (and not-so-common) slang terms you might hear on your travels." />
+          </p>
+        </div>
+      </section>
+      <section className="py-16 lg:py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full">
+                {slangData.map((item) => (
+                    <AccordionItem value={item.term} key={item.term}>
+                        <AccordionTrigger className="text-lg font-semibold text-left">
+                            <Translatable text={item.term} />
+                        </AccordionTrigger>
+                        <AccordionContent className="text-base text-muted-foreground">
+                            <Translatable text={item.definition} />
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
