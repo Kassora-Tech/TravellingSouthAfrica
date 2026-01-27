@@ -119,10 +119,11 @@ function Calendar({
                     disabled={isDisabled}
                     className={cn(
                       "flex h-full w-full items-center justify-center text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                      "hover:bg-accent/50 disabled:cursor-not-allowed disabled:hover:bg-transparent",
                       {
-                        "bg-primary text-primary-foreground font-bold hover:bg-primary/90": isSelected,
-                        "bg-muted": !isSelected && isCurrentDay,
+                        "bg-primary text-primary-foreground font-bold": isSelected,
+                        "bg-accent text-accent-foreground": !isSelected && isCurrentDay,
+                        "hover:bg-accent/50": !isSelected && !isDisabled,
+                        "cursor-not-allowed": isDisabled,
                       }
                     )}
                   >
