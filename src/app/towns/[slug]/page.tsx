@@ -102,7 +102,7 @@ export default function TownDetailPage({ params }: { params: { slug:string } }) 
                       <CardContent className="p-4">
                         <Badge><Translatable text={sight.category} /></Badge>
                         <h3 className="font-headline text-xl font-bold mt-2"><Translatable text={sight.name} /></h3>
-                        <p className="text-sm text-muted-foreground flex items-center mt-1">
+                        <p className="text-muted-foreground flex items-center mt-1">
                           <MapPin className="w-4 h-4 mr-1" />
                           <Translatable text={sight.location} />
                         </p>

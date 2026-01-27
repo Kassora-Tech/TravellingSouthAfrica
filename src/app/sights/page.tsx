@@ -45,7 +45,7 @@ export default function SightsPage() {
                                     <div className="absolute bottom-0 left-0 w-full p-4 text-white">
                                         <Badge variant="secondary"><Translatable text={sight.category} /></Badge>
                                         <h3 className="font-headline text-xl font-bold mt-2"><Translatable text={sight.name} /></h3>
-                                        <p className="text-sm flex items-center mt-1">
+                                        <p className="flex items-center mt-1">
                                             <MapPin className="w-4 h-4 mr-1" />
                                             <Translatable text={sight.location} />
                                         </p>

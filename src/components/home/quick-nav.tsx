@@ -55,7 +55,7 @@ export function QuickNav() {
                   <CardTitle className="font-headline text-xl">
                     <Translatable text={item.title} />
                   </CardTitle>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-muted-foreground">
                     <Translatable text={item.description} />
                   </p>
                 </CardContent>

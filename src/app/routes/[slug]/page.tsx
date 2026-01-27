@@ -57,15 +57,15 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
               <p className="text-3xl font-bold text-primary">{route.distance}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Approx. Distance" /></p>
+              <p className="text-muted-foreground"><Translatable text="Approx. Distance" /></p>
             </div>
             <div>
               <p className="text-3xl font-bold text-primary">{route.days}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Suggested Days" /></p>
+              <p className="text-muted-foreground"><Translatable text="Suggested Days" /></p>
             </div>
             <div>
               <p className="text-3xl font-bold text-primary">{route.highlights.length}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Key Highlights" /></p>
+              <p className="text-muted-foreground"><Translatable text="Key Highlights" /></p>
             </div>
           </div>
         </div>

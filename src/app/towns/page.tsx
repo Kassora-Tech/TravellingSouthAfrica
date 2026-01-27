@@ -107,7 +107,7 @@ export default function TownsPage() {
                                         <Badge variant="secondary" className="font-normal"><Translatable text={province.name} /></Badge>
                                     )}
                                     <h3 className="font-headline text-xl font-bold mt-1"><Translatable text={town.name} /></h3>
-                                    <p className="text-sm text-muted-foreground mt-2">
+                                    <p className="text-muted-foreground mt-2">
                                        <Translatable text={`Population: ${town.population}`}/>
                                     </p>
                                 </CardContent>

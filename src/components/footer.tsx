@@ -38,7 +38,7 @@ export const Footer = () => {
             <Link href="/">
               <Logo className="w-48" />
             </Link>
-            <p className="mt-4 text-sm max-w-xs">
+            <p className="mt-4 max-w-xs">
               <Translatable text="Your Free Comprehensive Guide to Travelling South Africa" />
             </p>
           </div>
@@ -52,7 +52,7 @@ export const Footer = () => {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className="text-sm hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors"
                     >
                       <Translatable text={item.name} />
                     </Link>
@@ -62,7 +62,7 @@ export const Footer = () => {
             </div>
           ))}
         </div>
-        <div className="mt-12 border-t pt-8 text-sm text-muted-foreground flex flex-col sm:flex-row justify-between items-center">
+        <div className="mt-12 border-t pt-8 text-muted-foreground flex flex-col sm:flex-row justify-between items-center">
           <p>
             &copy; {new Date().getFullYear()} Travelling South Africa Reborn. All
             rights reserved.

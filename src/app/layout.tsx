@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased text-base">
         <FirebaseClientProvider>
           <LanguageProvider>
             <div className="flex min-h-screen flex-col">

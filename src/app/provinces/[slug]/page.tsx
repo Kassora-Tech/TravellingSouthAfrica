@@ -65,19 +65,19 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <p className="text-3xl font-bold text-primary">{province.keyFacts.capital}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Capital" /></p>
+              <p className="text-muted-foreground"><Translatable text="Capital" /></p>
             </div>
             <div>
               <p className="text-3xl font-bold text-primary">{province.keyFacts.area}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Area (km²)" /></p>
+              <p className="text-muted-foreground"><Translatable text="Area (km²)" /></p>
             </div>
             <div>
               <p className="text-3xl font-bold text-primary">{province.keyFacts.population}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Population" /></p>
+              <p className="text-muted-foreground"><Translatable text="Population" /></p>
             </div>
              <div>
               <p className="text-3xl font-bold text-primary">{province.keyFacts.languages.split(',').length}</p>
-              <p className="text-sm text-muted-foreground"><Translatable text="Languages" /></p>
+              <p className="text-muted-foreground"><Translatable text="Languages" /></p>
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
                                   <h3 className="text-2xl font-bold font-headline">
                                     <Translatable text={sight.name} />
                                   </h3>
-                                  <div className="flex items-center text-sm mt-1">
+                                  <div className="flex items-center mt-1">
                                     <MapPin className="w-4 h-4 mr-1" />
                                     <Translatable text={sight.location} />
                                   </div>
@@ -160,7 +160,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
                                 )}
                                 <CardContent className="p-4">
                                     <h3 className="font-headline text-xl font-bold"><Translatable text={town.name} /></h3>
-                                    <p className="text-sm text-muted-foreground flex items-center mt-1">
+                                    <p className="text-muted-foreground flex items-center mt-1">
                                         <Translatable text={province.name} />
                                     </p>
                                 </CardContent>

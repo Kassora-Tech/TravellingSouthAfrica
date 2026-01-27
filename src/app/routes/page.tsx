@@ -44,7 +44,7 @@ export default function RoutesPage() {
                                 <h2 className="font-headline text-2xl font-bold text-primary">
                                     <Translatable text={route.name} />
                                 </h2>
-                                <p className="mt-2 text-sm text-muted-foreground">
+                                <p className="mt-2 text-muted-foreground">
                                     {route.distance} | {route.days}
                                 </p>
                                 <p className="mt-4 text-muted-foreground flex-grow">
