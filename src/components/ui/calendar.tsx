@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker, CaptionLabelProps } from "react-day-picker"
-import { format } from "date-fns"
+import { format, isValid } from "date-fns"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -11,9 +11,13 @@ import { buttonVariants } from "@/components/ui/button"
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 function CustomCaptionLabel({ displayMonth }: CaptionLabelProps) {
+    if (!isValid(displayMonth)) {
+        return null;
+    }
+
     return (
         <div className="flex items-center justify-center gap-2 text-lg">
-            <span className="font-bold text-muted-foreground">{format(displayMonth, "dd")}</span>
+            <span className="font-bold text-muted-foreground">{format(displayMonth, "MM")}</span>
             <span className="font-bold uppercase">{format(displayMonth, "MMMM")}</span>
             <span className="font-bold text-muted-foreground">{format(displayMonth, "yyyy")}</span>
         </div>
@@ -43,11 +47,11 @@ function Calendar({
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
         table: "w-full border-collapse",
-        head_row: "flex",
+        head_row: "flex border-b",
         head_cell:
-          "text-muted-foreground rounded-md w-10 font-bold text-xs uppercase text-center",
+          "text-muted-foreground rounded-md w-10 font-bold text-xs uppercase text-center p-2",
         row: "flex w-full mt-2",
-        cell: "h-10 w-10 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 border border-border",
+        cell: "h-10 w-10 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 border",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-10 w-10 p-0 font-normal aria-selected:opacity-100"
