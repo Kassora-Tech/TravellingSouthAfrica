@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Translatable } from '@/components/translatable';
-import { Map, Calculator, ListChecks } from 'lucide-react';
+import { Calculator, ListChecks, Languages } from 'lucide-react';
 import Link from 'next/link';
 
 const ctaItems = [
@@ -21,13 +21,20 @@ const ctaItems = [
     href: '/tools/currency-converter',
     buttonText: 'Convert Now',
   },
+  {
+    icon: Languages,
+    title: 'South African Slang',
+    description: 'Learn some local lingo with our handy slang guide.',
+    href: '/tools/slang',
+    buttonText: 'Learn Slang',
+  },
 ];
 
 export function CallToActions() {
   return (
     <section id="cta" className="bg-background py-16 lg:py-24">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {ctaItems.map((item) => (
             <Card key={item.title} className="flex flex-col">
               <CardHeader className="items-center text-center">
