@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { CustomCalendar } from '../ui/custom-calendar';
+import { Calendar } from '../ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -194,12 +194,15 @@ export function TripPlanner({ user }: { user: User }) {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <CustomCalendar 
-                                                selectedDate={newTripStartDate} 
-                                                onDateSelect={(date) => {
+                                            <Calendar 
+                                                mode="single"
+                                                selected={newTripStartDate} 
+                                                onSelect={(date) => {
                                                     setNewTripStartDate(date);
                                                     setStartCalOpen(false);
                                                 }}
+                                                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                                                initialFocus
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -214,13 +217,16 @@ export function TripPlanner({ user }: { user: User }) {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <CustomCalendar 
-                                                selectedDate={newTripEndDate} 
-                                                onDateSelect={(date) => {
+                                            <Calendar 
+                                                mode="single"
+                                                selected={newTripEndDate} 
+                                                onSelect={(date) => {
                                                     setNewTripEndDate(date);
                                                     setEndCalOpen(false);
                                                 }} 
-                                                disabled={(date) => newTripStartDate ? date <= newTripStartDate : false} />
+                                                disabled={(date) => (newTripStartDate && date <= newTripStartDate) || date < new Date(new Date().setHours(0, 0, 0, 0))} 
+                                                initialFocus
+                                            />
                                         </PopoverContent>
                                     </Popover>
                                 </div>

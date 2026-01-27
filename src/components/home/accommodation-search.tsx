@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { routes } from '@/lib/data/routes';
-import { CustomCalendar } from '@/components/ui/custom-calendar';
+import { Calendar as ShadcnCalendar } from '@/components/ui/calendar';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
@@ -83,13 +83,15 @@ export function AccommodationSearch() {
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
-                    <CustomCalendar
-                      selectedDate={routeOutDate}
-                      onDateSelect={(date) => {
+                    <ShadcnCalendar
+                      mode="single"
+                      selected={routeOutDate}
+                      onSelect={(date) => {
                         setRouteOutDate(date);
                         setIsOutCalendarOpen(false);
                       }}
                       disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                      initialFocus
                     />
                  </PopoverContent>
                </Popover>
@@ -109,13 +111,15 @@ export function AccommodationSearch() {
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
-                    <CustomCalendar
-                        selectedDate={routeHomeDate}
-                        onDateSelect={(date) => {
+                    <ShadcnCalendar
+                        mode="single"
+                        selected={routeHomeDate}
+                        onSelect={(date) => {
                           setRouteHomeDate(date);
                           setIsHomeCalendarOpen(false);
                         }}
-                        disabled={(date) => routeOutDate ? date <= routeOutDate : date < new Date(new Date().setHours(0, 0, 0, 0))}
+                        disabled={(date) => (routeOutDate && date <= routeOutDate) || date < new Date(new Date().setHours(0, 0, 0, 0))}
+                        initialFocus
                     />
                  </PopoverContent>
                </Popover>
