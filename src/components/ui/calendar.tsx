@@ -46,12 +46,12 @@ function Calendar({
         ),
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
-        table: "w-full border-collapse",
-        head_row: "grid grid-cols-7 border-b",
+        table: "w-full border-collapse table",
+        head_row: "table-row border-b",
         head_cell:
-          "text-muted-foreground font-bold text-xs uppercase text-center p-2",
-        row: "grid grid-cols-7 w-full mt-2",
-        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 border",
+          "text-muted-foreground font-bold text-xs uppercase text-center p-2 table-cell",
+        row: "table-row",
+        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 border table-cell",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-10 w-full font-normal aria-selected:opacity-100"
