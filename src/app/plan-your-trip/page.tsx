@@ -8,6 +8,7 @@ import { Lock } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { TripPlanner } from '@/components/trip-planner/trip-planner';
 
 export default function PlanYourTripPage() {
   const { user, isUserLoading } = useUser();
@@ -46,15 +47,5 @@ export default function PlanYourTripPage() {
     );
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold font-headline text-primary">
-        <Translatable text="Plan Your Trip" />
-      </h1>
-      <p className="mt-4 text-muted-foreground">
-        <Translatable text="Welcome! Here you can create and manage your personalized travel itineraries." />
-      </p>
-      {/* Actual trip planning dashboard will go here */}
-    </div>
-  );
+  return <TripPlanner user={user} />;
 }
