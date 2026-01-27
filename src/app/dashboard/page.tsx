@@ -44,12 +44,11 @@ export default function DashboardPage() {
           <Translatable text="This is your personal dashboard. Plan and manage your South African adventures." />
         </p>
 
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          <div className="lg:col-span-2">
-            {user && <MyItineraries user={user} />}
-          </div>
-          <div className="space-y-8">
-             <Card className="flex flex-col text-center h-full">
+        <div className="mt-12 space-y-12">
+          {user && <MyItineraries user={user} />}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+             <Card className="flex flex-col text-center">
               <CardHeader className="items-center">
                 <div className="rounded-full bg-primary/10 p-3 text-primary">
                     <PlusCircle className="h-8 w-8" />
@@ -67,20 +66,21 @@ export default function DashboardPage() {
                 </Button>
               </CardContent>
             </Card>
-             <Card className="flex flex-col text-center h-full">
+             <Card className="flex flex-col text-center">
               <CardHeader className="items-center">
                  <div className="rounded-full bg-primary/10 p-3 text-primary">
                     <Bed className="h-8 w-8" />
                 </div>
                 <CardTitle><Translatable text="My Bookings" /></CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow flex items-center justify-center">
-                <p className="text-muted-foreground">
+              <CardContent className="flex-grow flex flex-col justify-between">
+                <p className="text-muted-foreground mb-4">
                   <Translatable text="Accommodation booking history will be available here soon." />
                 </p>
+                <Button disabled><Translatable text="View Bookings" /></Button>
               </CardContent>
             </Card>
-             <Card className="flex flex-col text-center h-full">
+             <Card className="flex flex-col text-center">
               <CardHeader className="items-center">
                 <div className="rounded-full bg-primary/10 p-3 text-primary">
                     <LogOut className="h-8 w-8" />
