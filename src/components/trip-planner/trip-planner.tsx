@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, CalendarDays } from 'lucide-react';
+import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2 } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -35,6 +35,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError, errorEmitter } from '@/firebase';
+import { CalendarIcon } from 'lucide-react';
 
 
 interface Trip {
@@ -134,7 +135,7 @@ export function TripPlanner({ user }: { user: User }) {
             description: "Your trip has been successfully deleted.",
         });
       })
-      .catch((serverError) => {
+      .catch(async (serverError) => {
         const permissionError = new FirestorePermissionError({
             path: tripDocRef.path,
             operation: 'delete',
@@ -237,7 +238,7 @@ export function TripPlanner({ user }: { user: User }) {
                                     <Popover open={isStartCalOpen} onOpenChange={setStartCalOpen}>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarDays className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="mr-2 h-4 w-4" />
                                                 {newTripStartDate ? format(newTripStartDate, "PPP") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
@@ -260,7 +261,7 @@ export function TripPlanner({ user }: { user: User }) {
                                     <Popover open={isEndCalOpen} onOpenChange={setEndCalOpen}>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarDays className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="mr-2 h-4 w-4" />
                                                 {newTripEndDate ? format(newTripEndDate, "PPP") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
