@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { User } from 'firebase/auth';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import { useCollection, useFirestore, useMemoFirebase, FirestorePermissionError, errorEmitter } from '@/firebase';
+import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, CalendarIcon } from 'lucide-react';
+import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, CalendarDays } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -34,7 +34,6 @@ import { Label } from '../ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
-import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 
 interface Trip {
@@ -110,20 +109,33 @@ export function TripPlanner({ user }: { user: User }) {
     });
   };
 
-  const handleDeleteTrip = (tripId: string) => {
+  const handleDeleteTrip = async (tripId: string) => {
     if (!window.confirm("Are you sure you want to delete this trip? This action cannot be undone.")) return;
     
     const tripDocRef = doc(firestore, `users/${user.uid}/trips`, tripId);
-    deleteDocumentNonBlocking(tripDocRef);
-
-    if (selectedTrip?.id === tripId) {
-        setSelectedTrip(null);
-    }
     
-    toast({
-        title: "Trip Deleted",
-        description: "Your trip has been successfully deleted.",
-    });
+    try {
+        await deleteDoc(tripDocRef);
+        if (selectedTrip?.id === tripId) {
+            setSelectedTrip(null);
+        }
+        toast({
+            title: "Trip Deleted",
+            description: "Your trip has been successfully deleted.",
+        });
+    } catch(e) {
+        const permissionError = new FirestorePermissionError({
+            path: tripDocRef.path,
+            operation: 'delete',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+
+        toast({
+            variant: "destructive",
+            title: "Deletion Failed",
+            description: "Could not delete trip. You may not have permission.",
+        });
+    }
   }
 
   const dataMap = {
@@ -188,7 +200,7 @@ export function TripPlanner({ user }: { user: User }) {
                                     <Popover open={isStartCalOpen} onOpenChange={setStartCalOpen}>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarDays className="mr-2 h-4 w-4" />
                                                 {newTripStartDate ? format(newTripStartDate, "PPP") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
@@ -211,7 +223,7 @@ export function TripPlanner({ user }: { user: User }) {
                                     <Popover open={isEndCalOpen} onOpenChange={setEndCalOpen}>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarDays className="mr-2 h-4 w-4" />
                                                 {newTripEndDate ? format(newTripEndDate, "PPP") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
