@@ -18,6 +18,7 @@ const footerNavs = [
     items: [
       { href: '/plan-your-trip', name: 'Plan Your Trip' },
       { href: '/tools/currency-converter', name: 'Currency Converter' },
+      { href: '/tools/slang', name: 'Slang' },
     ],
   },
   {
