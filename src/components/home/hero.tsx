@@ -131,7 +131,7 @@ export function Hero() {
                       muted
                       playsInline
                       className="w-72 md:w-96"
-                      src="https://files.catbox.moe/2ysew9.webm"
+                      src="https://files.catbox.moe/a11y15.webm"
                     ></video>
                   {slide.isOriginal ? (
                     <OriginalHeroText />
