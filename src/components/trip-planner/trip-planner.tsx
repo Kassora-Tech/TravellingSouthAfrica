@@ -7,7 +7,7 @@ import { collection, doc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2 } from 'lucide-react';
+import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, CalendarIcon } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -33,7 +33,6 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
@@ -168,7 +167,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
