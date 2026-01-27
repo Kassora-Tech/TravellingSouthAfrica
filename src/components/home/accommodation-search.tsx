@@ -1,6 +1,6 @@
 "use client";
 
-import { Bed, Calendar, Users, ChevronDown, Plus, Minus } from 'lucide-react';
+import { Bed, Calendar as CalendarIcon, Users, ChevronDown, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { routes } from '@/lib/data/routes';
-import { Calendar as ShadcnCalendar } from '@/components/ui/calendar';
+import { Calendar } from '@/components/ui/calendar';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
@@ -71,7 +71,7 @@ export function AccommodationSearch() {
 
             {/* Date Out */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
-               <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
+               <CalendarIcon className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
                <Popover open={isOutCalendarOpen} onOpenChange={setIsOutCalendarOpen}>
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
@@ -83,7 +83,7 @@ export function AccommodationSearch() {
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
-                    <ShadcnCalendar
+                    <Calendar
                       mode="single"
                       selected={routeOutDate}
                       onSelect={(date) => {
@@ -99,7 +99,7 @@ export function AccommodationSearch() {
 
             {/* Date Home */}
             <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
-               <Calendar className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
+               <CalendarIcon className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
                <Popover open={isHomeCalendarOpen} onOpenChange={setIsHomeCalendarOpen}>
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
@@ -111,7 +111,7 @@ export function AccommodationSearch() {
                     </button>
                  </PopoverTrigger>
                  <PopoverContent className="w-auto p-0" align="start">
-                    <ShadcnCalendar
+                    <Calendar
                         mode="single"
                         selected={routeHomeDate}
                         onSelect={(date) => {
