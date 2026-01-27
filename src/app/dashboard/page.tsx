@@ -63,9 +63,17 @@ export default function DashboardPage() {
               <CardTitle><Translatable text="My Itinerary" /></CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">
-                <Translatable text="View your saved trips and plot your travel itinerary on a map. This feature is coming soon!" />
+              <p className="text-muted-foreground mb-4">
+                <Translatable text="View and download your saved itineraries. This feature is coming soon!" />
               </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button disabled>
+                    <Translatable text="View My Itinerary" />
+                </Button>
+                <Button variant="outline" disabled>
+                    <Translatable text="Download Itinerary" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
            <Card>
