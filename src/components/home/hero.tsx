@@ -130,7 +130,7 @@ export function Hero() {
                       loop
                       muted
                       playsInline
-                      className="w-72 md:w-96"
+                      className="w-72 md:w-96 mix-blend-screen"
                       src="https://files.catbox.moe/1s9wuw.webm"
                     ></video>
                   {slide.isOriginal ? (
