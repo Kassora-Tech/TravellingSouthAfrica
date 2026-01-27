@@ -45,6 +45,21 @@ export default function DashboardPage() {
         <div className="mt-12 grid gap-8 md:grid-cols-2">
            <Card>
             <CardHeader>
+              <CardTitle><Translatable text="Plan Your Trip" /></CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                <Translatable text="Go to the trip planner to create and manage your itineraries." />
+              </p>
+              <Button asChild>
+                <Link href="/plan-your-trip">
+                    <Translatable text="Start Planning" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+           <Card>
+            <CardHeader>
               <CardTitle><Translatable text="My Trips" /></CardTitle>
             </CardHeader>
             <CardContent>
@@ -61,21 +76,6 @@ export default function DashboardPage() {
               <p className="text-muted-foreground">
                 <Translatable text="Accommodation booking history will be available here soon." />
               </p>
-            </CardContent>
-          </Card>
-           <Card>
-            <CardHeader>
-              <CardTitle><Translatable text="Plan Your Trip" /></CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                <Translatable text="Go to the trip planner to create and manage your itineraries." />
-              </p>
-              <Button asChild>
-                <Link href="/plan-your-trip">
-                    <Translatable text="Start Planning" />
-                </Link>
-              </Button>
             </CardContent>
           </Card>
            <Card>
