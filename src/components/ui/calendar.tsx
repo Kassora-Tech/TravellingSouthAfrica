@@ -16,10 +16,8 @@ function CustomCaptionLabel({ displayMonth }: CaptionLabelProps) {
     }
 
     return (
-        <div className="flex items-center justify-center gap-2 text-lg">
-            <span className="font-bold text-muted-foreground">{format(displayMonth, "MM")}</span>
-            <span className="font-bold uppercase">{format(displayMonth, "MMMM")}</span>
-            <span className="font-bold text-muted-foreground">{format(displayMonth, "yyyy")}</span>
+        <div className="text-lg font-bold">
+            {format(displayMonth, "MMMM yyyy")}
         </div>
     )
 }
@@ -37,7 +35,7 @@ function Calendar({
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center mb-4",
+        caption: "flex justify-center pt-1 relative items-center",
         caption_label: "hidden", // We use a component to render the label
         nav: "space-x-1 flex items-center",
         nav_button: cn(
@@ -51,7 +49,7 @@ function Calendar({
         head_cell:
           "text-muted-foreground font-bold text-xs uppercase text-center p-2 table-cell",
         row: "table-row",
-        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 border table-cell",
+        cell: "text-center text-sm p-0 relative focus-within:relative focus-within:z-20 border table-cell",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-10 w-full font-normal aria-selected:opacity-100"
