@@ -87,7 +87,7 @@ const slangData = [
 export default function SlangPage() {
   return (
     <>
-      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/L5BqnN9/pexels-mat-brown-1118439.jpg')" }}>
+      <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/ccNkGKgF/South-African-English-word-cloud-featured.jpg')" }}>
         <div className="absolute inset-0 bg-black/50" />
         <div className="container relative mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold font-headline text-white md:text-5xl">
