@@ -102,4 +102,8 @@
     border-top: 1px solid theme('colors.border');
     border-left: 1px solid theme('colors.border');
   }
+  .calendar-grid .rdp-cell {
+    border-right: 1px solid theme('colors.border');
+    border-bottom: 1px solid theme('colors.border');
+  }
 }
