@@ -24,7 +24,7 @@ export default function CurrencyConverterPage() {
       if (!fromCurrency) return;
       setIsLoading(true);
       try {
-        const response = await fetch(`https://api.exchangerate.host/latest?base=${fromCurrency}`);
+        const response = await fetch(`https://api.frankfurter.app/latest?from=${fromCurrency}`);
         const data = await response.json();
         setRates(data.rates);
       } catch (error) {
