@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download } from 'lucide-react';
+import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -293,7 +293,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
@@ -406,20 +406,37 @@ export function TripPlanner({ user }: { user: User }) {
                             {renderItemList("Towns", <MapPin className="h-6 w-6 text-primary"/>, selectedTrip.townIds, towns, 'town')}
                             {renderItemList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
                             {renderItemList("Routes", <RouteIcon className="h-6 w-6 text-primary"/>, selectedTrip.routeIds, routes, 'route')}
+                             <Card>
+                                <CardHeader>
+                                    <div className="flex items-center gap-2">
+                                    <Bed className="h-6 w-6 text-primary"/>
+                                    <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-muted-foreground">
+                                        <Translatable text="Accommodation booking feature is coming soon."/>
+                                    </p>
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardHeader>
+                                    <div className="flex items-center gap-2">
+                                        <Sparkles className="h-6 w-6 text-primary"/>
+                                        <CardTitle className="text-xl font-headline"><Translatable text="Extras"/></CardTitle>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <ul className="text-sm text-muted-foreground grid grid-cols-2 gap-x-4 gap-y-1">
+                                        {['Adventure', 'Airlines', 'Attractions', 'Car Hire', 'General', 'Hotels', 'Restaurants', 'Technology', 'Travel Agents', 'Vehicles'].map(item => (
+                                            <li key={item}>
+                                                <Translatable text={item}/>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </CardContent>
+                            </Card>
                         </div>
-                         <Card>
-                            <CardHeader>
-                                <div className="flex items-center gap-2">
-                                <Bed className="h-6 w-6 text-primary"/>
-                                <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-muted-foreground">
-                                    <Translatable text="Accommodation booking feature is coming soon."/>
-                                </p>
-                            </CardContent>
-                        </Card>
                     </div>
                 ) : (
                     <Card className="flex flex-col items-center justify-center text-center h-full min-h-[500px]">
