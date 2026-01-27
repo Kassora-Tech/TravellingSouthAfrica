@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { logout } from "@/firebase/auth/actions";
 import Link from "next/link";
 import { MyItineraries } from "@/components/dashboard/my-itineraries";
+import { Bed, LogOut, PlusCircle } from "lucide-react";
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
@@ -43,16 +44,19 @@ export default function DashboardPage() {
           <Translatable text="This is your personal dashboard. Plan and manage your South African adventures." />
         </p>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          <div className="md:col-span-2">
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <div className="lg:col-span-2">
             {user && <MyItineraries user={user} />}
           </div>
           <div className="space-y-8">
-             <Card>
-              <CardHeader>
+             <Card className="flex flex-col text-center h-full">
+              <CardHeader className="items-center">
+                <div className="rounded-full bg-primary/10 p-3 text-primary">
+                    <PlusCircle className="h-8 w-8" />
+                </div>
                 <CardTitle><Translatable text="Plan a New Trip" /></CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow flex flex-col justify-between">
                 <p className="text-muted-foreground mb-4">
                   <Translatable text="Go to the trip planner to create and manage your itineraries." />
                 </p>
@@ -63,21 +67,27 @@ export default function DashboardPage() {
                 </Button>
               </CardContent>
             </Card>
-             <Card>
-              <CardHeader>
+             <Card className="flex flex-col text-center h-full">
+              <CardHeader className="items-center">
+                 <div className="rounded-full bg-primary/10 p-3 text-primary">
+                    <Bed className="h-8 w-8" />
+                </div>
                 <CardTitle><Translatable text="My Bookings" /></CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow flex items-center justify-center">
                 <p className="text-muted-foreground">
                   <Translatable text="Accommodation booking history will be available here soon." />
                 </p>
               </CardContent>
             </Card>
-             <Card>
-              <CardHeader>
+             <Card className="flex flex-col text-center h-full">
+              <CardHeader className="items-center">
+                <div className="rounded-full bg-primary/10 p-3 text-primary">
+                    <LogOut className="h-8 w-8" />
+                </div>
                 <CardTitle><Translatable text="Account" /></CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow flex flex-col justify-between">
                 <p className="text-muted-foreground mb-4">
                   <Translatable text="End your current session." />
                 </p>
