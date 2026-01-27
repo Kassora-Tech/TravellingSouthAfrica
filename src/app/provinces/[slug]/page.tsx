@@ -62,7 +62,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
             <Translatable text={province.description} />
           </p>
 
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <p className="text-3xl font-bold text-primary">{province.keyFacts.capital}</p>
               <p className="text-sm text-muted-foreground"><Translatable text="Capital" /></p>
