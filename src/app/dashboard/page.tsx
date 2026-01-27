@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/firebase/auth/actions";
 import Link from "next/link";
+import { MyItineraries } from "@/components/dashboard/my-itineraries";
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
@@ -34,71 +35,58 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold font-headline text-primary">
           <Translatable text={`Welcome, ${user.displayName || 'Explorer'}!`} />
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          <Translatable text="This is your personal dashboard. Plan your next South African adventure." />
+          <Translatable text="This is your personal dashboard. Plan and manage your South African adventures." />
         </p>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
-           <Card>
-            <CardHeader>
-              <CardTitle><Translatable text="Plan Your Trip" /></CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                <Translatable text="Go to the trip planner to create and manage your itineraries." />
-              </p>
-              <Button asChild>
-                <Link href="/plan-your-trip">
-                    <Translatable text="Start Planning" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-           <Card>
-            <CardHeader>
-              <CardTitle><Translatable text="My Itinerary" /></CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                <Translatable text="View and download your saved itineraries. This feature is coming soon!" />
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button disabled>
-                    <Translatable text="View My Itinerary" />
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+          <div className="md:col-span-2">
+            {user && <MyItineraries user={user} />}
+          </div>
+          <div className="space-y-8">
+             <Card>
+              <CardHeader>
+                <CardTitle><Translatable text="Plan a New Trip" /></CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  <Translatable text="Go to the trip planner to create and manage your itineraries." />
+                </p>
+                <Button asChild>
+                  <Link href="/plan-your-trip">
+                      <Translatable text="Go to Trip Planner" />
+                  </Link>
                 </Button>
-                <Button variant="outline" disabled>
-                    <Translatable text="Download Itinerary" />
+              </CardContent>
+            </Card>
+             <Card>
+              <CardHeader>
+                <CardTitle><Translatable text="My Bookings" /></CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  <Translatable text="Accommodation booking history will be available here soon." />
+                </p>
+              </CardContent>
+            </Card>
+             <Card>
+              <CardHeader>
+                <CardTitle><Translatable text="Account" /></CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  <Translatable text="End your current session." />
+                </p>
+                <Button onClick={handleLogout} variant="outline">
+                  <Translatable text="Logout" />
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-           <Card>
-            <CardHeader>
-              <CardTitle><Translatable text="My Bookings" /></CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                <Translatable text="Accommodation booking history will be available here soon." />
-              </p>
-            </CardContent>
-          </Card>
-           <Card>
-            <CardHeader>
-              <CardTitle><Translatable text="Log Out" /></CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                <Translatable text="End your current session." />
-              </p>
-              <Button onClick={handleLogout} variant="outline">
-                <Translatable text="Logout" />
-              </Button>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

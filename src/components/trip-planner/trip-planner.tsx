@@ -36,6 +36,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError, errorEmitter } from '@/firebase';
 import { CalendarIcon } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 
 interface Trip {
@@ -47,6 +48,7 @@ interface Trip {
   sightIds?: string[];
   routeIds?: string[];
   accommodationIds?: string[];
+  createdAt?: { seconds: number; nanoseconds: number };
 }
 
 type DialogState = {
@@ -57,6 +59,7 @@ type DialogState = {
 export function TripPlanner({ user }: { user: User }) {
   const firestore = useFirestore();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
 
   const tripsQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -75,13 +78,21 @@ export function TripPlanner({ user }: { user: User }) {
   const [isEndCalOpen, setEndCalOpen] = useState(false);
 
   useEffect(() => {
-    if (!selectedTrip && trips && trips.length > 0) {
-        setSelectedTrip(trips[0]);
+    if (!trips) return;
+    
+    const tripIdFromQuery = searchParams.get('tripId');
+    if (tripIdFromQuery) {
+        const tripFromQuery = trips.find(t => t.id === tripIdFromQuery);
+        if (tripFromQuery) {
+            setSelectedTrip(tripFromQuery);
+            return;
+        }
     }
-    if (selectedTrip && trips && !trips.find(t => t.id === selectedTrip.id)) {
+
+    if (!selectedTrip || !trips.find(t => t.id === selectedTrip.id)) {
         setSelectedTrip(trips.length > 0 ? trips[0] : null);
     }
-  }, [trips, selectedTrip]);
+  }, [trips, searchParams]);
 
 
   const handleCreateTrip = () => {
@@ -121,15 +132,11 @@ export function TripPlanner({ user }: { user: User }) {
   };
 
   const handleDeleteTrip = (tripId: string) => {
-    if (!window.confirm("Are you sure you want to delete this trip? This action cannot be undone.")) return;
     
     const tripDocRef = doc(firestore, `users/${user.uid}/trips`, tripId);
     
     deleteDoc(tripDocRef)
       .then(() => {
-        if (selectedTrip?.id === tripId) {
-            setSelectedTrip(null);
-        }
         toast({
             title: "Trip Deleted",
             description: "Your trip has been successfully deleted.",
@@ -217,7 +224,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
