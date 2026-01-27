@@ -119,13 +119,13 @@ export function TripPlanner({ user }: { user: User }) {
     });
   };
 
-  const handleDeleteTrip = async (tripId: string) => {
+  const handleDeleteTrip = (tripId: string) => {
     if (!window.confirm("Are you sure you want to delete this trip? This action cannot be undone.")) return;
     
     const tripDocRef = doc(firestore, `users/${user.uid}/trips`, tripId);
     
-    try {
-        await deleteDoc(tripDocRef);
+    deleteDoc(tripDocRef)
+      .then(() => {
         if (selectedTrip?.id === tripId) {
             setSelectedTrip(null);
         }
@@ -133,7 +133,8 @@ export function TripPlanner({ user }: { user: User }) {
             title: "Trip Deleted",
             description: "Your trip has been successfully deleted.",
         });
-    } catch(e) {
+      })
+      .catch((serverError) => {
         const permissionError = new FirestorePermissionError({
             path: tripDocRef.path,
             operation: 'delete',
@@ -145,7 +146,7 @@ export function TripPlanner({ user }: { user: User }) {
             title: "Deletion Failed",
             description: "Could not delete trip. You may not have permission.",
         });
-    }
+    });
   }
 
   const filteredItems = useMemo(() => {
@@ -215,7 +216,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
