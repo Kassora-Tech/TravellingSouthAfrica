@@ -90,6 +90,7 @@ export function AccommodationSearch() {
                         setRouteOutDate(date);
                         setIsOutCalendarOpen(false);
                       }}
+                      onClose={() => setIsOutCalendarOpen(false)}
                       disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                       initialFocus
                     />
@@ -118,6 +119,7 @@ export function AccommodationSearch() {
                           setRouteHomeDate(date);
                           setIsHomeCalendarOpen(false);
                         }}
+                        onClose={() => setIsHomeCalendarOpen(false)}
                         disabled={(date) => (routeOutDate && date <= routeOutDate) || date < new Date(new Date().setHours(0, 0, 0, 0))}
                         initialFocus
                     />

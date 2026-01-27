@@ -366,6 +366,7 @@ export function TripPlanner({ user }: { user: User }) {
                                                     setNewTripStartDate(date);
                                                     setStartCalOpen(false);
                                                 }}
+                                                onClose={() => setStartCalOpen(false)}
                                                 disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                                                 initialFocus
                                             />
@@ -388,7 +389,8 @@ export function TripPlanner({ user }: { user: User }) {
                                                 onSelect={(date) => {
                                                     setNewTripEndDate(date);
                                                     setEndCalOpen(false);
-                                                }} 
+                                                }}
+                                                onClose={() => setEndCalOpen(false)}
                                                 disabled={(date) => (newTripStartDate && date <= newTripStartDate) || date < new Date(new Date().setHours(0, 0, 0, 0))} 
                                                 initialFocus
                                             />
