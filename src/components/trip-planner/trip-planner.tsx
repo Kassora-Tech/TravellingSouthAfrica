@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles } from 'lucide-react';
+import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -254,10 +254,38 @@ export function TripPlanner({ user }: { user: User }) {
 
   const currentDialogData = dialogState.type ? dataMap[dialogState.type] : null;
 
-  const renderItemList = (title: string, icon: React.ReactNode, itemIds: string[] | undefined, allItems: {slug: string, name: string}[], type: 'province' | 'town' | 'sight' | 'route') => {
-      const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean) as {name: string, slug: string}[];
+  const renderItemList = (
+    title: string,
+    icon: React.ReactNode,
+    itemIds: string[] | undefined,
+    allItems: any[], // Using any for simplicity as it can be provinces, towns, etc.
+    type: 'province' | 'town' | 'sight' | 'route'
+  ) => {
+      const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean);
       const isAddDisabled = type !== 'province' && (!selectedTrip?.provinceIds || selectedTrip.provinceIds.length === 0);
-
+  
+      const handleDirectionsClick = (item: any) => {
+          let destination = '';
+          if (type === 'province') {
+              destination = `${item.name}, South Africa`;
+          } else if (type === 'town') {
+              const province = provinces.find(p => p.slug === item.provinceSlug);
+              destination = `${item.name}, ${province?.name || ''}, South Africa`;
+          } else if (type === 'sight') {
+              const province = provinces.find(p => p.slug === item.provinceSlug);
+              destination = `${item.name}, ${item.location}, ${province?.name || ''}, South Africa`;
+          } else if (type === 'route') {
+              const firstTown = towns.find(t => t.slug === item.townSlugs?.[0]);
+              const province = provinces.find(p => p.slug === firstTown?.provinceSlug);
+              destination = `${item.name}, ${firstTown?.name || ''}, ${province?.name || ''}, South Africa`;
+          }
+          
+          if (destination) {
+              const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+              window.open(url, '_blank');
+          }
+      };
+  
       return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -271,8 +299,20 @@ export function TripPlanner({ user }: { user: User }) {
             </CardHeader>
             <CardContent>
                 {items && items.length > 0 ? (
-                    <ul className="list-disc pl-5 text-muted-foreground">
-                        {items.map(item => <li key={item.slug}><Translatable text={item.name}/></li>)}
+                    <ul className="space-y-3">
+                        {items.map(item => (
+                            <li key={item.slug} className="flex justify-between items-center">
+                                <span className="text-muted-foreground"><Translatable text={item.name}/></span>
+                                <Button
+                                    size="sm"
+                                    className="bg-accent text-primary-foreground hover:bg-accent/90 h-auto px-2 py-1 text-xs"
+                                    onClick={() => handleDirectionsClick(item)}
+                                >
+                                    <Car className="mr-1 h-3 w-3" />
+                                    <Translatable text="Directions" />
+                                </Button>
+                            </li>
+                        ))}
                     </ul>
                 ) : (
                     <p className="text-sm text-muted-foreground">
