@@ -60,11 +60,11 @@ export default function DashboardPage() {
           </Card>
            <Card>
             <CardHeader>
-              <CardTitle><Translatable text="My Trips" /></CardTitle>
+              <CardTitle><Translatable text="My Itinerary" /></CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                <Translatable text="Functionality to view, create, and manage your personalized trips is coming soon." />
+                <Translatable text="View your saved trips and plot your travel itinerary on a map. This feature is coming soon!" />
               </p>
             </CardContent>
           </Card>
