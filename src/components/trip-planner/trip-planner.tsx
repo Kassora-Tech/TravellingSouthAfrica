@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2 } from 'lucide-react';
+import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -37,6 +37,8 @@ import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError, errorEmitter } from '@/firebase';
 import { CalendarIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 interface Trip {
@@ -90,9 +92,11 @@ export function TripPlanner({ user }: { user: User }) {
     }
 
     if (!selectedTrip || !trips.find(t => t.id === selectedTrip.id)) {
-        setSelectedTrip(trips.length > 0 ? trips[0] : null);
+        // Sort trips by creation date, newest first
+        const sortedTrips = [...trips].sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
+        setSelectedTrip(sortedTrips.length > 0 ? sortedTrips[0] : null);
     }
-  }, [trips, searchParams]);
+  }, [trips, searchParams, selectedTrip]);
 
 
   const handleCreateTrip = () => {
@@ -156,6 +160,71 @@ export function TripPlanner({ user }: { user: User }) {
         });
     });
   }
+
+  const handleDownloadPdf = () => {
+    const input = document.getElementById('itinerary-to-print');
+    if (!input || !selectedTrip) {
+        toast({
+            variant: "destructive",
+            title: "Download Failed",
+            description: "Could not find the itinerary content to download.",
+        });
+        return;
+    }
+
+    const buttons = Array.from(input.querySelectorAll('button')) as HTMLElement[];
+    buttons.forEach(btn => btn.style.visibility = 'hidden');
+
+    const bgColor = window.getComputedStyle(document.body).getPropertyValue('background-color');
+
+    html2canvas(input, { 
+        scale: 2, 
+        useCORS: true, 
+        backgroundColor: bgColor 
+    }).then(canvas => {
+      buttons.forEach(btn => btn.style.visibility = 'visible');
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4',
+      });
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgWidth = imgProps.width;
+      const imgHeight = imgProps.height;
+      const ratio = imgWidth / imgHeight;
+
+      let finalWidth = pdfWidth - 20; // with margin
+      let finalHeight = finalWidth / ratio;
+      
+      if (finalHeight > pdfHeight - 20) {
+          finalHeight = pdfHeight - 20;
+          finalWidth = finalHeight * ratio;
+      }
+      
+      const xOffset = (pdfWidth - finalWidth) / 2;
+      const yOffset = 10;
+
+      pdf.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
+      pdf.save(`${selectedTrip.name}.pdf`);
+      
+      toast({
+        title: "Download Started",
+        description: `Your itinerary "${selectedTrip.name}.pdf" is being downloaded.`,
+      });
+    }).catch(err => {
+      buttons.forEach(btn => btn.style.visibility = 'visible');
+      toast({
+        variant: "destructive",
+        title: "Download Failed",
+        description: "An error occurred while generating the PDF.",
+      });
+      console.error(err);
+    });
+  };
 
   const filteredItems = useMemo(() => {
     if (!selectedTrip || !selectedTrip.provinceIds || selectedTrip.provinceIds.length === 0) {
@@ -224,7 +293,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
@@ -320,8 +389,14 @@ export function TripPlanner({ user }: { user: User }) {
 
             <div className="md:col-span-2 lg:col-span-3">
                 {selectedTrip ? (
-                    <div className="space-y-6">
-                        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
+                    <div className="space-y-6" id="itinerary-to-print">
+                        <div className="flex justify-between items-center">
+                            <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
+                            <Button onClick={handleDownloadPdf} variant="outline">
+                                <Download className="mr-2 h-4 w-4" />
+                                <Translatable text="Download PDF" />
+                            </Button>
+                        </div>
                         <p className="text-muted-foreground text-lg">
                            {format(new Date(selectedTrip.startDate.seconds * 1000), 'PPP')} to {format(new Date(selectedTrip.endDate.seconds * 1000), 'PPP')}
                         </p>
