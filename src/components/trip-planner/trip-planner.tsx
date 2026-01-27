@@ -175,12 +175,7 @@ export function TripPlanner({ user }: { user: User }) {
                                 <Translatable text="Create New Trip"/>
                             </Button>
                         </DialogTrigger>
-                        <DialogContent onPointerDownOutside={(e) => {
-                            const el = e.target as HTMLElement;
-                            if (el.closest('[data-radix-popper-content-wrapper]')) {
-                                e.preventDefault();
-                            }
-                        }}>
+                        <DialogContent>
                             <DialogHeader>
                                 <DialogTitle><Translatable text="Create a New Trip" /></DialogTitle>
                             </DialogHeader>
