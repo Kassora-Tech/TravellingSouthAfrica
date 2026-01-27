@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { User } from 'firebase/auth';
-import { useCollection, useFirestore, useMemoFirebase, FirestorePermissionError, errorEmitter } from '@/firebase';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,7 @@ import { Label } from '../ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
+import { FirestorePermissionError, errorEmitter } from '@/firebase';
 
 
 interface Trip {
@@ -71,6 +72,15 @@ export function TripPlanner({ user }: { user: User }) {
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, type: null });
   const [isStartCalOpen, setStartCalOpen] = useState(false);
   const [isEndCalOpen, setEndCalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!selectedTrip && trips && trips.length > 0) {
+        setSelectedTrip(trips[0]);
+    }
+    if (selectedTrip && trips && !trips.find(t => t.id === selectedTrip.id)) {
+        setSelectedTrip(trips.length > 0 ? trips[0] : null);
+    }
+  }, [trips, selectedTrip]);
 
 
   const handleCreateTrip = () => {
@@ -138,17 +148,38 @@ export function TripPlanner({ user }: { user: User }) {
     }
   }
 
-  const dataMap = {
+  const filteredItems = useMemo(() => {
+    if (!selectedTrip || !selectedTrip.provinceIds || selectedTrip.provinceIds.length === 0) {
+      return { towns: [], sights: [], routes: [] };
+    }
+
+    const provinceSlugs = selectedTrip.provinceIds;
+
+    const filteredTowns = towns.filter(t => provinceSlugs.includes(t.provinceSlug));
+    const filteredSights = sights.filter(s => provinceSlugs.includes(s.provinceSlug));
+    const filteredRoutes = routes.filter(route => 
+      route.townSlugs.some(townSlug => {
+        const town = towns.find(t => t.slug === townSlug);
+        return town && provinceSlugs.includes(town.provinceSlug);
+      })
+    );
+
+    return { towns: filteredTowns, sights: filteredSights, routes: filteredRoutes };
+  }, [selectedTrip]);
+
+  const dataMap = useMemo(() => ({
     province: { title: "Add Provinces", items: provinces, key: 'provinceIds' as const },
-    town: { title: "Add Towns", items: towns, key: 'townIds' as const },
-    sight: { title: "Add Sights", items: sights, key: 'sightIds' as const },
-    route: { title: "Add Routes", items: routes, key: 'routeIds' as const },
-  };
-  
+    town: { title: "Add Towns", items: filteredItems.towns, key: 'townIds' as const },
+    sight: { title: "Add Sights", items: filteredItems.sights, key: 'sightIds' as const },
+    route: { title: "Add Routes", items: filteredItems.routes, key: 'routeIds' as const },
+  }), [filteredItems]);
+
   const currentDialogData = dialogState.type ? dataMap[dialogState.type] : null;
 
   const renderItemList = (title: string, icon: React.ReactNode, itemIds: string[] | undefined, allItems: {slug: string, name: string}[], type: 'province' | 'town' | 'sight' | 'route') => {
       const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean) as {name: string, slug: string}[];
+      const isAddDisabled = type !== 'province' && (!selectedTrip?.provinceIds || selectedTrip.provinceIds.length === 0);
+
       return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -156,7 +187,7 @@ export function TripPlanner({ user }: { user: User }) {
                     {icon}
                     <CardTitle className="text-xl font-headline"><Translatable text={title}/></CardTitle>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: type })}>
+                <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: type })} disabled={isAddDisabled}>
                     <PlusCircle className="mr-2 h-4 w-4" /> Add
                 </Button>
             </CardHeader>
@@ -166,7 +197,12 @@ export function TripPlanner({ user }: { user: User }) {
                         {items.map(item => <li key={item.slug}><Translatable text={item.name}/></li>)}
                     </ul>
                 ) : (
-                    <p className="text-sm text-muted-foreground"><Translatable text={`No ${title.toLowerCase()} added yet.`} /></p>
+                    <p className="text-sm text-muted-foreground">
+                        {isAddDisabled 
+                            ? <Translatable text={`Please add a province to see available ${title.toLowerCase()}.`} />
+                            : <Translatable text={`No ${title.toLowerCase()} added yet.`} />
+                        }
+                    </p>
                 )}
             </CardContent>
         </Card>
@@ -179,7 +215,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
@@ -317,7 +353,7 @@ export function TripPlanner({ user }: { user: User }) {
         {currentDialogData && (
              <AddToTripDialog 
                 isOpen={dialogState.isOpen}
-                onOpenChange={(isOpen) => setDialogState({ isOpen, type: dialogState.type })}
+                onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
                 title={currentDialogData.title}
                 items={currentDialogData.items}
                 selectedItems={(selectedTrip?.[currentDialogData.key] as string[]) || []}
