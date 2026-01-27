@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { DayPicker, DayContentProps } from "react-day-picker"
+import { DayPicker } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -10,26 +10,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   onClose?: () => void;
 };
-
-function CustomDayContent(props: DayContentProps) {
-  const isToday = props.activeModifiers.today;
-  return (
-    <div className="relative flex items-center justify-center h-full w-full pointer-events-none">
-      {props.date.getDate()}
-      {isToday && (
-        <div
-          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0"
-          style={{
-            borderLeft: '4px solid transparent',
-            borderRight: '4px solid transparent',
-            borderTop: '5px solid hsl(var(--primary))',
-          }}
-        />
-      )}
-    </div>
-  );
-}
-
 
 function Calendar({
   className,
@@ -88,7 +68,7 @@ function Calendar({
         day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 rounded-md hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         day_selected:
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-transparent text-foreground",
+        day_today: "bg-accent text-accent-foreground",
         day_outside: "text-muted-foreground opacity-50",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
@@ -99,7 +79,6 @@ function Calendar({
       components={{
         IconLeft: () => <ChevronLeft className="h-4 w-4" />,
         IconRight: () => <ChevronRight className="h-4 w-4" />,
-        DayContent: CustomDayContent,
       }}
       footer={footer}
       {...props}
