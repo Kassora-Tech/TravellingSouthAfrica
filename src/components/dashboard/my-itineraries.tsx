@@ -7,7 +7,7 @@ import { Translatable } from '../translatable';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { differenceInCalendarDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { provinces } from '@/lib/data/provinces';
 import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError, errorEmitter } from '@/firebase';
@@ -27,8 +27,8 @@ import { Badge } from '../ui/badge';
 
 interface Trip {
   name: string;
-  startDate: { seconds: number; nanoseconds: number };
-  endDate: { seconds: number; nanoseconds: number };
+  startDate?: { seconds: number; nanoseconds: number };
+  endDate?: { seconds: number; nanoseconds: number };
   provinceIds?: string[];
   townIds?: string[];
   sightIds?: string[];
@@ -104,11 +104,6 @@ export function MyItineraries({ user }: { user: User }) {
     );
   }
 
-  const getTripDuration = (startDate: Date, endDate: Date) => {
-    const days = differenceInCalendarDays(endDate, startDate) + 1;
-    return `${days} ${days === 1 ? 'day' : 'days'}`;
-  }
-
   const getProvinceName = (provinceId: string) => {
       const province = provinces.find(p => p.slug === provinceId);
       return province?.name || provinceId;
@@ -124,11 +119,11 @@ export function MyItineraries({ user }: { user: User }) {
                         <div className="flex justify-between items-start gap-4">
                             <div>
                                 <CardTitle className="font-headline text-2xl text-primary">{trip.name}</CardTitle>
+                                {trip.createdAt && (
                                 <CardDescription className="mt-1">
-                                    {format(new Date(trip.startDate.seconds * 1000), 'd MMM yyyy')} - {format(new Date(trip.endDate.seconds * 1000), 'd MMM yyyy')}
-                                    {' · '}
-                                    {getTripDuration(new Date(trip.startDate.seconds * 1000), new Date(trip.endDate.seconds * 1000))}
+                                    <Translatable text={`Created on ${format(new Date(trip.createdAt.seconds * 1000), 'd MMM yyyy')}`} />
                                 </CardDescription>
+                                )}
                             </div>
                             <div className="flex items-center flex-shrink-0">
                                 <Button variant="ghost" size="icon" className="h-8 w-8" asChild>

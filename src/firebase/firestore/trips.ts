@@ -12,8 +12,8 @@ import { FirestorePermissionError } from '../errors';
 
 export interface TripData {
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   userId: string;
   provinceIds?: string[];
   townIds?: string[];

@@ -1,24 +1,17 @@
 "use client";
 
-import { Bed, Calendar as CalendarIcon, Users, ChevronDown, Plus, Minus } from 'lucide-react';
+import { Bed, Users, ChevronDown, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { routes } from '@/lib/data/routes';
-import { Calendar } from '@/components/ui/calendar';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
-  const [routeOutDate, setRouteOutDate] = useState<Date | undefined>();
-  const [routeHomeDate, setRouteHomeDate] = useState<Date | undefined>();
   const [guests, setGuests] = useState({ adults: 2, children: 0, rooms: 1 });
-  const [isOutCalendarOpen, setIsOutCalendarOpen] = useState(false);
-  const [isHomeCalendarOpen, setIsHomeCalendarOpen] = useState(false);
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +41,7 @@ export function AccommodationSearch() {
 
         <form
             onSubmit={handleSubmit}
-            className="mt-8 max-w-6xl mx-auto bg-transparent p-1 rounded-lg"
+            className="mt-8 max-w-4xl mx-auto bg-transparent p-1 rounded-lg"
             style={{ borderColor: 'hsl(var(--accent))', borderWidth: '3px' }}
         >
           <div className="flex flex-col lg:flex-row items-center bg-white rounded-md overflow-hidden">
@@ -67,62 +60,6 @@ export function AccommodationSearch() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            {/* Date Out */}
-            <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
-               <CalendarIcon className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-               <Popover open={isOutCalendarOpen} onOpenChange={setIsOutCalendarOpen}>
-                 <PopoverTrigger asChild>
-                    <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
-                      {routeOutDate ? (
-                        format(routeOutDate, "dd/MM/yyyy")
-                      ) : (
-                        <span className="text-gray-500"><Translatable text="Route Out" /></span>
-                      )}
-                    </button>
-                 </PopoverTrigger>
-                 <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={routeOutDate}
-                      onSelect={(date) => {
-                        setRouteOutDate(date);
-                        setIsOutCalendarOpen(false);
-                      }}
-                      onClose={() => setIsOutCalendarOpen(false)}
-                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                    />
-                 </PopoverContent>
-               </Popover>
-            </div>
-
-            {/* Date Home */}
-            <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
-               <CalendarIcon className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-               <Popover open={isHomeCalendarOpen} onOpenChange={setIsHomeCalendarOpen}>
-                 <PopoverTrigger asChild>
-                    <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
-                      {routeHomeDate ? (
-                        format(routeHomeDate, "dd/MM/yyyy")
-                      ) : (
-                        <span className="text-gray-500"><Translatable text="Route Home" /></span>
-                      )}
-                    </button>
-                 </PopoverTrigger>
-                 <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                        mode="single"
-                        selected={routeHomeDate}
-                        onSelect={(date) => {
-                          setRouteHomeDate(date);
-                          setIsHomeCalendarOpen(false);
-                        }}
-                        onClose={() => setIsHomeCalendarOpen(false)}
-                        disabled={(date) => (routeOutDate && date <= routeOutDate) || date < new Date(new Date().setHours(0, 0, 0, 0))}
-                    />
-                 </PopoverContent>
-               </Popover>
             </div>
 
             {/* Guests */}
@@ -177,7 +114,7 @@ export function AccommodationSearch() {
             </div>
 
             {/* Search Button */}
-            <div className="p-2 w-full lg:w-auto bg-white border-t lg:border-t-0">
+            <div className="p-2 w-full lg:w-auto bg-white border-t lg:border-t-0 lg:border-l">
                 <Button type="submit" className="w-full h-10 text-base font-bold px-8 bg-blue-900 hover:bg-blue-800">
                     <Translatable text="Search" />
                 </Button>

@@ -31,11 +31,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError, errorEmitter } from '@/firebase';
-import { CalendarIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -43,8 +40,8 @@ import html2canvas from 'html2canvas';
 
 interface Trip {
   name: string;
-  startDate: { seconds: number; nanoseconds: number };
-  endDate: { seconds: number; nanoseconds: number };
+  startDate?: { seconds: number; nanoseconds: number };
+  endDate?: { seconds: number; nanoseconds: number };
   provinceIds?: string[];
   townIds?: string[];
   sightIds?: string[];
@@ -73,11 +70,7 @@ export function TripPlanner({ user }: { user: User }) {
   const [selectedTrip, setSelectedTrip] = useState<WithId<Trip> | null>(null);
   const [isCreateTripOpen, setCreateTripOpen] = useState(false);
   const [newTripName, setNewTripName] = useState('');
-  const [newTripStartDate, setNewTripStartDate] = useState<Date | undefined>();
-  const [newTripEndDate, setNewTripEndDate] = useState<Date | undefined>();
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, type: null });
-  const [isStartCalOpen, setStartCalOpen] = useState(false);
-  const [isEndCalOpen, setEndCalOpen] = useState(false);
 
   useEffect(() => {
     if (!trips) return;
@@ -100,24 +93,20 @@ export function TripPlanner({ user }: { user: User }) {
 
 
   const handleCreateTrip = () => {
-    if (!newTripName || !newTripStartDate || !newTripEndDate) {
+    if (!newTripName) {
       toast({
         variant: "destructive",
         title: "Missing Information",
-        description: "Please provide a name, start date, and end date for your trip.",
+        description: "Please provide a name for your trip.",
       });
       return;
     }
     createTrip(firestore, {
       name: newTripName,
-      startDate: newTripStartDate,
-      endDate: newTripEndDate,
       userId: user.uid,
     });
     setCreateTripOpen(false);
     setNewTripName('');
-    setNewTripStartDate(undefined);
-    setNewTripEndDate(undefined);
     toast({
         title: "Trip Created!",
         description: `Your trip "${newTripName}" has been created.`,
@@ -349,52 +338,6 @@ export function TripPlanner({ user }: { user: User }) {
                                     <Label htmlFor="trip-name"><Translatable text="Trip Name"/></Label>
                                     <Input id="trip-name" value={newTripName} onChange={(e) => setNewTripName(e.target.value)} placeholder="e.g., Garden Route Adventure"/>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label><Translatable text="Start Date"/></Label>
-                                    <Popover open={isStartCalOpen} onOpenChange={setStartCalOpen}>
-                                        <PopoverTrigger asChild>
-                                            <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {newTripStartDate ? format(newTripStartDate, "dd/MM/yyyy") : <span>Pick a date</span>}
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0">
-                                            <Calendar 
-                                                mode="single"
-                                                selected={newTripStartDate} 
-                                                onSelect={(date) => {
-                                                    setNewTripStartDate(date);
-                                                    setStartCalOpen(false);
-                                                }}
-                                                onClose={() => setStartCalOpen(false)}
-                                                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
-                                 <div className="space-y-2">
-                                    <Label><Translatable text="End Date"/></Label>
-                                    <Popover open={isEndCalOpen} onOpenChange={setEndCalOpen}>
-                                        <PopoverTrigger asChild>
-                                            <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {newTripEndDate ? format(newTripEndDate, "dd/MM/yyyy") : <span>Pick a date</span>}
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0">
-                                            <Calendar 
-                                                mode="single"
-                                                selected={newTripEndDate} 
-                                                onSelect={(date) => {
-                                                    setNewTripEndDate(date);
-                                                    setEndCalOpen(false);
-                                                }}
-                                                onClose={() => setEndCalOpen(false)}
-                                                disabled={(date) => (newTripStartDate && date <= newTripStartDate) || date < new Date(new Date().setHours(0, 0, 0, 0))} 
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
                             </div>
                             <DialogFooter>
                                 <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
@@ -411,9 +354,11 @@ export function TripPlanner({ user }: { user: User }) {
                             <div className="flex justify-between items-start">
                                 <div>
                                     <h3 className="font-bold">{trip.name}</h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        {format(new Date(trip.startDate.seconds * 1000), 'd MMM yyyy')} - {format(new Date(trip.endDate.seconds * 1000), 'd MMM yyyy')}
-                                    </p>
+                                    {trip.createdAt && (
+                                        <p className="text-sm text-muted-foreground">
+                                            Created on {format(new Date(trip.createdAt.seconds * 1000), 'd MMM yyyy')}
+                                        </p>
+                                    )}
                                 </div>
                                 <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
                                     <Trash2 className="h-4 w-4"/>
@@ -437,9 +382,6 @@ export function TripPlanner({ user }: { user: User }) {
                                 <Translatable text="Download PDF" />
                             </Button>
                         </div>
-                        <p className="text-muted-foreground text-lg">
-                           {format(new Date(selectedTrip.startDate.seconds * 1000), 'PPP')} to {format(new Date(selectedTrip.endDate.seconds * 1000), 'PPP')}
-                        </p>
                         
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {renderItemList("Provinces", <Map className="h-6 w-6 text-primary"/>, selectedTrip.provinceIds, provinces, 'province')}
