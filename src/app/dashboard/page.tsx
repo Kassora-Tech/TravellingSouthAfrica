@@ -7,6 +7,7 @@ import { Translatable } from "@/components/translatable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/firebase/auth/actions";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
@@ -64,12 +65,17 @@ export default function DashboardPage() {
           </Card>
            <Card>
             <CardHeader>
-              <CardTitle><Translatable text="Account Settings" /></CardTitle>
+              <CardTitle><Translatable text="Plan Your Trip" /></CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">
-                <Translatable text="Manage your profile information and preferences. This feature is under development." />
+              <p className="text-muted-foreground mb-4">
+                <Translatable text="Go to the trip planner to create and manage your itineraries." />
               </p>
+              <Button asChild>
+                <Link href="/plan-your-trip">
+                    <Translatable text="Start Planning" />
+                </Link>
+              </Button>
             </CardContent>
           </Card>
            <Card>
