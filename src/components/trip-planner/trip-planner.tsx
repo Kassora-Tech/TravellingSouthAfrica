@@ -31,8 +31,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Calendar } from '../ui/calendar';
-import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
@@ -168,7 +168,7 @@ export function TripPlanner({ user }: { user: User }) {
             <div className="md:col-span-1 lg:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
                 <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
+                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen} modal={false}>
                         <DialogTrigger asChild>
                             <Button className="w-full">
                                 <PlusCircle className="mr-2 h-4 w-4" />
