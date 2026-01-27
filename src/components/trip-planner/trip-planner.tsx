@@ -71,6 +71,9 @@ export function TripPlanner({ user }: { user: User }) {
   const [newTripStartDate, setNewTripStartDate] = useState<Date | undefined>();
   const [newTripEndDate, setNewTripEndDate] = useState<Date | undefined>();
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, type: null });
+  const [isStartCalOpen, setStartCalOpen] = useState(false);
+  const [isEndCalOpen, setEndCalOpen] = useState(false);
+
 
   const handleCreateTrip = () => {
     if (!newTripName || !newTripStartDate || !newTripEndDate) {
@@ -183,7 +186,7 @@ export function TripPlanner({ user }: { user: User }) {
                                 </div>
                                 <div className="space-y-2">
                                     <Label><Translatable text="Start Date"/></Label>
-                                    <Popover>
+                                    <Popover open={isStartCalOpen} onOpenChange={setStartCalOpen}>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
@@ -191,13 +194,19 @@ export function TripPlanner({ user }: { user: User }) {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <CustomCalendar selectedDate={newTripStartDate} onDateSelect={setNewTripStartDate} />
+                                            <CustomCalendar 
+                                                selectedDate={newTripStartDate} 
+                                                onDateSelect={(date) => {
+                                                    setNewTripStartDate(date);
+                                                    setStartCalOpen(false);
+                                                }}
+                                            />
                                         </PopoverContent>
                                     </Popover>
                                 </div>
                                  <div className="space-y-2">
                                     <Label><Translatable text="End Date"/></Label>
-                                    <Popover>
+                                    <Popover open={isEndCalOpen} onOpenChange={setEndCalOpen}>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
@@ -205,7 +214,13 @@ export function TripPlanner({ user }: { user: User }) {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <CustomCalendar selectedDate={newTripEndDate} onDateSelect={setNewTripEndDate} disabled={(date) => newTripStartDate ? date <= newTripStartDate : false} />
+                                            <CustomCalendar 
+                                                selectedDate={newTripEndDate} 
+                                                onDateSelect={(date) => {
+                                                    setNewTripEndDate(date);
+                                                    setEndCalOpen(false);
+                                                }} 
+                                                disabled={(date) => newTripStartDate ? date <= newTripStartDate : false} />
                                         </PopoverContent>
                                     </Popover>
                                 </div>
