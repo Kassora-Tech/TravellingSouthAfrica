@@ -355,7 +355,7 @@ export function TripPlanner({ user }: { user: User }) {
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {newTripStartDate ? format(newTripStartDate, "PPP") : <span>Pick a date</span>}
+                                                {newTripStartDate ? format(newTripStartDate, "dd/MM/yyyy") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -368,7 +368,6 @@ export function TripPlanner({ user }: { user: User }) {
                                                 }}
                                                 onClose={() => setStartCalOpen(false)}
                                                 disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                                                initialFocus
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -379,7 +378,7 @@ export function TripPlanner({ user }: { user: User }) {
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {newTripEndDate ? format(newTripEndDate, "PPP") : <span>Pick a date</span>}
+                                                {newTripEndDate ? format(newTripEndDate, "dd/MM/yyyy") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -392,7 +391,6 @@ export function TripPlanner({ user }: { user: User }) {
                                                 }}
                                                 onClose={() => setEndCalOpen(false)}
                                                 disabled={(date) => (newTripStartDate && date <= newTripStartDate) || date < new Date(new Date().setHours(0, 0, 0, 0))} 
-                                                initialFocus
                                             />
                                         </PopoverContent>
                                     </Popover>

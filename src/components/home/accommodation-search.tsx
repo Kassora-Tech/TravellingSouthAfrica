@@ -76,7 +76,7 @@ export function AccommodationSearch() {
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
                       {routeOutDate ? (
-                        format(routeOutDate, "PPP")
+                        format(routeOutDate, "dd/MM/yyyy")
                       ) : (
                         <span className="text-gray-500"><Translatable text="Route Out" /></span>
                       )}
@@ -92,7 +92,6 @@ export function AccommodationSearch() {
                       }}
                       onClose={() => setIsOutCalendarOpen(false)}
                       disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                      initialFocus
                     />
                  </PopoverContent>
                </Popover>
@@ -105,7 +104,7 @@ export function AccommodationSearch() {
                  <PopoverTrigger asChild>
                     <button type="button" className="w-full text-left h-14 px-3 py-2 pl-12 text-gray-900 bg-white text-base rounded-none border-0 lg:border-r focus:outline-none focus:ring-2 focus:ring-ring">
                       {routeHomeDate ? (
-                        format(routeHomeDate, "PPP")
+                        format(routeHomeDate, "dd/MM/yyyy")
                       ) : (
                         <span className="text-gray-500"><Translatable text="Route Home" /></span>
                       )}
@@ -121,7 +120,6 @@ export function AccommodationSearch() {
                         }}
                         onClose={() => setIsHomeCalendarOpen(false)}
                         disabled={(date) => (routeOutDate && date <= routeOutDate) || date < new Date(new Date().setHours(0, 0, 0, 0))}
-                        initialFocus
                     />
                  </PopoverContent>
                </Popover>
