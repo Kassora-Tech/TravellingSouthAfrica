@@ -14,7 +14,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 function CustomDayContent(props: DayContentProps) {
   const isToday = props.activeModifiers.today;
   return (
-    <div className="relative flex items-center justify-center h-full w-full">
+    <div className="relative flex items-center justify-center h-full w-full pointer-events-none">
       {props.date.getDate()}
       {isToday && (
         <div
