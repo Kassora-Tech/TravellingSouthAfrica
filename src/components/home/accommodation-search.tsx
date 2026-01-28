@@ -5,16 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { routes } from '@/lib/data/routes';
+import { towns } from '@/lib/data/towns';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app this would trigger a search with state values.
-    // For now it just redirects.
-    window.location.href = '/accommodations';
+    if (destination) {
+        window.location.href = `/accommodations?town=${destination}`;
+    } else {
+        window.location.href = '/accommodations';
+    }
   };
 
   return (
@@ -39,12 +41,12 @@ export function AccommodationSearch() {
               <Bed className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
               <Select value={destination} onValueChange={setDestination}>
                 <SelectTrigger className="w-full h-14 pl-12 text-base border-0 lg:border-r rounded-none focus:ring-0 focus:ring-offset-0 text-left justify-start gap-2">
-                  <SelectValue placeholder="Pick your route" />
+                  <SelectValue placeholder="Pick your Town" />
                 </SelectTrigger>
                 <SelectContent>
-                  {routes.map((route) => (
-                    <SelectItem key={route.slug} value={route.slug}>
-                      <Translatable text={route.name} />
+                  {towns.map((town) => (
+                    <SelectItem key={town.slug} value={town.slug}>
+                      <Translatable text={town.name} />
                     </SelectItem>
                   ))}
                 </SelectContent>
