@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 const Logo = ({ className }: { className?: string }) => {
   return (
     <Image
-      src="/2026%20Logo%20(1)-Photoroom.png"
+      src="https://i.ibb.co/Cxn46LL/Made-with-Flex-Clip-AI-2026-01-28-T091645.png"
       alt="Travelling South Africa Logo"
       width={300}
       height={150}
