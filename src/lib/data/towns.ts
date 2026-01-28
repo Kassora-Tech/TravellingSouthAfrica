@@ -178,5 +178,105 @@ export const towns = [
     description: 'A small town perched on the edge of the Drakensberg escarpment, serving as a perfect base for exploring the Panorama Route and its many waterfalls.',
     nearbySightSlugs: ['blyde-river-canyon', 'gods-window'],
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28994.02058988636!2d30.82583859250488!3d-24.935293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec221b25078508d%3A0x9d004655f2d28d09!2sGraskop!5e0!3m2!1sen!2sza!4v1678889701234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'east-london',
+    name: 'East London',
+    provinceSlug: 'eastern-cape',
+    population: '267,000',
+    imageId: 'town-east-london',
+    description: 'South Africa\'s only river port city, situated on the Indian Ocean coast. Known for its beautiful beaches and rich maritime history.',
+    nearbySightSlugs: [],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107338.4556488301!2d27.83449339396973!3d-32.9912089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e66e6a125509959%3A0x6065538e12484725!2sEast%20London!5e0!3m2!1sen!2sza!4v1678889801234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'makhanda',
+    name: 'Makhanda (Grahamstown)',
+    provinceSlug: 'eastern-cape',
+    population: '67,000',
+    imageId: 'town-makhanda',
+    description: 'A city known for its university, festivals, and over 40 historical churches, giving it the nickname "City of Saints".',
+    nearbySightSlugs: [],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d53303.48312151622!2d26.491223943359374!3d-33.3108998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e6462719b33109d%3A0x2bb9592f69f2e18!2sMakhanda!5e0!3m2!1sen!2sza!4v1678889901234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'clarens',
+    name: 'Clarens',
+    provinceSlug: 'free-state',
+    population: '6,500',
+    imageId: 'town-clarens',
+    description: 'Nestled in the foothills of the Maluti Mountains, Clarens is an artists\' haven known for its sandstone mountains and scenic beauty.',
+    nearbySightSlugs: ['clarens-golden-gate-route'],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28308.20455018608!2d28.406935!3d-28.513689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9c5b8f6a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sClarens!5e0!3m2!1sen!2sza!4v1678890001234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'hermanus',
+    name: 'Hermanus',
+    provinceSlug: 'western-cape',
+    population: '80,000',
+    imageId: 'town-hermanus',
+    description: 'Famous for its spectacular land-based whale watching. The cliff path offers stunning views of Walker Bay.',
+    nearbySightSlugs: [],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52671.07436034177!2d19.19011294274902!3d-34.417711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dce0b8f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sHermanus!5e0!3m2!1sen!2sza!4v1678890101234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'paarl',
+    name: 'Paarl',
+    provinceSlug: 'western-cape',
+    population: '191,000',
+    imageId: 'town-paarl',
+    description: 'One of the oldest towns in South Africa, located in the Cape Winelands, known for its Pearl Mountain and rich wine-making history.',
+    nearbySightSlugs: ['cape-winelands'],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106297.80105307525!2d18.91426464332275!3d-33.722513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcdb3f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sPaarl!5e0!3m2!1sen!2sza!4v1678890201234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'franschhoek',
+    name: 'Franschhoek',
+    provinceSlug: 'western-cape',
+    population: '17,000',
+    imageId: 'town-franschhoek',
+    description: 'The "French Corner" of the Cape, a picturesque valley and one of South Africa\'s premier food and wine destinations.',
+    nearbySightSlugs: ['cape-winelands'],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26500.58431980315!2d19.102604!3d-33.909983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcd97f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sFranschhoek!5e0!3m2!1sen!2sza!4v1678890301234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'rustenburg',
+    name: 'Rustenburg',
+    provinceSlug: 'north-west',
+    population: '104,000',
+    imageId: 'town-rustenburg',
+    description: 'Situated at the foot of the Magaliesberg mountain range, it is one of the oldest towns in the region and close to major attractions like Sun City.',
+    nearbySightSlugs: ['sun-city'],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115160.03859663717!2d27.16838384370117!3d-25.666999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9567f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sRustenburg!5e0!3m2!1sen!2sza!4v1678890401234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'hazyview',
+    name: 'Hazyview',
+    provinceSlug: 'mpumalanga',
+    population: '4,000',
+    imageId: 'town-hazyview',
+    description: 'A small farming town renowned for its lush, subtropical climate and banana industry. It is a major gateway to the southern Kruger National Park.',
+    nearbySightSlugs: ['kruger-national-park'],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28913.88248386121!2d31.112108!3d-25.048795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec2f8f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sHazyview!5e0!3m2!1sen!2sza!4v1678890501234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'upington',
+    name: 'Upington',
+    provinceSlug: 'northern-cape',
+    population: '74,000',
+    imageId: 'town-upington',
+    description: 'A town on the banks of the Orange River in the arid Northern Cape. It is the gateway to the Kgalagadi Transfrontier Park and Augrabies Falls.',
+    nearbySightSlugs: [],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56903.01166687483!2d21.192661!3d-28.455494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e85a3f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sUpington!5e0!3m2!1sen!2sza!4v1678890601234!5m2!1sen!2sza'
+  },
+  {
+    slug: 'graaff-reinet',
+    name: 'Graaff-Reinet',
+    provinceSlug: 'eastern-cape',
+    population: '35,000',
+    imageId: 'town-graaff-reinet',
+    description: 'The fourth oldest town in South Africa, surrounded by the Camdeboo National Park. Known for its well-preserved Cape Dutch architecture and the Valley of Desolation.',
+    nearbySightSlugs: [],
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d53860.29742635951!2d24.482025!3d-32.252222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e7d83f0a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sGraaff-Reinet!5e0!3m2!1sen!2sza!4v1678890701234!5m2!1sen!2sza'
   }
 ];

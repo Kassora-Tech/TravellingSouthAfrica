@@ -255,7 +255,7 @@
     {
       "id": "sight-soweto",
       "description": "Orlando Towers in Soweto",
-      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "soweto towers"
     },
     {
@@ -273,13 +273,13 @@
     {
       "id": "sight-addo-elephant-park",
       "description": "Elephants in Addo Park",
-      "imageUrl": "https://images.unsplash.com/photo-1683529887016-8a89c672b21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhZGRvJTIwZWxlcGhhbnRzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1683529887016-8a89c672b21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhZGRvJTIwZWxlcGhhbnRzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "addo elephants"
     },
     {
       "id": "sight-namaqualand-flowers",
       "description": "Flowers in Namaqualand",
-      "imageUrl": "https://images.unsplash.com/photo-1696436686609-bba4f3fbe29b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmFtYXF1YWxhbmQlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1696436686609-bba4f3fbe29b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmFtYXF1YWxhbmQlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "namaqualand flowers"
     },
     {
@@ -291,13 +291,13 @@
     {
       "id": "sight-kimberley-big-hole",
       "description": "The Big Hole",
-      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "kimberley big hole"
     },
     {
       "id": "sight-gods-window",
       "description": "View from God's Window",
-      "imageUrl": "https://images.unsplash.com/photo-1746295660130-ca366cfe7dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnb2RzJTIwd2luZG93fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1746295660130-ca366cfe7dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnb2RzJTIwd2luZG93fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "gods window"
     },
     {
@@ -353,6 +353,66 @@
       "description": "Golden Gate sandstone cliffs",
       "imageUrl": "https://images.unsplash.com/photo-1720670275485-12c8371ff5c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnb2xkZW4lMjBnYXRlJTIwY2xpZmZzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "golden gate cliffs"
+    },
+    {
+      "id": "town-east-london",
+      "description": "East London beach",
+      "imageUrl": "https://images.unsplash.com/photo-1540347731729-b3b42413fab5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxlYXN0JTIwbG9uZG9ufGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "east london"
+    },
+    {
+      "id": "town-makhanda",
+      "description": "Makhanda university",
+      "imageUrl": "https://picsum.photos/seed/townMAK/600/400",
+      "imageHint": "makhanda university"
+    },
+    {
+      "id": "town-clarens",
+      "description": "Clarens sandstone mountains",
+      "imageUrl": "https://images.unsplash.com/photo-1730440593401-6a83a93dacab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2xhcmVucyUyMG1vdW50YWluc3xlbnwwfHx8fDE3Njk1OTY5MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "clarens mountains"
+    },
+    {
+      "id": "town-hermanus",
+      "description": "Whale watching in Hermanus",
+      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hermanus whale"
+    },
+    {
+      "id": "town-paarl",
+      "description": "Paarl Rock",
+      "imageUrl": "https://picsum.photos/seed/townPAA/600/400",
+      "imageHint": "paarl rock"
+    },
+    {
+      "id": "town-franschhoek",
+      "description": "Franschhoek valley",
+      "imageUrl": "https://images.unsplash.com/photo-1716898048845-aa10f40a1a53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmcmFuc2NoaG9layUyMHZhbGxleXxlbnwwfHx8fDE3Njk1OTY5MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "franschhoek valley"
+    },
+    {
+      "id": "town-rustenburg",
+      "description": "Magaliesberg near Rustenburg",
+      "imageUrl": "https://picsum.photos/seed/townRUS/600/400",
+      "imageHint": "rustenburg mountains"
+    },
+    {
+      "id": "town-hazyview",
+      "description": "Banana plantation near Hazyview",
+      "imageUrl": "https://picsum.photos/seed/townHAZ/600/400",
+      "imageHint": "hazyview banana"
+    },
+    {
+      "id": "town-upington",
+      "description": "Orange River in Upington",
+      "imageUrl": "https://picsum.photos/seed/townUPI/600/400",
+      "imageHint": "upington river"
+    },
+    {
+      "id": "town-graaff-reinet",
+      "description": "Valley of Desolation near Graaff-Reinet",
+      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graaff-reinet valley"
     }
   ]
 }
