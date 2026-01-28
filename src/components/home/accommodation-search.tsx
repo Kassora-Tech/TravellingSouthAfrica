@@ -1,31 +1,20 @@
 "use client";
 
-import { Bed, Users, ChevronDown, Plus, Minus } from 'lucide-react';
+import { Bed } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { routes } from '@/lib/data/routes';
 
 export function AccommodationSearch() {
   const [destination, setDestination] = useState('');
-  const [guests, setGuests] = useState({ adults: 2, children: 0, rooms: 1 });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real app this would trigger a search with state values.
     // For now it just redirects.
     window.location.href = '/accommodations';
-  };
-
-  const handleGuestChange = (type: 'adults' | 'children' | 'rooms', operation: 'increment' | 'decrement') => {
-    setGuests(prev => {
-      const newCount = operation === 'increment' ? prev[type] + 1 : prev[type] - 1;
-      const value = Math.max(type === 'adults' || type === 'rooms' ? 1 : 0, newCount); // Adults/rooms >= 1, children >= 0
-      return { ...prev, [type]: value };
-    });
   };
 
   return (
@@ -60,57 +49,6 @@ export function AccommodationSearch() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            {/* Guests */}
-            <div className="relative flex items-center flex-grow w-full border-t lg:border-t-0">
-              <Users className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button type="button" className="flex items-center justify-between w-full h-14 px-4 py-2 text-base text-gray-900 text-left pl-12 rounded-none border-0 focus:outline-none focus:ring-2 focus:ring-ring">
-                    <span>
-                      {guests.adults} <Translatable text="adult" />{guests.adults !== 1 ? 's' : ''} · {guests.children} <Translatable text="children" /> · {guests.rooms} <Translatable text="room" />{guests.rooms !== 1 ? 's' : ''}
-                    </span>
-                    <ChevronDown className="h-5 w-5 opacity-70" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80 text-black">
-                    <div className="grid gap-4">
-                        <div className="space-y-2">
-                            <h4 className="font-medium leading-none"><Translatable text="Guests" /></h4>
-                            <p className="text-sm text-muted-foreground">
-                                <Translatable text="Adjust the number of guests and rooms." />
-                            </p>
-                        </div>
-                        <div className="grid gap-2">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="adults"><Translatable text="Adults" /></Label>
-                                <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('adults', 'decrement')} disabled={guests.adults <= 1}><Minus className="h-4 w-4" /></Button>
-                                    <span className="w-10 text-center">{guests.adults}</span>
-                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('adults', 'increment')}><Plus className="h-4 w-4" /></Button>
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="children"><Translatable text="Children" /></Label>
-                                <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('children', 'decrement')} disabled={guests.children <= 0}><Minus className="h-4 w-4" /></Button>
-                                    <span className="w-10 text-center">{guests.children}</span>
-                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('children', 'increment')}><Plus className="h-4 w-4" /></Button>
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="rooms"><Translatable text="Rooms" /></Label>
-                                <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('rooms', 'decrement')} disabled={guests.rooms <= 1}><Minus className="h-4 w-4" /></Button>
-                                    <span className="w-10 text-center">{guests.rooms}</span>
-                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleGuestChange('rooms', 'increment')}><Plus className="h-4 w-4" /></Button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </PopoverContent>
-              </Popover>
             </div>
 
             {/* Search Button */}
