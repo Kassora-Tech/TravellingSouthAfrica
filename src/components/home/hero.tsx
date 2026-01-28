@@ -13,6 +13,7 @@ import { useLanguage } from '@/hooks/use-language';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Translatable } from '../translatable';
+import Logo from '@/components/logo';
 
 const slidesData = [
   {
@@ -125,14 +126,7 @@ export function Hero() {
                 )}
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="relative z-10 flex flex-col items-center px-4 -translate-y-10">
-                   <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-72 md:w-96 mix-blend-screen transform-gpu overflow-hidden fix-safari-blend-glitch-mobile"
-                      src="https://files.catbox.moe/1s9wuw.webm"
-                    ></video>
+                   <Logo className="w-72 md:w-96" />
                   {slide.isOriginal ? (
                     <OriginalHeroText />
                   ) : (
