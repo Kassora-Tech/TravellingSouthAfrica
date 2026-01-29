@@ -32,8 +32,7 @@ export function AccommodationSearch() {
 
         <form
             onSubmit={handleSubmit}
-            className="mt-8 max-w-4xl mx-auto bg-transparent p-1 rounded-lg"
-            style={{ borderColor: 'hsl(var(--accent))', borderWidth: '3px' }}
+            className="mt-8 max-w-4xl mx-auto bg-transparent rounded-lg"
         >
           <div className="flex flex-col lg:flex-row items-center bg-white rounded-md overflow-hidden">
             {/* Location */}
