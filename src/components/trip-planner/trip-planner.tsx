@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map as MapIcon, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft } from 'lucide-react';
+import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, MapIcon } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -275,12 +275,11 @@ export function TripPlanner({ user }: { user: User }) {
   };
 
   const filteredItems = useMemo(() => {
-    // Since province selection is removed, we make all items available.
     return { towns, sights, routes };
   }, []);
 
   const dataMap = useMemo(() => ({
-    town: { title: "Add Towns", items: filteredItems.towns, key: 'townIds' as const },
+    town: { title: "Add Towns", items: filteredItems.towns, key: 'townIds' as const, provinces: provinces },
     sight: { title: "Add Sights", items: filteredItems.sights, key: 'sightIds' as const },
     route: { title: "Add Routes", items: filteredItems.routes, key: 'routeIds' as const },
   }), [filteredItems]);
@@ -614,6 +613,7 @@ export function TripPlanner({ user }: { user: User }) {
                 onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
                 title={currentDialogData.title}
                 items={currentDialogData.items}
+                provinces={dialogState.type === 'town' ? (currentDialogData as any).provinces : undefined}
                 selectedItems={(selectedTrip?.[currentDialogData.key] as string[]) || []}
                 onSave={(selectedSlugs) => handleSaveChanges(currentDialogData.key, selectedSlugs)}
             />

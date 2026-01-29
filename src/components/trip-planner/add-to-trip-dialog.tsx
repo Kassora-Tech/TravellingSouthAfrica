@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -15,10 +15,17 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Translatable } from '../translatable';
 import { Input } from '../ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 interface Item {
   slug: string;
   name: string;
+  provinceSlug?: string;
+}
+
+interface Province {
+    slug: string;
+    name: string;
 }
 
 interface AddToTripDialogProps {
@@ -28,6 +35,7 @@ interface AddToTripDialogProps {
   items: Item[];
   selectedItems: string[];
   onSave: (selectedSlugs: string[]) => void;
+  provinces?: Province[];
 }
 
 export function AddToTripDialog({
@@ -37,9 +45,11 @@ export function AddToTripDialog({
   items,
   selectedItems,
   onSave,
+  provinces,
 }: AddToTripDialogProps) {
   const [currentSelection, setCurrentSelection] = useState<string[]>(selectedItems);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState('all');
 
   useEffect(() => {
     if(isOpen) {
@@ -58,20 +68,63 @@ export function AddToTripDialog({
     onOpenChange(false);
   };
   
-  const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const showProvinceFilter = provinces && provinces.length > 0;
+
+  const provinceMap = useMemo(() => {
+    if (!provinces) return new Map();
+    return new Map(provinces.map(p => [p.slug, p.name]));
+  }, [provinces]);
+
+  const filteredItems = useMemo(() => {
+    let provinceFiltered = items;
+    if (showProvinceFilter && selectedProvince !== 'all') {
+      provinceFiltered = items.filter(item => item.provinceSlug === selectedProvince);
+    }
+    return provinceFiltered.filter(item => 
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [items, searchTerm, selectedProvince, showProvinceFilter]);
+
+  const totalTownsInProvince = useMemo(() => {
+      if (!showProvinceFilter || selectedProvince === 'all') return items.length;
+      return items.filter(i => i.provinceSlug === selectedProvince).length;
+  }, [items, selectedProvince, showProvinceFilter]);
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle><Translatable text={title} /></DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <Input 
-            placeholder="Search..."
+           <Input 
+            placeholder={`Search ${title.replace('Add ', '').toLowerCase()}...`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+
+          {showProvinceFilter && (
+             <Select value={selectedProvince} onValueChange={setSelectedProvince}>
+                <SelectTrigger>
+                    <SelectValue placeholder="Filter by province" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="all">All Provinces</SelectItem>
+                    {provinces.map(p => (
+                        <SelectItem key={p.slug} value={p.slug}>{p.name}</SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+          )}
+          
+          {showProvinceFilter && (
+            <p className="text-sm text-muted-foreground px-1">
+                <Translatable text={`Showing ${filteredItems.length} of ${totalTownsInProvince} towns`} />
+                {selectedProvince !== 'all' && <Translatable text={` in ${provinceMap.get(selectedProvince)}`} />}
+            </p>
+          )}
+
           <ScrollArea className="h-72">
             <div className="space-y-2 pr-4">
               {filteredItems.map((item) => (
@@ -82,7 +135,7 @@ export function AddToTripDialog({
                     onCheckedChange={() => handleSelect(item.slug)}
                   />
                   <Label htmlFor={item.slug} className="font-normal cursor-pointer flex-grow">
-                    <Translatable text={item.name} />
+                     <Translatable text={showProvinceFilter && item.provinceSlug ? `${item.name} (${provinceMap.get(item.provinceSlug) || 'N/A'})` : item.name} />
                   </Label>
                 </div>
               ))}

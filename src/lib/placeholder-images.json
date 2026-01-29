@@ -51,7 +51,7 @@
     {
       "id": "featured-5",
       "description": "A scenic view of the Garden Route.",
-      "imageUrl": "https://images.unsplash.com/photo-1699292352199-35e0b930c7b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1699292352199-35e0b930c7b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "garden route"
     },
     {
@@ -69,7 +69,7 @@
     {
       "id": "province-kwazulu-natal",
       "description": "Drakensberg mountains Amphitheatre.",
-      "imageUrl": "https://images.unsplash.com/photo-1662562045216-34ceb091fa22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkcmFrZW5zYmVyZyUyMG1vdW50YWluc3xlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1662562045216-34ceb091fa22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkcmFrZW5zYmVyZyUyMG1vdW50YWluc3xlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "drakensberg mountains"
     },
     {
@@ -255,7 +255,7 @@
     {
       "id": "sight-soweto",
       "description": "Orlando Towers in Soweto",
-      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "soweto towers"
     },
     {
@@ -309,13 +309,13 @@
     {
       "id": "route-garden-route",
       "description": "Storms River Mouth, Garden Route",
-      "imageUrl": "https://images.unsplash.com/photo-1520796412393-db86e624492e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1520796412393-db86e624492e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "garden route"
     },
     {
       "id": "route-panorama-route",
       "description": "Three Rondavels on Panorama Route",
-      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "panorama route"
     },
     {
@@ -339,7 +339,7 @@
     {
       "id": "route-west-coast-flower-route",
       "description": "Flower fields on West Coast",
-      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "west coast flowers"
     },
     {
@@ -369,13 +369,13 @@
     {
       "id": "town-clarens",
       "description": "Clarens sandstone mountains",
-      "imageUrl": "https://images.unsplash.com/photo-1730440593401-6a83a93dacab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2xhcmVucyUyMG1vdW50YWluc3xlbnwwfHx8fDE3Njk1OTY5MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1730440593401-6a83a93dacab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2xhcmVucyUyMG1vdW50YWluc3xlbnwwfHx8fDE3Njk1OTY5MzV8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "clarens mountains"
     },
     {
       "id": "town-hermanus",
       "description": "Whale watching in Hermanus",
-      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "hermanus whale"
     },
     {
@@ -387,7 +387,7 @@
     {
       "id": "town-franschhoek",
       "description": "Franschhoek valley",
-      "imageUrl": "https://images.unsplash.com/photo-1716898048845-aa10f40a1a53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmcmFuc2NoaG9layUyMHZhbGxleXxlbnwwfHx8fDE3Njk1OTY5MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1716898048845-aa10f40a1a53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmcmFuc2NoaG9layUyMHZhbGxleXxlbnwwfHx8fDE3Njk1OTY5MzV8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "franschhoek valley"
     },
     {
@@ -411,8 +411,386 @@
     {
       "id": "town-graaff-reinet",
       "description": "Valley of Desolation near Graaff-Reinet",
-      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "graaff-reinet valley"
+    },
+    {
+      "id": "town-swellendam",
+      "imageUrl": "https://images.unsplash.com/photo-1726482478344-97855f8f4dde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2VsbGVuZGFtJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Swellendam",
+      "imageHint": "swellendam town"
+    },
+    {
+      "id": "town-worcester",
+      "imageUrl": "https://images.unsplash.com/photo-1570483976272-b1e77e517bdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JjZXN0ZXIlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Worcester",
+      "imageHint": "worcester town"
+    },
+    {
+      "id": "town-robertson",
+      "imageUrl": "https://picsum.photos/seed/townRobertson/600/400",
+      "description": "A view of Robertson",
+      "imageHint": "robertson town"
+    },
+    {
+      "id": "town-ceres",
+      "imageUrl": "https://images.unsplash.com/photo-1693680501611-4432ec5afbef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZXJlcyUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Ceres",
+      "imageHint": "ceres town"
+    },
+    {
+      "id": "town-malmesbury",
+      "imageUrl": "https://picsum.photos/seed/townMalmesbury/600/400",
+      "description": "A view of Malmesbury",
+      "imageHint": "malmesbury town"
+    },
+    {
+      "id": "town-clanwilliam",
+      "imageUrl": "https://picsum.photos/seed/townClanwilliam/600/400",
+      "description": "A view of Clanwilliam",
+      "imageHint": "clanwilliam town"
+    },
+    {
+      "id": "town-vredenburg",
+      "imageUrl": "https://picsum.photos/seed/townVredenburg/600/400",
+      "description": "A view of Vredenburg",
+      "imageHint": "vredenburg town"
+    },
+    {
+      "id": "town-saldanha",
+      "imageUrl": "https://picsum.photos/seed/townSaldanha/600/400",
+      "description": "A view of Saldanha",
+      "imageHint": "saldanha town"
+    },
+    {
+      "id": "town-bredasdorp",
+      "imageUrl": "https://picsum.photos/seed/townBredasdorp/600/400",
+      "description": "A view of Bredasdorp",
+      "imageHint": "bredasdorp town"
+    },
+    {
+      "id": "town-caledon",
+      "imageUrl": "https://picsum.photos/seed/townCaledon/600/400",
+      "description": "A view of Caledon",
+      "imageHint": "caledon town"
+    },
+    {
+      "id": "town-soweto",
+      "imageUrl": "https://images.unsplash.com/photo-1730234344109-f10c88b864f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzb3dldG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Soweto",
+      "imageHint": "soweto town"
+    },
+    {
+      "id": "town-sandton",
+      "imageUrl": "https://images.unsplash.com/photo-1592850696009-60727756ce44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYW5kdG9uJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Sandton",
+      "imageHint": "sandton town"
+    },
+    {
+      "id": "town-randburg",
+      "imageUrl": "https://picsum.photos/seed/townRandburg/600/400",
+      "description": "A view of Randburg",
+      "imageHint": "randburg town"
+    },
+    {
+      "id": "town-roodepoort",
+      "imageUrl": "https://picsum.photos/seed/townRoodepoort/600/400",
+      "description": "A view of Roodepoort",
+      "imageHint": "roodepoort town"
+    },
+    {
+      "id": "town-benoni",
+      "imageUrl": "https://picsum.photos/seed/townBenoni/600/400",
+      "description": "A view of Benoni",
+      "imageHint": "benoni town"
+    },
+    {
+      "id": "town-boksburg",
+      "imageUrl": "https://picsum.photos/seed/townBoksburg/600/400",
+      "description": "A view of Boksburg",
+      "imageHint": "boksburg town"
+    },
+    {
+      "id": "town-krugersdorp",
+      "imageUrl": "https://images.unsplash.com/photo-1745401380907-4d5af69d66d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxrcnVnZXJzZG9ycCUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Krugersdorp",
+      "imageHint": "krugersdorp town"
+    },
+    {
+      "id": "town-germiston",
+      "imageUrl": "https://picsum.photos/seed/townGermiston/600/400",
+      "description": "A view of Germiston",
+      "imageHint": "germiston town"
+    },
+    {
+      "id": "town-centurion",
+      "imageUrl": "https://images.unsplash.com/photo-1629765604030-ff2f3557ca41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjZW50dXJpb24lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Centurion",
+      "imageHint": "centurion town"
+    },
+    {
+      "id": "town-midrand",
+      "imageUrl": "https://picsum.photos/seed/townMidrand/600/400",
+      "description": "A view of Midrand",
+      "imageHint": "midrand town"
+    },
+    {
+      "id": "town-vanderbijlpark",
+      "imageUrl": "https://picsum.photos/seed/townVanderbijlpark/600/400",
+      "description": "A view of Vanderbijlpark",
+      "imageHint": "vanderbijlpark town"
+    },
+    {
+      "id": "town-vereeniging",
+      "imageUrl": "https://picsum.photos/seed/townVereeniging/600/400",
+      "description": "A view of Vereeniging",
+      "imageHint": "vereeniging town"
+    },
+    {
+      "id": "town-richards-bay",
+      "imageUrl": "https://picsum.photos/seed/townRichardsBay/600/400",
+      "description": "A view of Richards Bay",
+      "imageHint": "richards bay town"
+    },
+    {
+      "id": "town-ladysmith",
+      "imageUrl": "https://picsum.photos/seed/townLadysmith/600/400",
+      "description": "A view of Ladysmith",
+      "imageHint": "ladysmith town"
+    },
+    {
+      "id": "town-newcastle",
+      "imageUrl": "https://images.unsplash.com/photo-1657073901450-178799c5903d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxuZXdjYXN0bGUlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Newcastle",
+      "imageHint": "newcastle town"
+    },
+    {
+      "id": "town-port-shepstone",
+      "imageUrl": "https://picsum.photos/seed/townPortShepstone/600/400",
+      "description": "A view of Port Shepstone",
+      "imageHint": "port shepstone town"
+    },
+    {
+      "id": "town-margate",
+      "imageUrl": "https://images.unsplash.com/photo-1665952494587-78029f6a864f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYXJnYXRlJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Margate",
+      "imageHint": "margate town"
+    },
+    {
+      "id": "town-eshowe",
+      "imageUrl": "https://picsum.photos/seed/townEshowe/600/400",
+      "description": "A view of Eshowe",
+      "imageHint": "eshowe town"
+    },
+    {
+      "id": "town-dundee",
+      "imageUrl": "https://images.unsplash.com/photo-1709390632539-3b4b6fb98a46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkdW5kZWUlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Dundee",
+      "imageHint": "dundee town"
+    },
+    {
+      "id": "town-vryheid",
+      "imageUrl": "https://picsum.photos/seed/townVryheid/600/400",
+      "description": "A view of Vryheid",
+      "imageHint": "vryheid town"
+    },
+    {
+      "id": "town-ulundi",
+      "imageUrl": "https://picsum.photos/seed/townUlundi/600/400",
+      "description": "A view of Ulundi",
+      "imageHint": "ulundi town"
+    },
+    {
+      "id": "town-mthatha",
+      "imageUrl": "https://picsum.photos/seed/townMthatha/600/400",
+      "description": "A view of Mthatha",
+      "imageHint": "mthatha town"
+    },
+    {
+      "id": "town-cradock",
+      "imageUrl": "https://picsum.photos/seed/townCradock/600/400",
+      "description": "A view of Cradock",
+      "imageHint": "cradock town"
+    },
+    {
+      "id": "town-jeffreys-bay",
+      "imageUrl": "https://images.unsplash.com/photo-1629274308341-4fc3a1cacb1f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxqZWZmcmV5cyUyMGJheSUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Jeffreys Bay",
+      "imageHint": "jeffreys bay town"
+    },
+    {
+      "id": "town-port-alfred",
+      "imageUrl": "https://picsum.photos/seed/townPortAlfred/600/400",
+      "description": "A view of Port Alfred",
+      "imageHint": "port alfred town"
+    },
+    {
+      "id": "town-queenstown",
+      "imageUrl": "https://images.unsplash.com/photo-1563755081404-0b461414de0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxxdWVlbnN0b3duJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Queenstown",
+      "imageHint": "queenstown town"
+    },
+    {
+      "id": "town-bhisho",
+      "imageUrl": "https://picsum.photos/seed/townBhisho/600/400",
+      "description": "A view of Bhisho",
+      "imageHint": "bhisho town"
+    },
+    {
+      "id": "town-tzaneen",
+      "imageUrl": "https://images.unsplash.com/photo-1597691854053-a2d6a967d7e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dHphbmVlbiUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Tzaneen",
+      "imageHint": "tzaneen town"
+    },
+    {
+      "id": "town-phalaborwa",
+      "imageUrl": "https://picsum.photos/seed/townPhalaborwa/600/400",
+      "description": "A view of Phalaborwa",
+      "imageHint": "phalaborwa town"
+    },
+    {
+      "id": "town-musina",
+      "imageUrl": "https://picsum.photos/seed/townMusina/600/400",
+      "description": "A view of Musina",
+      "imageHint": "musina town"
+    },
+    {
+      "id": "town-thohoyandou",
+      "imageUrl": "https://picsum.photos/seed/townThohoyandou/600/400",
+      "description": "A view of Thohoyandou",
+      "imageHint": "thohoyandou town"
+    },
+    {
+      "id": "town-bela-bela",
+      "imageUrl": "https://images.unsplash.com/photo-1723437093924-e7d8f936dc0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmVsYSUyMGJlbGElMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Bela-Bela",
+      "imageHint": "bela bela town"
+    },
+    {
+      "id": "town-mokopane",
+      "imageUrl": "https://picsum.photos/seed/townMokopane/600/400",
+      "description": "A view of Mokopane",
+      "imageHint": "mokopane town"
+    },
+    {
+      "id": "town-barberton",
+      "imageUrl": "https://picsum.photos/seed/townBarberton/600/400",
+      "description": "A view of Barberton",
+      "imageHint": "barberton town"
+    },
+    {
+      "id": "town-ermelo",
+      "imageUrl": "https://images.unsplash.com/photo-1768470599195-978a609bbd09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxlcm1lbG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Ermelo",
+      "imageHint": "ermelo town"
+    },
+    {
+      "id": "town-emalahleni",
+      "imageUrl": "https://picsum.photos/seed/townEmalahleni/600/400",
+      "description": "A view of eMalahleni (Witbank)",
+      "imageHint": "emalahleni town"
+    },
+    {
+      "id": "town-middelburg",
+      "imageUrl": "https://images.unsplash.com/photo-1648818694788-87ef9712e796?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaWRkZWxidXJnJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of Middelburg",
+      "imageHint": "middelburg town"
+    },
+    {
+      "id": "town-sabie",
+      "imageUrl": "https://picsum.photos/seed/townSabie/600/400",
+      "description": "A view of Sabie",
+      "imageHint": "sabie town"
+    },
+    {
+      "id": "town-lydenburg",
+      "imageUrl": "https://picsum.photos/seed/townLydenburg/600/400",
+      "description": "A view of Mashishing (Lydenburg)",
+      "imageHint": "lydenburg town"
+    },
+    {
+      "id": "town-potchefstroom",
+      "imageUrl": "https://picsum.photos/seed/townPotchefstroom/600/400",
+      "description": "A view of Potchefstroom",
+      "imageHint": "potchefstroom town"
+    },
+    {
+      "id": "town-klerksdorp",
+      "imageUrl": "https://picsum.photos/seed/townKlerksdorp/600/400",
+      "description": "A view of Klerksdorp",
+      "imageHint": "klerksdorp town"
+    },
+    {
+      "id": "town-brits",
+      "imageUrl": "https://picsum.photos/seed/townBrits/600/400",
+      "description": "A view of Brits",
+      "imageHint": "brits town"
+    },
+    {
+      "id": "town-vryburg",
+      "imageUrl": "https://picsum.photos/seed/townVryburg/600/400",
+      "description": "A view of Vryburg",
+      "imageHint": "vryburg town"
+    },
+    {
+      "id": "town-welkom",
+      "imageUrl": "https://picsum.photos/seed/townWelkom/600/400",
+      "description": "A view of Welkom",
+      "imageHint": "welkom town"
+    },
+    {
+      "id": "town-kroonstad",
+      "imageUrl": "https://picsum.photos/seed/townKroonstad/600/400",
+      "description": "A view of Kroonstad",
+      "imageHint": "kroonstad town"
+    },
+    {
+      "id": "town-harrismith",
+      "imageUrl": "https://picsum.photos/seed/townHarrismith/600/400",
+      "description": "A view of Harrismith",
+      "imageHint": "harrismith town"
+    },
+    {
+      "id": "town-parys",
+      "imageUrl": "https://picsum.photos/seed/townParys/600/400",
+      "description": "A view of Parys",
+      "imageHint": "parys town"
+    },
+    {
+      "id": "town-phuthaditjhaba",
+      "imageUrl": "https://picsum.photos/seed/townPhuthaditjhaba/600/400",
+      "description": "A view of Phuthaditjhaba",
+      "imageHint": "phuthaditjhaba town"
+    },
+    {
+      "id": "town-springbok",
+      "imageUrl": "https://picsum.photos/seed/townSpringbok/600/400",
+      "description": "A view of Springbok",
+      "imageHint": "springbok town"
+    },
+    {
+      "id": "town-kuruman",
+      "imageUrl": "https://picsum.photos/seed/townKuruman/600/400",
+      "description": "A view of Kuruman",
+      "imageHint": "kuruman town"
+    },
+    {
+      "id": "town-de-aar",
+      "imageUrl": "https://images.unsplash.com/photo-1650513667369-8d5a5ff55d53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkZSUyMGFhciUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A view of De Aar",
+      "imageHint": "de aar town"
+    },
+    {
+      "id": "town-colesberg",
+      "imageUrl": "https://picsum.photos/seed/townColesberg/600/400",
+      "description": "A view of Colesberg",
+      "imageHint": "colesberg town"
+    },
+    {
+      "id": "town-port-nolloth",
+      "imageUrl": "https://picsum.photos/seed/townPortNolloth/600/400",
+      "description": "A view of Port Nolloth",
+      "imageHint": "port nolloth town"
     }
   ]
 }
