@@ -291,14 +291,14 @@ export function TripPlanner({ user }: { user: User }) {
   ) => {
       const isAddDisabled = type !== 'province' && (!selectedTrip?.provinceIds || selectedTrip.provinceIds.length === 0);
   
-      const handleDirectionsClick = (item: any) => {
+      const handleDirectionsClick = (item: any, itemType: 'province' | 'town' | 'sight' = type as any) => {
           let destination = '';
-          if (type === 'province') {
+          if (itemType === 'province') {
               destination = `${item.name}, South Africa`;
-          } else if (type === 'town') {
+          } else if (itemType === 'town') {
               const province = provinces.find(p => p.slug === item.provinceSlug);
               destination = `${item.name}, ${province?.name || ''}, South Africa`;
-          } else if (type === 'sight') {
+          } else if (itemType === 'sight') {
               const province = provinces.find(p => p.slug === item.provinceSlug);
               destination = `${item.name}, ${item.location}, ${province?.name || ''}, South Africa`;
           }
@@ -308,6 +308,76 @@ export function TripPlanner({ user }: { user: User }) {
               window.open(url, '_blank');
           }
       };
+
+      if (type === 'town') {
+        const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean);
+
+        return (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <CardTitle className="text-xl font-headline"><Translatable text={title}/></CardTitle>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: type })} disabled={isAddDisabled}>
+                    <PlusCircle className="mr-2 h-4 w-4" /> Add
+                </Button>
+            </CardHeader>
+            <CardContent>
+                {items && items.length > 0 ? (
+                    <Accordion type="multiple" className="w-full">
+                        {items.map(item => {
+                             const relatedRoutes = routes.filter(r => r.townSlugs.includes(item.slug));
+                             const relatedTowns = [...new Map(relatedRoutes
+                                 .flatMap(r => r.townSlugs)
+                                 .filter(slug => slug !== item.slug)
+                                 .map(slug => towns.find(t => t.slug === slug))
+                                 .filter(Boolean)
+                                 .map(t => [t!.slug, t!])).values()];
+
+                            return (
+                                <AccordionItem value={item.slug} key={item.slug}>
+                                    <AccordionTrigger><Translatable text={item.name}/></AccordionTrigger>
+                                    <AccordionContent>
+                                        {relatedTowns.length > 0 ? (
+                                            <>
+                                                <p className="text-sm text-muted-foreground font-medium mb-2 pl-2"><Translatable text="Other towns on this route:"/></p>
+                                                <ul className="space-y-2 pt-2">
+                                                    {relatedTowns.map(relatedTown => (
+                                                        <li key={relatedTown.slug} className="flex justify-between items-center text-sm text-muted-foreground pl-2">
+                                                            <Translatable text={relatedTown.name} />
+                                                            <Button
+                                                                size="sm"
+                                                                className="bg-accent text-primary-foreground hover:bg-accent/90 h-auto px-2 py-1 text-xs"
+                                                                onClick={() => handleDirectionsClick(relatedTown, 'town')}
+                                                            >
+                                                                <Car className="mr-1 h-3 w-3" />
+                                                                <Translatable text="Directions" />
+                                                            </Button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </>
+                                        ) : (
+                                            <p className="text-sm text-muted-foreground pt-2 pl-2"><Translatable text="No other towns listed on a shared route."/></p>
+                                        )}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            )
+                        })}
+                    </Accordion>
+                ) : (
+                    <p className="text-sm text-muted-foreground">
+                        {isAddDisabled 
+                            ? <Translatable text={`Please add a province to see available ${title.toLowerCase()}.`} />
+                            : <Translatable text={`No ${title.toLowerCase()} added yet.`} />
+                        }
+                    </p>
+                )}
+            </CardContent>
+          </Card>
+        );
+      }
 
       if (type === 'route') {
         const tripRoutes = selectedTrip?.tripRoutes?.filter(tr => selectedTrip.routeIds?.includes(tr.routeSlug)) || [];
