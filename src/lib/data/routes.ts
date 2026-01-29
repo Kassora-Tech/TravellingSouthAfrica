@@ -57,7 +57,7 @@ export const routes = [
     days: '1-3 Days',
     highlights: ['Howick Falls', 'Art galleries & craft shops', 'Cheese and chocolate tasting', 'Nelson Mandela Capture Site'],
     townSlugs: ['durban', 'pietermaritzburg'],
-    roads: ['R103', 'Various local roads']
+    roads: ['N3 National Highway', 'R103 (Old Main Road)', 'R617 (Howick to Underberg)', 'Dargle Valley Road', 'Kamberg Road', 'Lotheni Road']
   },
   {
     slug: 'west-coast-flower-route',
