@@ -18,7 +18,6 @@ export interface TripRoute {
 export interface TripData {
   name: string;
   userId: string;
-  provinceIds?: string[];
   townIds?: string[];
   sightIds?: string[];
   routeIds?: string[];
@@ -31,7 +30,6 @@ export function createTrip(firestore: Firestore, tripData: Omit<TripData, 'creat
   const tripsCollection = collection(firestore, `users/${tripData.userId}/trips`);
   const dataWithTimestamp = {
     ...tripData,
-    provinceIds: [],
     townIds: [],
     sightIds: [],
     routeIds: [],
@@ -54,7 +52,7 @@ export function updateTripItems(
   firestore: Firestore,
   userId: string,
   tripId: string,
-  itemType: 'provinceIds' | 'townIds' | 'sightIds' | 'routeIds' | 'accommodationIds',
+  itemType: 'townIds' | 'sightIds' | 'routeIds' | 'accommodationIds',
   itemIds: string[]
 ) {
   const tripDocRef = doc(firestore, `users/${userId}/trips`, tripId);

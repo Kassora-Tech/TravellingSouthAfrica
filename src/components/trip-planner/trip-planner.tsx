@@ -46,7 +46,6 @@ import html2canvas from 'html2canvas';
 
 interface Trip {
   name: string;
-  provinceIds?: string[];
   townIds?: string[];
   sightIds?: string[];
   routeIds?: string[];
@@ -57,7 +56,7 @@ interface Trip {
 
 type DialogState = {
   isOpen: boolean;
-  type: 'province' | 'town' | 'sight' | 'route' | null;
+  type: 'town' | 'sight' | 'route' | null;
 }
 
 export function TripPlanner({ user }: { user: User }) {
@@ -117,7 +116,7 @@ export function TripPlanner({ user }: { user: User }) {
     });
   };
 
-  const handleSaveChanges = (itemType: 'provinceIds' | 'townIds' | 'sightIds' | 'routeIds', selectedSlugs: string[]) => {
+  const handleSaveChanges = (itemType: 'townIds' | 'sightIds' | 'routeIds', selectedSlugs: string[]) => {
     if (!selectedTrip) return;
 
     if (itemType === 'routeIds') {
@@ -276,26 +275,11 @@ export function TripPlanner({ user }: { user: User }) {
   };
 
   const filteredItems = useMemo(() => {
-    if (!selectedTrip || !selectedTrip.provinceIds || selectedTrip.provinceIds.length === 0) {
-      return { towns: [], sights: [], routes: [] };
-    }
-
-    const provinceSlugs = selectedTrip.provinceIds;
-
-    const filteredTowns = towns.filter(t => provinceSlugs.includes(t.provinceSlug));
-    const filteredSights = sights.filter(s => provinceSlugs.includes(s.provinceSlug));
-    const filteredRoutes = routes.filter(route => 
-      route.townSlugs.some(townSlug => {
-        const town = towns.find(t => t.slug === townSlug);
-        return town && provinceSlugs.includes(town.provinceSlug);
-      })
-    );
-
-    return { towns: filteredTowns, sights: filteredSights, routes: filteredRoutes };
-  }, [selectedTrip]);
+    // Since province selection is removed, we make all items available.
+    return { towns, sights, routes };
+  }, []);
 
   const dataMap = useMemo(() => ({
-    province: { title: "Add Provinces", items: provinces, key: 'provinceIds' as const },
     town: { title: "Add Towns", items: filteredItems.towns, key: 'townIds' as const },
     sight: { title: "Add Sights", items: filteredItems.sights, key: 'sightIds' as const },
     route: { title: "Add Routes", items: filteredItems.routes, key: 'routeIds' as const },
@@ -308,15 +292,13 @@ export function TripPlanner({ user }: { user: User }) {
     icon: React.ReactNode,
     itemIds: string[] | undefined,
     allItems: any[], // Using any for simplicity as it can be provinces, towns, etc.
-    type: 'province' | 'town' | 'sight' | 'route'
+    type: 'town' | 'sight' | 'route'
   ) => {
-      const isAddDisabled = type !== 'province' && (!selectedTrip?.provinceIds || selectedTrip.provinceIds.length === 0);
+      const isAddDisabled = false;
   
-      const handleDirectionsClick = (item: any, itemType: 'province' | 'town' | 'sight' = type as any) => {
+      const handleDirectionsClick = (item: any, itemType: 'town' | 'sight' = type as any) => {
           let destination = '';
-          if (itemType === 'province') {
-              destination = `${item.name}, South Africa`;
-          } else if (itemType === 'town') {
+          if (itemType === 'town') {
               const province = provinces.find(p => p.slug === item.provinceSlug);
               destination = `${item.name}, ${province?.name || ''}, South Africa`;
           } else if (itemType === 'sight') {
@@ -578,7 +560,6 @@ export function TripPlanner({ user }: { user: User }) {
                         </div>
                         
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {renderItemList("Provinces", <MapIcon className="h-6 w-6 text-primary"/>, selectedTrip.provinceIds, provinces, 'province')}
                             {renderItemList("Towns", <MapPin className="h-6 w-6 text-primary"/>, selectedTrip.townIds, towns, 'town')}
                             {renderItemList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
                             {renderItemList("Routes", <RouteIcon className="h-6 w-6 text-primary"/>, selectedTrip.routeIds, routes, 'route')}
