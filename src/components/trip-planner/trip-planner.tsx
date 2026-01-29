@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map as MapIcon, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car } from 'lucide-react';
+import { PlusCircle, Map as MapIcon, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -250,8 +250,29 @@ export function TripPlanner({ user }: { user: User }) {
       setSelectedTrip(prev => prev ? ({...prev, tripRoutes: newTripRoutes}) : null);
       toast({
           title: "Road removed",
-          description: `${road} has been removed from ${routes.find(r => r.slug === routeSlug)?.name}.`
+          description: `${road} has been removed from your itinerary.`
       });
+  };
+
+  const handleReverseRoads = (routeSlug: string) => {
+    if (!selectedTrip || !selectedTrip.tripRoutes) return;
+
+    const newTripRoutes = selectedTrip.tripRoutes.map(r => {
+        if (r.routeSlug === routeSlug) {
+            return {
+                ...r,
+                includedRoads: [...r.includedRoads].reverse()
+            };
+        }
+        return r;
+    });
+
+    updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
+    setSelectedTrip(prev => prev ? ({...prev, tripRoutes: newTripRoutes}) : null);
+    toast({
+        title: "Route Reversed",
+        description: `The order of roads for ${routes.find(r => r.slug === routeSlug)?.name} has been reversed.`
+    });
   };
 
   const filteredItems = useMemo(() => {
@@ -408,16 +429,24 @@ export function TripPlanner({ user }: { user: User }) {
                                 <AccordionTrigger><Translatable text={item.name}/></AccordionTrigger>
                                 <AccordionContent>
                                     {item.includedRoads.length > 0 ? (
-                                        <ul className="space-y-2 pt-2">
-                                            {item.includedRoads.map((road: string) => (
-                                                <li key={road} className="flex justify-between items-center text-sm text-muted-foreground pl-2">
-                                                    <span>{road}</span>
-                                                    <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive" onClick={() => handleRemoveRoad(item.slug, road)}>
-                                                        <Trash2 className="h-3 w-3" />
-                                                    </Button>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <>
+                                            <div className="flex justify-end -mb-2">
+                                                <Button variant="ghost" size="sm" onClick={() => handleReverseRoads(item.slug)}>
+                                                    <ArrowRightLeft className="mr-2 h-4 w-4" />
+                                                    <Translatable text="Reverse Route"/>
+                                                </Button>
+                                            </div>
+                                            <ul className="space-y-2 pt-2">
+                                                {item.includedRoads.map((road: string) => (
+                                                    <li key={road} className="flex justify-between items-center text-sm text-muted-foreground pl-2">
+                                                        <span>{road}</span>
+                                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive" onClick={() => handleRemoveRoad(item.slug, road)}>
+                                                            <Trash2 className="h-3 w-3" />
+                                                        </Button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
                                     ) : (
                                         <p className="text-sm text-muted-foreground pt-2 pl-2"><Translatable text="No roads in this route."/></p>
                                     )}
