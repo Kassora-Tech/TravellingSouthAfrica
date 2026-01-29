@@ -7,7 +7,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Map, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car } from 'lucide-react';
+import { PlusCircle, Map as MapIcon, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -549,7 +549,7 @@ export function TripPlanner({ user }: { user: User }) {
                         </div>
                         
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {renderItemList("Provinces", <Map className="h-6 w-6 text-primary"/>, selectedTrip.provinceIds, provinces, 'province')}
+                            {renderItemList("Provinces", <MapIcon className="h-6 w-6 text-primary"/>, selectedTrip.provinceIds, provinces, 'province')}
                             {renderItemList("Towns", <MapPin className="h-6 w-6 text-primary"/>, selectedTrip.townIds, towns, 'town')}
                             {renderItemList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
                             {renderItemList("Routes", <RouteIcon className="h-6 w-6 text-primary"/>, selectedTrip.routeIds, routes, 'route')}
