@@ -8,7 +8,8 @@ export const routes = [
     distance: 'Approx. 300 km',
     days: '3-7 Days',
     highlights: ['Tsitsikamma National Park', 'Knysna Heads', 'Plettenberg Bay beaches', 'Oudtshoorn Cango Caves'],
-    townSlugs: ['mossel-bay', 'george', 'knysna', 'plettenberg-bay']
+    townSlugs: ['mossel-bay', 'george', 'knysna', 'plettenberg-bay'],
+    roads: ['N2']
   },
   {
     slug: 'panorama-route',
@@ -19,7 +20,8 @@ export const routes = [
     distance: 'Approx. 160 km',
     days: '1-2 Days',
     highlights: ['Blyde River Canyon', 'God\'s Window', 'Bourke\'s Luck Potholes', 'The Three Rondavels'],
-    townSlugs: ['graskop', 'mbombela']
+    townSlugs: ['graskop', 'mbombela'],
+    roads: ['R532', 'R534', 'R40']
   },
   {
     slug: 'route-62',
@@ -30,7 +32,8 @@ export const routes = [
     distance: 'Approx. 850 km',
     days: '2-4 Days',
     highlights: ['Wine tasting in Robertson', 'Ronnie\'s Sex Shop (pub)', 'Cogmanskloof Pass', 'Quirky towns like Barrydale'],
-    townSlugs: ['oudtshoorn', 'george']
+    townSlugs: ['oudtshoorn', 'george'],
+    roads: ['R62']
   },
   {
     slug: 'wild-coast',
@@ -41,7 +44,8 @@ export const routes = [
     distance: 'Approx. 350 km',
     days: '4-7 Days',
     highlights: ['Hole in the Wall', 'Coffee Bay', 'Remote hiking trails', 'Traditional Xhosa villages'],
-    townSlugs: ['port-elizabeth']
+    townSlugs: ['port-elizabeth'],
+    roads: ['N2', 'Local coastal roads']
   },
   {
     slug: 'midlands-meander',
@@ -52,7 +56,8 @@ export const routes = [
     distance: 'Approx. 80 km',
     days: '1-3 Days',
     highlights: ['Howick Falls', 'Art galleries & craft shops', 'Cheese and chocolate tasting', 'Nelson Mandela Capture Site'],
-    townSlugs: ['durban', 'pietermaritzburg']
+    townSlugs: ['durban', 'pietermaritzburg'],
+    roads: ['R103', 'Various local roads']
   },
   {
     slug: 'west-coast-flower-route',
@@ -63,7 +68,8 @@ export const routes = [
     distance: 'Varies',
     days: '1-3 Days',
     highlights: ['West Coast National Park', 'Postberg Flower Reserve', 'Namaqua National Park', 'Fields of daisies'],
-    townSlugs: ['cape-town']
+    townSlugs: ['cape-town'],
+    roads: ['R27', 'N7']
   },
   {
     slug: 'waterberg-meander',
@@ -74,7 +80,8 @@ export const routes = [
     distance: 'Approx. 350 km',
     days: '3-5 Days',
     highlights: ['Welgevonden Game Reserve', 'Bushman rock art', 'Marakele National Park', 'Stargazing'],
-    townSlugs: ['polokwane']
+    townSlugs: ['polokwane'],
+    roads: ['R33', 'R517', 'Local reserve roads']
   },
   {
     slug: 'clarens-golden-gate-route',
@@ -85,6 +92,7 @@ export const routes = [
     distance: 'Varies',
     days: '2-3 Days',
     highlights: ['Golden Gate Highlands NP', 'Clarens art galleries', 'Dinosaur fossil sites', 'Hiking and horse riding'],
-    townSlugs: ['bloemfontein']
+    townSlugs: ['bloemfontein'],
+    roads: ['R712', 'R711']
   }
 ];

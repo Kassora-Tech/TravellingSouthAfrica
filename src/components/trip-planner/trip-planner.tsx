@@ -16,9 +16,8 @@ import { provinces } from '@/lib/data/provinces';
 import { towns } from '@/lib/data/towns';
 import { sights } from '@/lib/data/sights';
 import { routes } from '@/lib/data/routes';
-// No accommodation data file, so I'll disable that for now.
 
-import { createTrip, updateTripItems } from '@/firebase/firestore/trips';
+import { createTrip, updateTripItems, updateTripRoutes, type TripRoute } from '@/firebase/firestore/trips';
 
 import {
   Dialog,
@@ -29,6 +28,13 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useToast } from '@/hooks/use-toast';
@@ -40,12 +46,11 @@ import html2canvas from 'html2canvas';
 
 interface Trip {
   name: string;
-  startDate?: { seconds: number; nanoseconds: number };
-  endDate?: { seconds: number; nanoseconds: number };
   provinceIds?: string[];
   townIds?: string[];
   sightIds?: string[];
   routeIds?: string[];
+  tripRoutes?: TripRoute[];
   accommodationIds?: string[];
   createdAt?: { seconds: number; nanoseconds: number };
 }
@@ -85,7 +90,6 @@ export function TripPlanner({ user }: { user: User }) {
     }
 
     if (!selectedTrip || !trips.find(t => t.id === selectedTrip.id)) {
-        // Sort trips by creation date, newest first
         const sortedTrips = [...trips].sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
         setSelectedTrip(sortedTrips.length > 0 ? sortedTrips[0] : null);
     }
@@ -115,9 +119,23 @@ export function TripPlanner({ user }: { user: User }) {
 
   const handleSaveChanges = (itemType: 'provinceIds' | 'townIds' | 'sightIds' | 'routeIds', selectedSlugs: string[]) => {
     if (!selectedTrip) return;
-    updateTripItems(firestore, user.uid, selectedTrip.id, itemType, selectedSlugs);
-    // Optimistic update
-    setSelectedTrip(prev => prev ? ({ ...prev, [itemType]: selectedSlugs }) : null);
+
+    if (itemType === 'routeIds') {
+        const newTripRoutes = selectedSlugs.map(slug => {
+            const existing = selectedTrip.tripRoutes?.find(tr => tr.routeSlug === slug);
+            if (existing) return existing;
+            const routeData = routes.find(r => r.slug === slug);
+            return {
+                routeSlug: slug,
+                includedRoads: routeData?.roads || [],
+            };
+        });
+        updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
+        setSelectedTrip(prev => prev ? ({ ...prev, routeIds: selectedSlugs, tripRoutes: newTripRoutes }) : null);
+    } else {
+        updateTripItems(firestore, user.uid, selectedTrip.id, itemType, selectedSlugs);
+        setSelectedTrip(prev => prev ? ({ ...prev, [itemType]: selectedSlugs }) : null);
+    }
     toast({
         title: "Itinerary Updated!",
         description: `Your trip "${selectedTrip.name}" has been updated.`,
@@ -215,6 +233,27 @@ export function TripPlanner({ user }: { user: User }) {
     });
   };
 
+  const handleRemoveRoad = (routeSlug: string, road: string) => {
+      if (!selectedTrip || !selectedTrip.tripRoutes) return;
+  
+      const newTripRoutes = selectedTrip.tripRoutes.map(r => {
+          if (r.routeSlug === routeSlug) {
+              return {
+                  ...r,
+                  includedRoads: r.includedRoads.filter(roadName => roadName !== road)
+              };
+          }
+          return r;
+      });
+  
+      updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
+      setSelectedTrip(prev => prev ? ({...prev, tripRoutes: newTripRoutes}) : null);
+      toast({
+          title: "Road removed",
+          description: `${road} has been removed from ${routes.find(r => r.slug === routeSlug)?.name}.`
+      });
+  };
+
   const filteredItems = useMemo(() => {
     if (!selectedTrip || !selectedTrip.provinceIds || selectedTrip.provinceIds.length === 0) {
       return { towns: [], sights: [], routes: [] };
@@ -250,7 +289,6 @@ export function TripPlanner({ user }: { user: User }) {
     allItems: any[], // Using any for simplicity as it can be provinces, towns, etc.
     type: 'province' | 'town' | 'sight' | 'route'
   ) => {
-      const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean);
       const isAddDisabled = type !== 'province' && (!selectedTrip?.provinceIds || selectedTrip.provinceIds.length === 0);
   
       const handleDirectionsClick = (item: any) => {
@@ -263,10 +301,6 @@ export function TripPlanner({ user }: { user: User }) {
           } else if (type === 'sight') {
               const province = provinces.find(p => p.slug === item.provinceSlug);
               destination = `${item.name}, ${item.location}, ${province?.name || ''}, South Africa`;
-          } else if (type === 'route') {
-              const firstTown = towns.find(t => t.slug === item.townSlugs?.[0]);
-              const province = provinces.find(p => p.slug === firstTown?.provinceSlug);
-              destination = `${item.name}, ${firstTown?.name || ''}, ${province?.name || ''}, South Africa`;
           }
           
           if (destination) {
@@ -274,6 +308,67 @@ export function TripPlanner({ user }: { user: User }) {
               window.open(url, '_blank');
           }
       };
+
+      if (type === 'route') {
+        const tripRoutes = selectedTrip?.tripRoutes?.filter(tr => selectedTrip.routeIds?.includes(tr.routeSlug)) || [];
+        const items = tripRoutes.map(tr => {
+            const routeData = allItems.find(r => r.slug === tr.routeSlug);
+            return routeData ? {
+                ...routeData,
+                includedRoads: tr.includedRoads,
+            } : null;
+        }).filter(Boolean);
+
+        return (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <CardTitle className="text-xl font-headline"><Translatable text={title}/></CardTitle>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: type })} disabled={isAddDisabled}>
+                    <PlusCircle className="mr-2 h-4 w-4" /> Add
+                </Button>
+            </CardHeader>
+            <CardContent>
+                {items && items.length > 0 ? (
+                    <Accordion type="multiple" className="w-full">
+                        {items.map(item => (
+                            item && <AccordionItem value={item.slug} key={item.slug}>
+                                <AccordionTrigger><Translatable text={item.name}/></AccordionTrigger>
+                                <AccordionContent>
+                                    {item.includedRoads.length > 0 ? (
+                                        <ul className="space-y-2 pt-2">
+                                            {item.includedRoads.map((road: string) => (
+                                                <li key={road} className="flex justify-between items-center text-sm text-muted-foreground pl-2">
+                                                    <span>{road}</span>
+                                                    <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive" onClick={() => handleRemoveRoad(item.slug, road)}>
+                                                        <Trash2 className="h-3 w-3" />
+                                                    </Button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground pt-2 pl-2"><Translatable text="No roads in this route."/></p>
+                                    )}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                ) : (
+                    <p className="text-sm text-muted-foreground">
+                        {isAddDisabled 
+                            ? <Translatable text={`Please add a province to see available ${title.toLowerCase()}.`} />
+                            : <Translatable text={`No ${title.toLowerCase()} added yet.`} />
+                        }
+                    </p>
+                )}
+            </CardContent>
+        </Card>
+        );
+      }
+
+      const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean);
   
       return (
         <Card>
