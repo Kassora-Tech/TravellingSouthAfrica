@@ -18,14 +18,14 @@ const ctaItems = [
     icon: Calculator,
     title: 'Convert Currency',
     description: 'Use our handy tool for up-to-date exchange rates.',
-    href: '/tools/currency-converter',
+    href: '/service-providers/currency-converter',
     buttonText: 'Convert Now',
   },
   {
     icon: Languages,
     title: 'South African Slang',
     description: 'Learn some local lingo with our handy slang guide.',
-    href: '/tools/slang',
+    href: '/service-providers/slang',
     buttonText: 'Learn Slang',
   },
 ];

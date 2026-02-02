@@ -32,9 +32,10 @@ const navLinks = [
   { href: '/accommodations', label: 'Accommodations' },
 ];
 
-const toolsLinks = [
-    { href: '/tools/currency-converter', label: 'Currency' },
-    { href: '/tools/slang', label: 'Slang' },
+const serviceProviderLinks = [
+    { href: '/service-providers/currency-converter', label: 'Currency' },
+    { href: '/service-providers/slang', label: 'Slang' },
+    { href: '/service-providers/directions', label: 'Directions' },
 ]
 
 export function Header() {
@@ -66,11 +67,14 @@ export function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost">
-                  <Translatable text="Tools" /> <ChevronDown className="ml-1 h-4 w-4" />
+                  <Translatable text="Service Providers" /> <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {toolsLinks.map((link) => (
+                <DropdownMenuItem asChild>
+                    <Link href="/service-providers"><Translatable text="All Services" /></Link>
+                </DropdownMenuItem>
+                {serviceProviderLinks.map((link) => (
                   <DropdownMenuItem key={link.href} asChild>
                     <Link href={link.href}><Translatable text={link.label} /></Link>
                   </DropdownMenuItem>
@@ -117,7 +121,7 @@ export function Header() {
                         </Button>
                     </div>
                   <nav className="flex flex-col space-y-4">
-                    {[...navLinks, ...toolsLinks].map((link) => (
+                    {[...navLinks, { href: '/service-providers', label: 'Service Providers' }].map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
