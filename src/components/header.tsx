@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,12 +10,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { LanguageSwitcher } from './language-switcher';
 import { cn } from '@/lib/utils';
 import { useScroll } from '@/hooks/use-scroll';
@@ -31,12 +25,6 @@ const navLinks = [
   { href: '/routes', label: 'Routes' },
   { href: '/accommodations', label: 'Accommodations' },
 ];
-
-const serviceProviderLinks = [
-    { href: '/service-providers/currency-converter', label: 'Currency' },
-    { href: '/service-providers/slang', label: 'Slang' },
-    { href: '/service-providers/directions', label: 'Directions' },
-]
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,23 +52,9 @@ export function Header() {
                 </Link>
               </Button>
             ))}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost">
-                  <Translatable text="Service Providers" /> <ChevronDown className="ml-1 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                    <Link href="/service-providers"><Translatable text="All Services" /></Link>
-                </DropdownMenuItem>
-                {serviceProviderLinks.map((link) => (
-                  <DropdownMenuItem key={link.href} asChild>
-                    <Link href={link.href}><Translatable text={link.label} /></Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant="ghost" asChild>
+                <Link href="/service-providers"><Translatable text="Service Providers" /></Link>
+            </Button>
             <Button variant="ghost" asChild>
                 <Link href="/contact"><Translatable text="Contact" /></Link>
             </Button>
