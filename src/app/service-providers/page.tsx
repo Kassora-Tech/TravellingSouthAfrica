@@ -2,37 +2,72 @@ import { Translatable } from '@/components/translatable';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Calculator, Languages, ListChecks, Map } from 'lucide-react';
+import { Plane, Camera, Car, Settings, Bed, Utensils, Laptop, Users, Truck } from 'lucide-react';
 
-const serviceItems = [
-  {
-    icon: ListChecks,
-    title: 'Plan Your Trip',
-    description: 'Create and save your personalized travel itineraries.',
-    href: '/plan-your-trip',
-    buttonText: 'Start Planning',
-  },
-  {
-    icon: Calculator,
-    title: 'Currency Converter',
-    description: 'Use our handy tool for up-to-date exchange rates.',
-    href: '/service-providers/currency-converter',
-    buttonText: 'Convert Now',
-  },
-  {
-    icon: Languages,
-    title: 'South African Slang',
-    description: 'Learn some local lingo with our handy slang guide.',
-    href: '/service-providers/slang',
-    buttonText: 'Learn Slang',
-  },
-  {
-    icon: Map,
-    title: 'Get Directions',
-    description: 'Find the best route for your journey across South Africa.',
-    href: '/service-providers/directions',
-    buttonText: 'Find Route',
-  }
+const serviceCategories = [
+    {
+        icon: Plane,
+        title: 'Airlines',
+        description: 'Find flights to and within South Africa from major carriers.',
+        href: '/service-providers/airlines',
+        buttonText: 'Browse Airlines',
+    },
+    {
+        icon: Camera,
+        title: 'Attractions',
+        description: 'Discover top attractions and book unique experiences.',
+        href: '/service-providers/attractions',
+        buttonText: 'Explore Attractions',
+    },
+    {
+        icon: Car,
+        title: 'Car Hire',
+        description: 'Rent a car for your South African road trip adventure.',
+        href: '/service-providers/car-hire',
+        buttonText: 'Find a Vehicle',
+    },
+    {
+        icon: Settings,
+        title: 'General',
+        description: 'General services to assist with your travel planning.',
+        href: '/service-providers/general',
+        buttonText: 'View Services',
+    },
+    {
+        icon: Bed,
+        title: 'Hotels',
+        description: 'Find and book hotels, guesthouses, and lodges.',
+        href: '/service-providers/hotels',
+        buttonText: 'Book a Stay',
+    },
+    {
+        icon: Utensils,
+        title: 'Restaurants',
+        description: 'Explore dining options, from fine dining to local eateries.',
+        href: '/service-providers/restaurants',
+        buttonText: 'Find Restaurants',
+    },
+    {
+        icon: Laptop,
+        title: 'Technology',
+        description: 'Services for staying connected, like SIM cards and Wi-Fi.',
+        href: '/service-providers/technology',
+        buttonText: 'Get Connected',
+    },
+    {
+        icon: Users,
+        title: 'Travel Agents',
+        description: 'Connect with expert travel agents to plan your perfect trip.',
+        href: '/service-providers/travel-agents',
+        buttonText: 'Find an Agent',
+    },
+    {
+        icon: Truck,
+        title: 'Vehicles',
+        description: 'Specialty vehicle rentals like campers and 4x4s.',
+        href: '/service-providers/vehicles',
+        buttonText: 'Browse Vehicles',
+    },
 ];
 
 export default function ServiceProvidersPage() {
@@ -52,9 +87,17 @@ export default function ServiceProvidersPage() {
 
       <section id="services" className="bg-background py-16 lg:py-24">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold font-headline md:text-4xl">
+              <Translatable text="Explore Service Providers by Category" />
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+              <Translatable text="Find services for your trip." />
+            </p>
+          </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {serviceItems.map((item) => (
-              <Card key={item.title} className="flex flex-col">
+            {serviceCategories.map((item) => (
+              <Card key={item.title} className="flex flex-col transition-all hover:shadow-xl hover:-translate-y-1">
                 <CardHeader className="items-center text-center">
                   <div className="rounded-full bg-primary/10 p-4 text-primary">
                     <item.icon className="h-10 w-10" />

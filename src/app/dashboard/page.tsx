@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { logout } from "@/firebase/auth/actions";
 import Link from "next/link";
 import { MyItineraries } from "@/components/dashboard/my-itineraries";
-import { Bed, LogOut, PlusCircle } from "lucide-react";
+import { Bed, Calculator, Languages, LogOut, PlusCircle } from "lucide-react";
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
@@ -78,6 +78,42 @@ export default function DashboardPage() {
                   <Translatable text="Accommodation booking history will be available here soon." />
                 </p>
                 <Button disabled><Translatable text="View Bookings" /></Button>
+              </CardContent>
+            </Card>
+            <Card className="flex flex-col text-center">
+              <CardHeader className="items-center">
+                <div className="rounded-full bg-primary/10 p-3 text-primary">
+                  <Languages className="h-8 w-8" />
+                </div>
+                <CardTitle><Translatable text="SA Slang" /></CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow flex flex-col justify-between">
+                <p className="text-muted-foreground mb-4">
+                  <Translatable text="Learn some local lingo with our handy slang guide." />
+                </p>
+                <Button asChild>
+                  <Link href="/service-providers/slang">
+                      <Translatable text="Learn Slang" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+            <Card className="flex flex-col text-center">
+              <CardHeader className="items-center">
+                 <div className="rounded-full bg-primary/10 p-3 text-primary">
+                    <Calculator className="h-8 w-8" />
+                </div>
+                <CardTitle><Translatable text="Currency Converter" /></CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow flex flex-col justify-between">
+                <p className="text-muted-foreground mb-4">
+                  <Translatable text="Use our handy tool for up-to-date exchange rates." />
+                </p>
+                <Button asChild>
+                  <Link href="/service-providers/currency-converter">
+                      <Translatable text="Convert Now" />
+                  </Link>
+                </Button>
               </CardContent>
             </Card>
              <Card className="flex flex-col text-center">
