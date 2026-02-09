@@ -97,7 +97,7 @@ export const routes = [
   },
   {
     slug: 'n1-route',
-    name: 'N1 National Route',
+    name: 'N1',
     tagline: 'The spine of South Africa, from Cape Town to the Limpopo border.',
     description: 'The N1 is South Africa\'s premier highway, connecting the country\'s major economic and legislative hubs. This route takes you from the scenic beauty of the Western Cape, through the vast plains of the Karoo and Free State, into the bustling heart of Gauteng, and finally to the northern border with Zimbabwe.',
     imageId: 'route-route-62',
@@ -109,7 +109,7 @@ export const routes = [
   },
   {
     slug: 'n2-route',
-    name: 'N2 National Route',
+    name: 'N2',
     tagline: 'A spectacular coastal journey from Cape Town to Ermelo.',
     description: 'The N2 highway hugs the South African coastline for a significant portion of its length, incorporating the famous Garden Route. It offers an incredible diversity of scenery, from the mountains and vineyards of the Western Cape to the wild coast of the Eastern Cape and the subtropical beaches of KwaZulu-Natal.',
     imageId: 'route-garden-route',
@@ -121,7 +121,7 @@ export const routes = [
   },
   {
     slug: 'n3-route',
-    name: 'N3 National Route',
+    name: 'N3',
     tagline: 'Connecting Johannesburg and Durban.',
     description: 'The N3 is the economic corridor between Gauteng and the port city of Durban, passing through the scenic Natal Midlands.',
     imageId: 'route-midlands-meander',
@@ -133,7 +133,7 @@ export const routes = [
   },
   {
     slug: 'n4-route',
-    name: 'N4 National Route',
+    name: 'N4',
     tagline: 'From the capital to the Kruger gateway.',
     description: 'The N4 runs from Pretoria eastwards to the Mozambican border, passing through Nelspruit (Mbombela), the gateway to the Kruger National Park.',
     imageId: 'route-panorama-route',
@@ -145,7 +145,7 @@ export const routes = [
   },
   {
     slug: 'n5-route',
-    name: 'N5 National Route',
+    name: 'N5',
     tagline: 'A link between the N1 and N3 in the Free State.',
     description: 'The N5 provides a crucial connection across the Free State, starting from the N1 at Winburg and meeting the N3 at Harrismith.',
     imageId: 'province-free-state',
@@ -157,7 +157,7 @@ export const routes = [
   },
   {
     slug: 'n6-route',
-    name: 'N6 National Route',
+    name: 'N6',
     tagline: 'From the coast of East London to the heart of Bloemfontein.',
     description: 'The N6 connects the port city of East London with the judicial capital, Bloemfontein, traversing the historic landscapes of the Eastern Cape.',
     imageId: 'province-eastern-cape',
@@ -169,7 +169,7 @@ export const routes = [
   },
   {
     slug: 'n7-route',
-    name: 'N7 National Route',
+    name: 'N7',
     tagline: 'From Cape Town to the Namibian Border.',
     description: 'The N7 stretches north from Cape Town, through the West Coast and Namaqualand flower region, to the Vioolsdrif border with Namibia.',
     imageId: 'route-west-coast-flower-route',
@@ -181,7 +181,7 @@ export const routes = [
   },
   {
     slug: 'n8-route',
-    name: 'N8 National Route',
+    name: 'N8',
     tagline: 'West to East across the heart of South Africa.',
     description: 'The N8 connects the Northern Cape with the Free State and Lesotho border, running from Groblershoop through Kimberley and Bloemfontein to Ladybrand.',
     imageId: 'province-northern-cape',
@@ -193,7 +193,7 @@ export const routes = [
   },
   {
     slug: 'n9-route',
-    name: 'N9 National Route',
+    name: 'N9',
     tagline: 'From the Garden Route through the Karoo.',
     description: 'The N9 runs from George on the Garden Route, north through the semi-arid Karoo via Graaff-Reinet, connecting to the N1 at Colesberg.',
     imageId: 'town-graaff-reinet',
@@ -205,7 +205,7 @@ export const routes = [
   },
   {
     slug: 'n10-route',
-    name: 'N10 National Route',
+    name: 'N10',
     tagline: 'From Gqeberha to the Namibian border.',
     description: 'The N10 connects the port city of Port Elizabeth (Gqeberha) with the Namibian border at Nakop, passing through the heart of the Karoo and the Green Kalahari.',
     imageId: 'town-upington',
@@ -217,7 +217,7 @@ export const routes = [
   },
   {
     slug: 'n11-route',
-    name: 'N11 National Route',
+    name: 'N11',
     tagline: 'Connecting Limpopo with KwaZulu-Natal.',
     description: 'The N11 runs from the Groblersbrug border with Botswana, through Mokopane and Middelburg, down to the industrial town of Newcastle and historic Ladysmith.',
     imageId: 'province-limpopo',
@@ -229,7 +229,7 @@ export const routes = [
   },
   {
     slug: 'n12-route',
-    name: 'N12 National Route',
+    name: 'N12',
     tagline: 'From the Garden Route to Johannesburg.',
     description: 'The N12 provides a major route from George on the coast, through the Klein Karoo and diamond fields of Kimberley, to the economic hubs of Potchefstroom and Johannesburg, ending in eMalahleni.',
     imageId: 'town-kimberley',
@@ -241,7 +241,7 @@ export const routes = [
   },
   {
     slug: 'n14-route',
-    name: 'N14 National Route',
+    name: 'N14',
     tagline: 'Across the vast Northern Cape to Gauteng.',
     description: 'The N14 stretches from Springbok in Namaqualand, across the vast and arid Northern Cape via Upington, to Krugersdorp and Pretoria in Gauteng.',
     imageId: 'province-northern-cape',
@@ -253,7 +253,7 @@ export const routes = [
   },
   {
     slug: 'n17-route',
-    name: 'N17 National Route',
+    name: 'N17',
     tagline: 'From Johannesburg to the Eswatini border.',
     description: 'The N17 connects Johannesburg with the Oshoek border post of Eswatini (formerly Swaziland), passing through industrial and agricultural heartlands.',
     imageId: 'town-johannesburg',
@@ -265,7 +265,7 @@ export const routes = [
   },
   {
     slug: 'n18-route',
-    name: 'N18 National Route',
+    name: 'N18',
     tagline: 'Through the North West province to Botswana.',
     description: 'The N18 runs from Warrenton in the Northern Cape, north through Vryburg and Mahikeng, to the Ramatlabama border post with Botswana.',
     imageId: 'town-mahikeng',
@@ -274,5 +274,29 @@ export const routes = [
     highlights: ['Mahikeng history', 'Vryburg cattle country'],
     townSlugs: ['warrenton', 'vryburg', 'mahikeng', 'miga'],
     roads: ['N18']
-  }
+  },
+   {
+    slug: 'r61-route',
+    name: 'R61',
+    tagline: 'Scenic route through the Eastern Cape.',
+    description: 'The R61 is a regional route that offers a scenic alternative through parts of the Eastern Cape, connecting towns and offering beautiful landscapes.',
+    imageId: 'route-wild-coast',
+    distance: 'Varies',
+    days: '1-2 Days',
+    highlights: ['Eastern Cape scenery'],
+    townSlugs: ['beaufort-west', 'graaff-reinet', 'cradock', 'queenstown', 'mthatha', 'port-st-johns'],
+    roads: ['R61']
+  },
+    {
+    slug: 'r62-route',
+    name: 'R62',
+    tagline: 'The world\'s longest wine route, through the heart of the Klein Karoo.',
+    description: 'A quieter, more scenic alternative to the N2 highway, Route 62 meanders through the semi-arid Klein Karoo, linking Cape Town and Oudtshoorn. It\'s famous for its quirky farm stalls, wineries, and dramatic mountain passes.',
+    imageId: 'route-route-62',
+    distance: 'Approx. 850 km',
+    days: '2-4 Days',
+    highlights: ['Wine tasting in Robertson', 'Ronnie\'s Sex Shop (pub)', 'Cogmanskloof Pass', 'Quirky towns like Barrydale'],
+    townSlugs: ['cape-town', 'paarl', 'wellington', 'worcester', 'robertson', 'montagu', 'barrydale', 'ladismith', 'calitzdorp', 'oudtshoorn'],
+    roads: ['R62', 'R60', 'R318', 'N1', 'N12']
+  },
 ];
