@@ -104,7 +104,7 @@ export const routes = [
     distance: 'Approx. 1,930 km',
     days: '3-5 Days',
     highlights: ['Cape Winelands', 'Karoo National Park', 'Bloemfontein', 'Johannesburg & Pretoria', 'Limpopo Bushveld'],
-    townSlugs: ['cape-town', 'paarl', 'worcester', 'beaufort-west', 'colesberg', 'bloemfontein', 'kroonstad', 'johannesburg', 'pretoria', 'polokwane', 'musina'],
+    townSlugs: ['cape-town', 'paarl', 'worcester', 'de-doorns', 'touws-river', 'matjiesfontein', 'laingsburg', 'beaufort-west', 'hutchinson', 'colesberg', 'bloemfontein', 'kroonstad', 'vaal-river', 'vanderbijlpark', 'lenasia', 'johannesburg', 'midrand', 'centurion', 'pretoria', 'polokwane', 'louis-trichardt', 'musina', 'beitbridge'],
     roads: ['N1']
   },
   {
@@ -116,7 +116,7 @@ export const routes = [
     distance: 'Approx. 2,255 km',
     days: '7-14 Days',
     highlights: ['Garden Route', 'Wild Coast', 'Durban beachfront', 'iSimangaliso Wetland Park'],
-    townSlugs: ['cape-town', 'somerset-west', 'caledon', 'swellendam', 'mossel-bay', 'george', 'knysna', 'plettenberg-bay', 'humansdorp', 'port-elizabeth', 'east-london', 'mthatha', 'kokstad', 'port-shepstone', 'durban', 'ermelo'],
+    townSlugs: ['cape-town', 'somerset-west', 'caledon', 'swellendam', 'mossel-bay', 'george', 'knysna', 'plettenberg-bay', 'humansdorp', 'port-elizabeth', 'grahamstown', 'king-william\'s-town', 'east-london', 'mthatha', 'kokstad', 'port-shepstone', 'durban', 'empangeni', 'piet-retief', 'ermelo'],
     roads: ['N2']
   }
 ];

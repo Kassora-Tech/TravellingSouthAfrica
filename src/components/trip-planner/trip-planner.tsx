@@ -681,13 +681,9 @@ export function TripPlanner({ user }: { user: User }) {
                                     </div>
                                 </CardHeader>
                                 <CardContent>
-                                    <ul className="text-sm text-muted-foreground grid grid-cols-2 gap-x-4 gap-y-1">
-                                        {['Adventure', 'Airlines', 'Attractions', 'Car Hire', 'General', 'Hotels', 'Restaurants', 'Technology', 'Travel Agents', 'Vehicles'].map(item => (
-                                            <li key={item}>
-                                                <Translatable text={item}/>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <p className="text-sm text-muted-foreground">
+                                        <Translatable text="This feature is coming soon."/>
+                                    </p>
                                 </CardContent>
                             </Card>
                         </div>
