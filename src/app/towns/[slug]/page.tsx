@@ -116,22 +116,24 @@ export default function TownDetailPage({ params }: { params: { slug:string } }) 
         </section>
       )}
 
-      <section className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-center font-headline text-3xl font-bold mb-8"><Translatable text="Location on Map" /></h2>
-          <div className="aspect-video overflow-hidden rounded-lg border">
-            <iframe
-              src={town.mapEmbed}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade">
-            </iframe>
+      {town.mapEmbed && (
+        <section className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-center font-headline text-3xl font-bold mb-8"><Translatable text="Location on Map" /></h2>
+            <div className="aspect-video overflow-hidden rounded-lg border">
+              <iframe
+                src={town.mapEmbed}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
     </div>
   );
