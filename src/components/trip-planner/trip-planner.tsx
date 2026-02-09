@@ -11,6 +11,7 @@ import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
+import Link from 'next/link';
 
 import { provinces } from '@/lib/data/provinces';
 import { towns } from '@/lib/data/towns';
