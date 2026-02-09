@@ -118,6 +118,7 @@ export function TripPlanner({ user }: { user: User }) {
     }
 
     let initialTowns: TripTown[] = [];
+    let initialRoutes: string[] = [];
     if (createMode === 'route' && selectedRoute) {
         const routeData = routes.find(r => r.slug === selectedRoute);
         if (routeData) {
@@ -126,6 +127,7 @@ export function TripPlanner({ user }: { user: User }) {
                 townSlugs = [...townSlugs].reverse();
             }
             initialTowns = townSlugs.map(slug => ({ slug, notes: '' }));
+            initialRoutes.push(routeData.slug);
         }
     }
 
@@ -133,6 +135,7 @@ export function TripPlanner({ user }: { user: User }) {
       name: newTripName,
       userId: user.uid,
       towns: initialTowns,
+      routeIds: initialRoutes,
     });
     setCreateTripOpen(false);
     setNewTripName('');
