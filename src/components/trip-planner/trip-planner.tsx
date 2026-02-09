@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, doc, deleteDoc } from 'firebase/firestore';
@@ -65,27 +65,128 @@ type DialogState = {
   type: 'town' | 'sight' | 'route' | null;
 }
 
-const NationalRoadsCard = ({ onSelectRoute }) => {
-    const nationalRoutes = routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a,b) => a.name.localeCompare(b.name));
+const findTownSlug = (name: string, allTowns: { slug: string, name: string }[]) => {
+    const cleanName = name.split('(')[0].trim().toLowerCase();
+    const town = allTowns.find(t => t.name.toLowerCase().startsWith(cleanName));
+    return town?.slug;
+};
+
+const SummaryRoute = ({ routeName, townNames, onSelectRoute }: { routeName: string, townNames: string[], onSelectRoute: (slug: string) => void }) => {
+    const routeSlug = `${routeName.toLowerCase()}-route`;
+    return (
+        <div className="flex items-center gap-2 flex-wrap">
+            <Button variant="link" className="p-0 h-auto font-bold text-sm" onClick={() => onSelectRoute(routeSlug)}>
+                {routeName}
+            </Button>
+            <span className="text-muted-foreground">-</span>
+            <div className="flex flex-wrap gap-x-2">
+                {townNames.map((townName, index) => {
+                    const townSlug = findTownSlug(townName, towns);
+                    return (
+                        <React.Fragment key={townName}>
+                            {townSlug ? (
+                                <Link href={`/towns/${townSlug}`} className="underline hover:text-primary text-sm" target="_blank">
+                                    <Translatable text={townName} />
+                                </Link>
+                            ) : (
+                                <span className="text-sm"><Translatable text={townName} /></span>
+                            )}
+                            {index < townNames.length - 1 && ','}
+                        </React.Fragment>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+
+const NationalRoadsCard = ({ onSelectRoute }: { onSelectRoute: (slug: string) => void }) => {
+    const nationalRoutesList = ['N1', 'N10', 'N11', 'N12', 'N14', 'N17', 'N18', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9'];
+    
+    const summaryRoutesData = [
+        { name: 'N1', towns: ['Polokwane', 'Pretoria', 'Johannesburg', 'Bloemfontein', 'Cape Town'] },
+        { name: 'N2', towns: ['Durban', 'Mthatha', 'East London', 'Port Elizabeth', 'Cape Town'] },
+        { name: 'N3', towns: ['Johannesburg', 'Pietermaritzburg', 'Durban'] },
+        { name: 'N4', towns: ['Pretoria', 'Mbombela'] },
+        { name: 'N5', towns: ['Harrismith'] },
+        { name: 'N6', towns: ['East London', 'Bloemfontein'] },
+        { name: 'N7', towns: ['Cape Town', 'Springbok', 'Vioolsdrif'] },
+        { name: 'N8', towns: ['Groblershoop', 'Kimberley', 'Bloemfontein', 'Ladybrand'] },
+        { name: 'N9', towns: ['George', 'Graaff-Reinet', 'Middelburg', 'Colesberg'] },
+        { name: 'N10', towns: ['Port Elizabeth', 'Middelburg', 'Upington', 'Nakop border control'] },
+        { name: 'N11', towns: ['Groblersbrug', 'Mokopane', 'Middelburg', 'Ermelo', 'Newcastle', 'Ladysmith'] },
+        { name: 'N12', towns: ['George', 'Oudtshoorn', 'Victoria West', 'Kimberley', 'Potchefstroom', 'Johannesburg', 'eMalahleni (Witbank)'] },
+        { name: 'N14', towns: ['Springbok', 'Upington', 'Krugersdorp', 'Pretoria'] },
+        { name: 'N17', towns: ['Johannesburg', 'Springs', 'Evander', 'Ermelo', 'Swaziland border'] },
+        { name: 'N18', towns: ['Warrenton', 'Vryburg', 'Mahikeng', 'Miga'] },
+    ];
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline text-2xl"><Translatable text="National Roads – Quick Route Planning" /></CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground space-y-4">
-                <p><Translatable text="This shows you the routes you can follow on the country's national roads."/></p>
-                <div className="flex flex-wrap gap-2">
-                    {nationalRoutes.map(route => (
-                        <Button key={route.slug} variant="outline" size="sm" onClick={() => onSelectRoute(route.slug)}>
-                            {route.name}
+                <p>This shows you the routes you can follow on the country's 15 national roads</p>
+
+                <p className="font-bold">South African National Roads:</p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1">
+                    {nationalRoutesList.sort().map(r => (
+                        <Button key={r} variant="link" className="p-0 h-auto" onClick={() => onSelectRoute(`${r.toLowerCase()}-route`)}>
+                            {r}
                         </Button>
                     ))}
                 </div>
-                 <p><Translatable text="Click on a route number to auto-create a trip."/></p>
+
+                <div className="mt-4 pt-4 border-t font-mono text-xs bg-muted/50 p-4 rounded-lg">
+                    <p className="font-sans font-bold text-sm mb-2 text-foreground">N1 Detailed route</p>
+                    <div className="font-sans whitespace-pre-wrap">
+                        <div className="grid grid-cols-3 font-bold border-b pb-1 mb-1">
+                            <span>Town</span>
+                            <span className="text-right">Distance</span>
+                            <span className="text-right">Cumulative</span>
+                        </div>
+                        <div className="grid grid-cols-3"><span>Beitbridge</span> <span className="text-right">-</span> <span className="text-right">-</span></div>
+                        <div className="grid grid-cols-3"><span>Musina</span> <span className="text-right">19</span> <span className="text-right">19</span></div>
+                        <div className="grid grid-cols-3"><span>Polokwane</span> <span className="text-right">201</span> <span className="text-right">220</span></div>
+                        <div className="grid grid-cols-3"><span>Pretoria</span> <span className="text-right">281</span> <span className="text-right">501</span></div>
+                        <div className="grid grid-cols-3"><span>Centurion</span> <span className="text-right">26</span> <span className="text-right">527</span></div>
+                        <div className="grid grid-cols-3"><span>Midrand</span> <span className="text-right">19</span> <span className="text-right">546</span></div>
+                        <div className="grid grid-cols-3"><span>Johannesburg</span> <span className="text-right">27</span> <span className="text-right">573</span></div>
+                        <div className="grid grid-cols-3"><span>Lenasia</span> <span className="text-right">35</span> <span className="text-right">608</span></div>
+                        <div className="grid grid-cols-3"><span>Vanderbijlpark</span> <span className="text-right">53</span> <span className="text-right">661</span></div>
+                        <div className="grid grid-cols-3"><span>Vaal River</span> <span className="text-right">10</span> <span className="text-right">671</span></div>
+                        <div className="grid grid-cols-3"><span>Kroonstad</span> <span className="text-right">121</span> <span className="text-right">792</span></div>
+                        <div className="grid grid-cols-3"><span>Ventersburg</span> <span className="text-right">52</span> <span className="text-right">844</span></div>
+                        <div className="grid grid-cols-3"><span>Bloemfontein</span> <span className="text-right">116</span> <span className="text-right">960</span></div>
+                        <div className="grid grid-cols-3"><span>Colesberg</span> <span className="text-right">233</span> <span className="text-right">1193</span></div>
+                        <div className="grid grid-cols-3"><span>Hanover</span> <span className="text-right">75</span> <span className="text-right">1268</span></div>
+                        <div className="grid grid-cols-3"><span>Beaufort West</span> <span className="text-right">241</span> <span className="text-right">1509</span></div>
+                        <div className="grid grid-cols-3"><span>Laingsburg</span> <span className="text-right">199</span> <span className="text-right">1708</span></div>
+                        <div className="grid grid-cols-3"><span>Matjiesfontein</span> <span className="text-right">29</span> <span className="text-right">1737</span></div>
+                        <div className="grid grid-cols-3"><span>Touws River</span> <span className="text-right">56</span> <span className="text-right">1793</span></div>
+                        <div className="grid grid-cols-3"><span>De Doorns</span> <span className="text-right">44</span> <span className="text-right">1837</span></div>
+                        <div className="grid grid-cols-3"><span>Worcester</span> <span className="text-right">33</span> <span className="text-right">1870</span></div>
+                        <div className="grid grid-cols-3"><span>Paarl</span> <span className="text-right">59</span> <span className="text-right">1929</span></div>
+                        <div className="grid grid-cols-3"><span>Cape Town</span> <span className="text-right">62</span> <span className="text-right">1991</span></div>
+                    </div>
+                </div>
+                
+                <div className="mt-4 pt-4 border-t">
+                    <p className="font-bold">Summary routes</p>
+                    <p>Click on route number (eg N1) for a detailed listing or on a town for details about the town.</p>
+                    <div className="space-y-2 mt-2">
+                        {summaryRoutesData.map(route => (
+                            <SummaryRoute key={route.name} routeName={route.name} townNames={route.towns} onSelectRoute={onSelectRoute} />
+                        ))}
+                    </div>
+                </div>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
+
 
 export function TripPlanner({ user }: { user: User }) {
   const firestore = useFirestore();
@@ -677,7 +778,7 @@ export function TripPlanner({ user }: { user: User }) {
                                                                 </div>
                                                                 <div className="flex gap-2">
                                                                     <Button asChild variant="outline" size="sm"><Link href={`/towns/${town.slug}`} target="_blank">View Details</Link></Button>
-                                                                    <Button asChild variant="outline" size="sm"><Link href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(town.name + ", " + (provinces.find(p => p.slug === town.provinceSlug)?.name || 'South Africa'))}`} target="_blank">Map</Link></Button>
+                                                                    <Button asChild variant="outline" size="sm"><Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(town.name + ", " + (provinces.find(p => p.slug === town.provinceSlug)?.name || 'South Africa'))}`} target="_blank">Map</Link></Button>
                                                                 </div>
                                                             </div>
                                                         </AccordionContent>
