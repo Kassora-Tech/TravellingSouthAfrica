@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { provinces } from '@/lib/data/provinces';
 import { towns } from '@/lib/data/towns';
 import { routes } from '@/lib/data/routes';
+import { sights } from '@/lib/data/sights';
 
 import { createTrip, updateTripItems, updateTripRoutes, type TripRoute, updateTripTowns, type TripTown } from '@/firebase/firestore/trips';
 
