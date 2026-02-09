@@ -10,6 +10,11 @@ import {
 import { errorEmitter } from '../error-emitter';
 import { FirestorePermissionError } from '../errors';
 
+export interface TripTown {
+  slug: string;
+  notes?: string;
+}
+
 export interface TripRoute {
   routeSlug: string;
   includedRoads: string[];
@@ -18,7 +23,7 @@ export interface TripRoute {
 export interface TripData {
   name: string;
   userId: string;
-  townIds?: string[];
+  towns?: TripTown[];
   sightIds?: string[];
   routeIds?: string[];
   tripRoutes?: TripRoute[];
@@ -29,12 +34,12 @@ export interface TripData {
 export function createTrip(firestore: Firestore, tripData: Omit<TripData, 'createdAt'>) {
   const tripsCollection = collection(firestore, `users/${tripData.userId}/trips`);
   const dataWithTimestamp = {
-    ...tripData,
-    townIds: [],
+    towns: [],
     sightIds: [],
     routeIds: [],
     tripRoutes: [],
     accommodationIds: [],
+    ...tripData,
     createdAt: serverTimestamp(),
   };
 
@@ -48,11 +53,31 @@ export function createTrip(firestore: Firestore, tripData: Omit<TripData, 'creat
   });
 }
 
+export function updateTripTowns(
+  firestore: Firestore,
+  userId: string,
+  tripId: string,
+  towns: TripTown[]
+) {
+  const tripDocRef = doc(firestore, `users/${userId}/trips`, tripId);
+  const payload = { towns };
+
+  updateDoc(tripDocRef, payload).catch(async (serverError) => {
+    const permissionError = new FirestorePermissionError({
+      path: tripDocRef.path,
+      operation: 'update',
+      requestResourceData: payload,
+    });
+    errorEmitter.emit('permission-error', permissionError);
+  });
+}
+
+
 export function updateTripItems(
   firestore: Firestore,
   userId: string,
   tripId: string,
-  itemType: 'townIds' | 'sightIds' | 'routeIds' | 'accommodationIds',
+  itemType: 'sightIds' | 'routeIds' | 'accommodationIds',
   itemIds: string[]
 ) {
   const tripDocRef = doc(firestore, `users/${userId}/trips`, tripId);

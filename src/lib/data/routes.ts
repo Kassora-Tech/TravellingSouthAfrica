@@ -8,7 +8,7 @@ export const routes = [
     distance: 'Approx. 300 km',
     days: '3-7 Days',
     highlights: ['Tsitsikamma National Park', 'Knysna Heads', 'Plettenberg Bay beaches', 'Oudtshoorn Cango Caves'],
-    townSlugs: ['mossel-bay', 'george', 'knysna', 'plettenberg-bay'],
+    townSlugs: ['mossel-bay', 'george', 'wilderness', 'sedgefield', 'knysna', 'plettenberg-bay'],
     roads: ['N2', 'R102 (Old N2)', 'Seven Passes Road']
   },
   {
@@ -20,7 +20,7 @@ export const routes = [
     distance: 'Approx. 160 km',
     days: '1-2 Days',
     highlights: ['Blyde River Canyon', 'God\'s Window', 'Bourke\'s Luck Potholes', 'The Three Rondavels'],
-    townSlugs: ['graskop', 'mbombela'],
+    townSlugs: ['graskop', 'mbombela', 'sabie', 'pilgrim\'s-rest'],
     roads: ['R532', 'R534 (God\'s Window loop)', 'R40']
   },
   {
@@ -32,7 +32,7 @@ export const routes = [
     distance: 'Approx. 850 km',
     days: '2-4 Days',
     highlights: ['Wine tasting in Robertson', 'Ronnie\'s Sex Shop (pub)', 'Cogmanskloof Pass', 'Quirky towns like Barrydale'],
-    townSlugs: ['oudtshoorn', 'george'],
+    townSlugs: ['cape-town', 'paarl', 'wellington', 'worcester', 'robertson', 'montagu', 'barrydale', 'ladismith', 'calitzdorp', 'oudtshoorn'],
     roads: ['R62', 'R60', 'R318', 'N1', 'N12']
   },
   {
@@ -44,7 +44,7 @@ export const routes = [
     distance: 'Approx. 350 km',
     days: '4-7 Days',
     highlights: ['Hole in the Wall', 'Coffee Bay', 'Remote hiking trails', 'Traditional Xhosa villages'],
-    townSlugs: ['port-elizabeth'],
+    townSlugs: ['east-london', 'port-st-johns', 'coffee-bay', 'morgan\'s-bay'],
     roads: ['N2', 'R61', 'Various local & gravel roads']
   },
   {
@@ -56,7 +56,7 @@ export const routes = [
     distance: 'Approx. 80 km',
     days: '1-3 Days',
     highlights: ['Howick Falls', 'Art galleries & craft shops', 'Cheese and chocolate tasting', 'Nelson Mandela Capture Site'],
-    townSlugs: ['durban', 'pietermaritzburg'],
+    townSlugs: ['pietermaritzburg', 'howick', 'nottingham-road', 'dargle'],
     roads: ['N3', 'R103 (Old Main Road)', 'R617 (Howick to Underberg)', 'Dargle Valley Road', 'Kamberg Road', 'Lotheni Road']
   },
   {
@@ -68,7 +68,7 @@ export const routes = [
     distance: 'Varies',
     days: '1-3 Days',
     highlights: ['West Coast National Park', 'Postberg Flower Reserve', 'Namaqua National Park', 'Fields of daisies'],
-    townSlugs: ['cape-town'],
+    townSlugs: ['cape-town', 'langebaan', 'paternoster', 'darling', 'clanwilliam'],
     roads: ['R27 (West Coast Road)', 'N7', 'R364 (Clanwilliam to Lamberts Bay)', 'R399 (Piketberg to Velddrif)']
   },
   {
@@ -80,7 +80,7 @@ export const routes = [
     distance: 'Approx. 350 km',
     days: '3-5 Days',
     highlights: ['Welgevonden Game Reserve', 'Bushman rock art', 'Marakele National Park', 'Stargazing'],
-    townSlugs: ['polokwane'],
+    townSlugs: ['vaalwater', 'bela-bela', 'modimolle', 'thabazimbi'],
     roads: ['R33', 'R517', 'R518', 'Various local & reserve roads']
   },
   {
@@ -92,7 +92,31 @@ export const routes = [
     distance: 'Varies',
     days: '2-3 Days',
     highlights: ['Golden Gate Highlands NP', 'Clarens art galleries', 'Dinosaur fossil sites', 'Hiking and horse riding'],
-    townSlugs: ['bloemfontein'],
+    townSlugs: ['clarens', 'harrismith', 'fouriesburg', 'kestell'],
     roads: ['R712', 'R711', 'R26']
+  },
+  {
+    slug: 'n1-route',
+    name: 'N1 National Route',
+    tagline: 'The spine of South Africa, from Cape Town to the Limpopo border.',
+    description: 'The N1 is South Africa\'s premier highway, connecting the country\'s major economic and legislative hubs. This route takes you from the scenic beauty of the Western Cape, through the vast plains of the Karoo and Free State, into the bustling heart of Gauteng, and finally to the northern border with Zimbabwe.',
+    imageId: 'route-route-62',
+    distance: 'Approx. 1,930 km',
+    days: '3-5 Days',
+    highlights: ['Cape Winelands', 'Karoo National Park', 'Bloemfontein', 'Johannesburg & Pretoria', 'Limpopo Bushveld'],
+    townSlugs: ['cape-town', 'paarl', 'worcester', 'beaufort-west', 'colesberg', 'bloemfontein', 'kroonstad', 'johannesburg', 'pretoria', 'polokwane', 'musina'],
+    roads: ['N1']
+  },
+  {
+    slug: 'n2-route',
+    name: 'N2 National Route',
+    tagline: 'A spectacular coastal journey from Cape Town to Ermelo.',
+    description: 'The N2 highway hugs the South African coastline for a significant portion of its length, incorporating the famous Garden Route. It offers an incredible diversity of scenery, from the mountains and vineyards of the Western Cape to the wild coast of the Eastern Cape and the subtropical beaches of KwaZulu-Natal.',
+    imageId: 'route-garden-route',
+    distance: 'Approx. 2,255 km',
+    days: '7-14 Days',
+    highlights: ['Garden Route', 'Wild Coast', 'Durban beachfront', 'iSimangaliso Wetland Park'],
+    townSlugs: ['cape-town', 'somerset-west', 'caledon', 'swellendam', 'mossel-bay', 'george', 'knysna', 'plettenberg-bay', 'humansdorp', 'port-elizabeth', 'east-london', 'mthatha', 'kokstad', 'port-shepstone', 'durban', 'ermelo'],
+    roads: ['N2']
   }
 ];
