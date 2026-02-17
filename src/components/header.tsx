@@ -23,6 +23,7 @@ const navLinks = [
   { href: '/towns', label: 'Towns' },
   { href: '/sights', label: 'Sights' },
   { href: '/routes', label: 'Routes' },
+  { href: '/plan-your-trip', label: 'Plan My Trip' },
   { href: '/accommodations', label: 'Accommodations' },
 ];
 
