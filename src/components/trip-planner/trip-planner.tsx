@@ -660,7 +660,7 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <div className="flex min-h-[calc(100vh_-_350px)]">
         <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
             <SidebarHeader>
@@ -737,7 +737,7 @@ export function TripPlanner({ user }: { user: User }) {
                             <RouteIcon />
                             <span>{trip.name}</span>
                         </SidebarMenuButton>
-                        <SidebarMenuAction showOnHover>
+                        <SidebarMenuAction asChild showOnHover>
                             <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
                                 <Trash2 className="h-4 w-4"/>
                             </Button>
