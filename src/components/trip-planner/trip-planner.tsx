@@ -45,7 +45,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarTrigger,
   SidebarSeparator,
   SidebarInset,
   SidebarMenuAction,
@@ -660,21 +659,20 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider open={true} onOpenChange={() => {}}>
       <div className="flex min-h-[calc(100vh_-_350px)]">
-        <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
+        <Sidebar className="max-h-[calc(100vh_-_80px)] top-20 sticky">
             <SidebarHeader>
-                 <h2 className="text-xl font-bold font-headline px-2 pt-1 group-data-[collapsible=icon]:hidden">
+                 <h2 className="text-xl font-bold font-headline px-2 pt-1">
                     <Translatable text="My Trips"/>
                 </h2>
-                <SidebarTrigger />
             </SidebarHeader>
 
             <SidebarContent>
               <SidebarMenu>
                 <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
                     <DialogTrigger asChild>
-                        <SidebarMenuButton tooltip="Create New Trip">
+                        <SidebarMenuButton>
                             <PlusCircle />
                             <span><Translatable text="Create New Trip"/></span>
                         </SidebarMenuButton>
@@ -732,7 +730,6 @@ export function TripPlanner({ user }: { user: User }) {
                         <SidebarMenuButton
                             onClick={() => setSelectedTrip(trip)}
                             isActive={selectedTrip?.id === trip.id}
-                            tooltip={trip.name}
                         >
                             <RouteIcon />
                             <span>{trip.name}</span>
@@ -747,7 +744,7 @@ export function TripPlanner({ user }: { user: User }) {
                 
                 {trips && trips.length === 0 && (
                    <SidebarMenuItem>
-                    <p className="text-sm text-muted-foreground text-center p-4 group-data-[collapsible=icon]:hidden">
+                    <p className="text-sm text-muted-foreground text-center p-4">
                       <Translatable text="You have no saved trips."/>
                     </p>
                   </SidebarMenuItem>
