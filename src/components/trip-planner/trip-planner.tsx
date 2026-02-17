@@ -660,7 +660,7 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className="flex min-h-[calc(100vh_-_350px)]">
         <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
             <SidebarHeader>
