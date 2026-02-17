@@ -544,7 +544,7 @@ export function TripPlanner({ user }: { user: User }) {
 
   const filteredItems = useMemo(() => {
     return { towns, sights, routes };
-  }, []);
+  }, [towns, sights, routes]);
 
   const dataMap = useMemo(() => ({
     town: { title: "Add Towns", items: filteredItems.towns, provinces: provinces },
@@ -737,7 +737,7 @@ export function TripPlanner({ user }: { user: User }) {
                             <RouteIcon />
                             <span>{trip.name}</span>
                         </SidebarMenuButton>
-                        <SidebarMenuAction showOnHover>
+                        <SidebarMenuAction showOnHover asChild>
                             <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
                                 <Trash2 className="h-4 w-4"/>
                             </Button>
