@@ -8,7 +8,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route } from 'lucide-react';
+import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, X } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -660,7 +660,7 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider>
       <div className="flex min-h-[calc(100vh_-_350px)]">
         <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
             <SidebarHeader>
@@ -761,7 +761,13 @@ export function TripPlanner({ user }: { user: User }) {
                 {selectedTrip ? (
                     <div className="space-y-6" id="itinerary-to-print">
                         <div className="flex justify-between items-center flex-wrap gap-4">
-                            <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setSelectedTrip(null)}>
+                                    <X className="h-5 w-5" />
+                                    <span className="sr-only">Close Trip</span>
+                                </Button>
+                            </div>
                             <div className="flex gap-2">
                                 <Button onClick={handleReverseTrip} variant="outline" size="sm">
                                     <ArrowRightLeft className="mr-2 h-4 w-4" />
