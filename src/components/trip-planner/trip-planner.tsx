@@ -147,8 +147,7 @@ const NationalRoadsCard = ({ onSelectRoute }: { onSelectRoute: (slug: string) =>
                             <span className="text-right">Distance</span>
                             <span className="text-right">Cumulative</span>
                         </div>
-                        <div className="grid grid-cols-3"><span>Beitbridge</span> <span className="text-right">-</span> <span className="text-right">-</span></div>
-                        <div className="grid grid-cols-3"><span>Musina</span> <span className="text-right">19</span> <span className="text-right">19</span></div>
+                        <div className="grid grid-cols-3"><span>Beitbridge / Musina</span> <span className="text-right">19</span> <span className="text-right">19</span></div>
                         <div className="grid grid-cols-3"><span>Polokwane</span> <span className="text-right">201</span> <span className="text-right">220</span></div>
                         <div className="grid grid-cols-3"><span>Pretoria</span> <span className="text-right">281</span> <span className="text-right">501</span></div>
                         <div className="grid grid-cols-3"><span>Centurion</span> <span className="text-right">26</span> <span className="text-right">527</span></div>
@@ -825,14 +824,6 @@ export function TripPlanner({ user }: { user: User }) {
                 ) : (
                     <div className="space-y-6">
                         <NationalRoadsCard onSelectRoute={handleSelectRouteForCreation} />
-                        <Card className="flex flex-col items-center justify-center text-center h-full min-h-[300px]">
-                            <CardHeader>
-                                <CardTitle className="text-2xl font-headline"><Translatable text="Plan Your Adventure"/></CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground"><Translatable text="Select a trip from the list or create a new one to start planning."/></p>
-                            </CardContent>
-                        </Card>
                     </div>
                 )}
             </div>

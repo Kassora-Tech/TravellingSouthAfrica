@@ -116,7 +116,7 @@ export const routes = [
     distance: 'Approx. 2,255 km',
     days: '7-14 Days',
     highlights: ['Garden Route', 'Wild Coast', 'Durban beachfront', 'iSimangaliso Wetland Park'],
-    townSlugs: ['durban', 'mthatha', 'east-london', 'port-elizabeth', 'cape-town'],
+    townSlugs: ['cape-town', 'port-elizabeth', 'east-london', 'mthatha', 'durban'],
     roads: ['N2']
   },
   {
