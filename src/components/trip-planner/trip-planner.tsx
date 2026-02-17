@@ -8,7 +8,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink } from 'lucide-react';
+import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -37,6 +37,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+  SidebarSeparator,
+  SidebarInset,
+  SidebarMenuAction,
+} from '@/components/ui/sidebar';
 
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -647,85 +660,104 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div className="md:col-span-1 lg:col-span-1">
-                <h2 className="text-2xl font-bold font-headline mb-4"><Translatable text="My Trips"/></h2>
-                <div className="space-y-2">
-                   <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
-                        <DialogTrigger asChild>
-                            <Button className="w-full">
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                <Translatable text="Create New Trip"/>
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle><Translatable text="Create a New Trip" /></DialogTitle>
-                            </DialogHeader>
-                            <Tabs value={createMode} onValueChange={(value) => setCreateMode(value as 'custom' | 'route')} className="pt-4">
-                                <TabsList className="grid w-full grid-cols-2">
-                                    <TabsTrigger value="custom"><Translatable text="Custom Trip" /></TabsTrigger>
-                                    <TabsTrigger value="route"><Translatable text="From Route" /></TabsTrigger>
-                                </TabsList>
-                                <div className="py-6 px-1 space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="trip-name"><Translatable text="Trip Name"/></Label>
-                                        <Input id="trip-name" value={newTripName} onChange={(e) => setNewTripName(e.target.value)} placeholder="e.g., Garden Route Adventure"/>
-                                    </div>
-                                    <TabsContent value="route" className="space-y-4 m-0">
-                                        <div className="space-y-2">
-                                            <Label><Translatable text="Select a National Road" /></Label>
-                                            <Select value={selectedRoute} onValueChange={setSelectedRoute}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Choose a route..." />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a,b) => a.name.localeCompare(b.name)).map(r => <SelectItem key={r.slug} value={r.slug}>{r.name}</SelectItem>)}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        <div className="flex items-center space-x-2">
-                                            <Checkbox id="reverse-route" checked={reverseRoute} onCheckedChange={(checked) => setReverseRoute(checked as boolean)} />
-                                            <Label htmlFor="reverse-route"><Translatable text="Reverse order of towns"/></Label>
-                                        </div>
-                                    </TabsContent>
-                                </div>
-                            </Tabs>
-                            <DialogFooter>
-                                <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
-                                <Button onClick={handleCreateTrip}><Translatable text="Create Trip"/></Button>
-                            </DialogFooter>
-                        </DialogContent>
-                   </Dialog>
-                    {tripsLoading && <p>Loading trips...</p>}
-                    {trips && trips.map(trip => (
-                        <div key={trip.id}
-                            onClick={() => setSelectedTrip(trip)}
-                            className={`p-4 rounded-lg cursor-pointer transition-colors border-2 ${selectedTrip?.id === trip.id ? 'bg-primary/10 border-primary' : 'bg-card hover:bg-muted/50 border-transparent'}`}
-                        >
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <h3 className="font-bold">{trip.name}</h3>
-                                    {trip.createdAt && (
-                                        <p className="text-sm text-muted-foreground">
-                                            Created on {format(new Date(trip.createdAt.seconds * 1000), 'd MMM yyyy')}
-                                        </p>
-                                    )}
-                                </div>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
-                                    <Trash2 className="h-4 w-4"/>
-                                </Button>
-                            </div>
-                        </div>
-                    ))}
-                    {trips && trips.length === 0 && (
-                        <p className="text-sm text-muted-foreground text-center py-4"><Translatable text="You have no saved trips. Create one to get started!"/></p>
-                    )}
-                </div>
-            </div>
+    <SidebarProvider defaultOpen={false}>
+      <div className="flex min-h-[calc(100vh_-_350px)]">
+        <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
+            <SidebarHeader>
+                 <h2 className="text-xl font-bold font-headline px-2 pt-1 group-data-[collapsible=icon]:hidden">
+                    <Translatable text="My Trips"/>
+                </h2>
+                <SidebarTrigger />
+            </SidebarHeader>
 
-            <div className="md:col-span-2 lg:col-span-3">
+            <SidebarContent>
+              <SidebarMenu>
+                <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
+                    <DialogTrigger asChild>
+                        <SidebarMenuButton tooltip="Create New Trip">
+                            <PlusCircle />
+                            <span><Translatable text="Create New Trip"/></span>
+                        </SidebarMenuButton>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle><Translatable text="Create a New Trip" /></DialogTitle>
+                        </DialogHeader>
+                        <Tabs value={createMode} onValueChange={(value) => setCreateMode(value as 'custom' | 'route')} className="pt-4">
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="custom"><Translatable text="Custom Trip" /></TabsTrigger>
+                                <TabsTrigger value="route"><Translatable text="From Route" /></TabsTrigger>
+                            </TabsList>
+                            <div className="py-6 px-1 space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="trip-name"><Translatable text="Trip Name"/></Label>
+                                    <Input id="trip-name" value={newTripName} onChange={(e) => setNewTripName(e.target.value)} placeholder="e.g., Garden Route Adventure"/>
+                                </div>
+                                <TabsContent value="route" className="space-y-4 m-0">
+                                    <div className="space-y-2">
+                                        <Label><Translatable text="Select a National Road" /></Label>
+                                        <Select value={selectedRoute} onValueChange={setSelectedRoute}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Choose a route..." />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a,b) => a.name.localeCompare(b.name)).map(r => <SelectItem key={r.slug} value={r.slug}>{r.name}</SelectItem>)}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="reverse-route" checked={reverseRoute} onCheckedChange={(checked) => setReverseRoute(checked as boolean)} />
+                                        <Label htmlFor="reverse-route"><Translatable text="Reverse order of towns"/></Label>
+                                    </div>
+                                </TabsContent>
+                            </div>
+                        </Tabs>
+                        <DialogFooter>
+                            <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
+                            <Button onClick={handleCreateTrip}><Translatable text="Create Trip"/></Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+                
+                <SidebarSeparator />
+                
+                {tripsLoading && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton disabled>Loading trips...</SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+
+                {trips && trips.map(trip => (
+                    <SidebarMenuItem key={trip.id}>
+                        <SidebarMenuButton
+                            onClick={() => setSelectedTrip(trip)}
+                            isActive={selectedTrip?.id === trip.id}
+                            tooltip={trip.name}
+                        >
+                            <RouteIcon />
+                            <span>{trip.name}</span>
+                        </SidebarMenuButton>
+                        <SidebarMenuAction showOnHover>
+                            <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
+                                <Trash2 className="h-4 w-4"/>
+                            </Button>
+                        </SidebarMenuAction>
+                  </SidebarMenuItem>
+                ))}
+                
+                {trips && trips.length === 0 && (
+                   <SidebarMenuItem>
+                    <p className="text-sm text-muted-foreground text-center p-4 group-data-[collapsible=icon]:hidden">
+                      <Translatable text="You have no saved trips."/>
+                    </p>
+                  </SidebarMenuItem>
+                )}
+              </SidebarMenu>
+            </SidebarContent>
+        </Sidebar>
+
+        <SidebarInset>
+            <div className="container mx-auto px-4 py-8">
                 {selectedTrip ? (
                     <div className="space-y-6" id="itinerary-to-print">
                         <div className="flex justify-between items-center flex-wrap gap-4">
@@ -844,6 +876,7 @@ export function TripPlanner({ user }: { user: User }) {
                     </div>
                 )}
             </div>
+        </SidebarInset>
        </div>
 
         {currentDialogData && dialogState.type === 'town' && (
@@ -867,6 +900,6 @@ export function TripPlanner({ user }: { user: User }) {
                 onSave={(selectedSlugs) => handleItemsSave(currentDialogData.key, selectedSlugs)}
             />
         )}
-    </div>
+    </SidebarProvider>
   );
 }
