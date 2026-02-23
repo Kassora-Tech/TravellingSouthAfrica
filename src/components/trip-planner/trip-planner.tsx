@@ -8,7 +8,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, X } from 'lucide-react';
+import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, Minus } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -659,9 +659,9 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider open={true} onOpenChange={() => {}}>
+    <SidebarProvider>
       <div className="flex min-h-[calc(100vh_-_350px)]">
-        <Sidebar className="max-h-[calc(100vh_-_80px)] top-20 sticky">
+        <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
             <SidebarHeader>
                  <h2 className="text-xl font-bold font-headline px-2 pt-1">
                     <Translatable text="My Trips"/>
@@ -754,15 +754,15 @@ export function TripPlanner({ user }: { user: User }) {
         </Sidebar>
 
         <SidebarInset>
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 py-8" onClick={() => { if (selectedTrip) { setSelectedTrip(null); } }}>
                 {selectedTrip ? (
-                    <div className="space-y-6" id="itinerary-to-print">
+                    <div className="space-y-6" id="itinerary-to-print" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center flex-wrap gap-4">
                             <div className="flex items-center gap-2">
                                 <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
                                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setSelectedTrip(null)}>
-                                    <X className="h-5 w-5" />
-                                    <span className="sr-only">Close Trip</span>
+                                    <Minus className="h-5 w-5" />
+                                    <span className="sr-only">Minimize Trip</span>
                                 </Button>
                             </div>
                             <div className="flex gap-2">
@@ -874,7 +874,7 @@ export function TripPlanner({ user }: { user: User }) {
                         </div>
                     </div>
                 ) : (
-                    <div className="space-y-6">
+                    <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
                         <NationalRoadsGuide onSelectRoute={handleSelectRouteForCreation} />
                     </div>
                 )}
@@ -906,3 +906,5 @@ export function TripPlanner({ user }: { user: User }) {
     </SidebarProvider>
   );
 }
+
+    
