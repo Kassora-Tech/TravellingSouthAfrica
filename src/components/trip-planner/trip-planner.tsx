@@ -23,15 +23,6 @@ import { sights } from '@/lib/data/sights';
 import { createTrip, updateTripItems, updateTripRoutes, type TripRoute, updateTripTowns, type TripTown } from '@/firebase/firestore/trips';
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-  DialogClose,
-} from '@/components/ui/dialog';
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -57,10 +48,9 @@ import { FirestorePermissionError, errorEmitter } from '@/firebase';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Checkbox } from '../ui/checkbox';
 import { Textarea } from '../ui/textarea';
+import { PlanTripHero } from './page-hero';
+import { TripCreatorBar } from './trip-creator-bar';
 
 
 interface Trip {
@@ -225,13 +215,7 @@ export function TripPlanner({ user }: { user: User }) {
   const { data: trips, isLoading: tripsLoading } = useCollection<Trip>(tripsQuery);
   
   const [selectedTrip, setSelectedTrip] = useState<WithId<Trip> | null>(null);
-  const [isCreateTripOpen, setCreateTripOpen] = useState(false);
   
-  const [createMode, setCreateMode] = useState<'custom' | 'route'>('custom');
-  const [newTripName, setNewTripName] = useState('');
-  const [selectedRoute, setSelectedRoute] = useState('');
-  const [reverseRoute, setReverseRoute] = useState(false);
-
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, type: null });
 
   const [editingNotes, setEditingNotes] = useState<Record<string, string | undefined>>({});
@@ -262,23 +246,14 @@ export function TripPlanner({ user }: { user: User }) {
   }, [tripIdFromQuery, trips, tripsLoading]);
 
 
-  const handleCreateTrip = () => {
-    if (!newTripName) {
-      toast({
-        variant: "destructive",
-        title: "Missing Information",
-        description: "Please provide a name for your trip.",
-      });
-      return;
-    }
-
+  const handleCreateTrip = (name: string, routeSlug?: string, reverse?: boolean) => {
     let initialTowns: TripTown[] = [];
     let initialRoutes: string[] = [];
-    if (createMode === 'route' && selectedRoute) {
-        const routeData = routes.find(r => r.slug === selectedRoute);
+    if (routeSlug) {
+        const routeData = routes.find(r => r.slug === routeSlug);
         if (routeData) {
             let townSlugs = routeData.townSlugs;
-            if (reverseRoute) {
+            if (reverse) {
                 townSlugs = [...townSlugs].reverse();
             }
             initialTowns = townSlugs.map(slug => ({ slug, notes: '' }));
@@ -287,32 +262,26 @@ export function TripPlanner({ user }: { user: User }) {
     }
 
     createTrip(firestore, {
-      name: newTripName,
+      name: name,
       userId: user.uid,
       towns: initialTowns,
       routeIds: initialRoutes,
     });
-    setCreateTripOpen(false);
-    setNewTripName('');
-    setSelectedRoute('');
-    setReverseRoute(false);
     toast({
         title: "Trip Created!",
-        description: `Your trip "${newTripName}" has been created.`,
+        description: `Your trip "${name}" has been created.`,
     });
   };
 
   const handleSelectRouteForCreation = (routeSlug: string) => {
-    setCreateMode('route');
     const routeData = routes.find(r => r.slug === routeSlug);
     if(routeData) {
-        setSelectedRoute(routeSlug);
-        setNewTripName(routeData.name);
-    } else {
-        setSelectedRoute('');
-        setNewTripName('');
+        handleCreateTrip(routeData.name, routeSlug, false);
+        toast({
+          title: "Trip Created from Route!",
+          description: `A new trip "${routeData.name}" has been created for you.`,
+      });
     }
-    setCreateTripOpen(true);
   };
 
   const handleTownsSave = (selectedSlugs: string[]) => {
@@ -662,255 +631,210 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="flex min-h-[calc(100vh_-_350px)]">
-        <Sidebar collapsible="none" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
-            <SidebarHeader>
-                 <h2 className="text-xl font-bold font-headline px-2 pt-1">
-                    <Translatable text="My Trips"/>
-                </h2>
-            </SidebarHeader>
+    <>
+      <div className="relative">
+        <PlanTripHero />
+        <TripCreatorBar onTripCreate={handleCreateTrip} />
+      </div>
 
-            <SidebarContent>
-              <SidebarMenu>
-                <Dialog open={isCreateTripOpen} onOpenChange={setCreateTripOpen}>
-                    <DialogTrigger asChild>
-                        <SidebarMenuButton>
-                            <PlusCircle />
-                            <span><Translatable text="Create New Trip"/></span>
-                        </SidebarMenuButton>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle><Translatable text="Create a New Trip" /></DialogTitle>
-                        </DialogHeader>
-                        <Tabs value={createMode} onValueChange={(value) => setCreateMode(value as 'custom' | 'route')} className="pt-4">
-                            <TabsList className="grid w-full grid-cols-2">
-                                <TabsTrigger value="custom"><Translatable text="Custom Trip" /></TabsTrigger>
-                                <TabsTrigger value="route"><Translatable text="From Route" /></TabsTrigger>
-                            </TabsList>
-                            <div className="py-6 px-1 space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="trip-name"><Translatable text="Trip Name"/></Label>
-                                    <Input id="trip-name" value={newTripName} onChange={(e) => setNewTripName(e.target.value)} placeholder="e.g., Garden Route Adventure"/>
-                                </div>
-                                <TabsContent value="route" className="space-y-4 m-0">
-                                    <div className="space-y-2">
-                                        <Label><Translatable text="Select a National Road" /></Label>
-                                        <Select value={selectedRoute} onValueChange={setSelectedRoute}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Choose a route..." />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a,b) => a.name.localeCompare(b.name)).map(r => <SelectItem key={r.slug} value={r.slug}>{r.name}</SelectItem>)}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="reverse-route" checked={reverseRoute} onCheckedChange={(checked) => setReverseRoute(checked as boolean)} />
-                                        <Label htmlFor="reverse-route"><Translatable text="Reverse order of towns"/></Label>
-                                    </div>
-                                </TabsContent>
-                            </div>
-                        </Tabs>
-                        <DialogFooter>
-                            <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
-                            <Button onClick={handleCreateTrip}><Translatable text="Create Trip"/></Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-                
-                <SidebarSeparator />
-                
-                {tripsLoading && (
-                  <SidebarMenuItem>
-                    <p className="text-sm text-muted-foreground text-center p-4">
-                      <Translatable text="Loading trips..."/>
-                    </p>
-                  </SidebarMenuItem>
-                )}
+      <SidebarProvider>
+        <div className="flex min-h-[calc(100vh_-_350px)]">
+          <Sidebar collapsible="none" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
+              <SidebarHeader>
+                   <h2 className="text-xl font-bold font-headline px-2 pt-1">
+                      <Translatable text="My Trips"/>
+                  </h2>
+              </SidebarHeader>
 
-                {trips && trips.map(trip => (
-                    <SidebarMenuItem key={trip.id}>
-                        <SidebarMenuButton
-                            onClick={() => handleSelectTrip(trip)}
-                            isActive={selectedTrip?.id === trip.id}
-                        >
-                            <RouteIcon />
-                            <span>{trip.name}</span>
-                        </SidebarMenuButton>
-                        <SidebarMenuAction asChild>
-                            <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
-                                <Trash2 className="h-4 w-4"/>
-                            </Button>
-                        </SidebarMenuAction>
-                  </SidebarMenuItem>
-                ))}
-                
-                {trips && trips.length === 0 && (
-                   <SidebarMenuItem>
-                    <p className="text-sm text-muted-foreground text-center p-4">
-                      <Translatable text="You have no saved trips."/>
-                    </p>
-                  </SidebarMenuItem>
-                )}
-              </SidebarMenu>
-            </SidebarContent>
-        </Sidebar>
+              <SidebarContent>
+                <SidebarMenu>
+                  {tripsLoading && (
+                    <SidebarMenuItem>
+                      <p className="text-sm text-muted-foreground text-center p-4">
+                        <Translatable text="Loading trips..."/>
+                      </p>
+                    </SidebarMenuItem>
+                  )}
 
-        <SidebarInset>
-            <div className="container mx-auto px-4 py-8" onClick={() => { if (selectedTrip) { handleMinimizeTrip(); } }}>
-                {selectedTrip ? (
-                    <div className="space-y-6" id="itinerary-to-print" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex justify-between items-center flex-wrap gap-4">
-                            <div className="flex items-center gap-2">
-                                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
-                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleMinimizeTrip}>
-                                    <Minus className="h-5 w-5" />
-                                    <span className="sr-only">Minimize Trip</span>
-                                </Button>
-                            </div>
-                            <div className="flex gap-2">
-                                <Button onClick={handleReverseTrip} variant="outline" size="sm">
-                                    <ArrowRightLeft className="mr-2 h-4 w-4" />
-                                    <Translatable text="Reverse Trip" />
-                                </Button>
-                                <Button onClick={handleDownloadPdf} variant="outline" size="sm">
-                                    <Download className="mr-2 h-4 w-4" />
-                                    <Translatable text="Download PDF" />
-                                </Button>
-                            </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <Card>
-                                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="h-6 w-6 text-primary"/>
-                                        <CardTitle className="text-xl font-headline"><Translatable text="Towns" /></CardTitle>
-                                    </div>
-                                    <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: 'town' })}>
-                                        <PlusCircle className="mr-2 h-4 w-4" /> Add
-                                    </Button>
-                                </CardHeader>
-                                <CardContent>
-                                    {(selectedTrip.towns?.length ?? 0) > 0 ? (
-                                        <Accordion type="multiple" className="w-full">
-                                            {selectedTrip.towns?.map((townData, index) => {
-                                                const town = towns.find(t => t.slug === townData.slug);
-                                                if (!town) return null;
-                                                const isEditing = editingNotes.hasOwnProperty(townData.slug);
-                                                return (
-                                                    <AccordionItem value={town.slug} key={town.slug}>
-                                                        <div className="flex items-center group">
-                                                            <div className="flex flex-col py-1">
-                                                                <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => handleReorderTown(index, 'up')} disabled={index === 0}>
-                                                                    <ArrowUp className="h-3 w-3" />
-                                                                </Button>
-                                                                <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => handleReorderTown(index, 'down')} disabled={index === selectedTrip.towns!.length - 1}>
-                                                                    <ArrowDown className="h-3 w-3" />
-                                                                </Button>
-                                                            </div>
-                                                            <span className="font-medium flex-grow pl-2"><Translatable text={town.name} /></span>
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => handleDeleteTown(town.slug)}>
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
-                                                            <AccordionTrigger className="w-8 hover:no-underline" />
-                                                        </div>
-                                                        <AccordionContent>
-                                                            <div className="pl-8 space-y-4">
-                                                                <div>
-                                                                    <Label htmlFor={`notes-${town.slug}`}><Translatable text="My Notes" /></Label>
-                                                                    <Textarea 
-                                                                        id={`notes-${town.slug}`} 
-                                                                        value={isEditing ? editingNotes[townData.slug] : townData.notes || ''}
-                                                                        onChange={(e) => setEditingNotes(prev => ({...prev, [townData.slug]: e.target.value}))}
-                                                                        placeholder="Add your personal notes for this town..."
-                                                                        className="mt-1"
-                                                                    />
-                                                                    {isEditing && (
-                                                                        <Button size="sm" className="mt-2" onClick={() => handleSaveNotes(townData.slug)}><Translatable text="Save Notes" /></Button>
-                                                                    )}
-                                                                </div>
-                                                                <div className="flex gap-2">
-                                                                    <Button asChild variant="outline" size="sm"><Link href={`/towns/${town.slug}`} target="_blank">View Details</Link></Button>
-                                                                    <Button asChild variant="outline" size="sm"><Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(town.name + ", " + (provinces.find(p => p.slug === town.provinceSlug)?.name || 'South Africa'))}`} target="_blank">Map</Link></Button>
-                                                                </div>
-                                                            </div>
-                                                        </AccordionContent>
-                                                    </AccordionItem>
-                                                )
-                                            })}
-                                        </Accordion>
-                                    ) : (
-                                        <p className="text-sm text-muted-foreground"><Translatable text="No towns added yet."/></p>
-                                    )}
-                                </CardContent>
-                            </Card>
+                  {trips && trips.map(trip => (
+                      <SidebarMenuItem key={trip.id}>
+                          <SidebarMenuButton
+                              onClick={() => handleSelectTrip(trip)}
+                              isActive={selectedTrip?.id === trip.id}
+                          >
+                              <RouteIcon />
+                              <span>{trip.name}</span>
+                          </SidebarMenuButton>
+                          <SidebarMenuAction asChild>
+                              <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
+                                  <Trash2 className="h-4 w-4"/>
+                              </Button>
+                          </SidebarMenuAction>
+                    </SidebarMenuItem>
+                  ))}
+                  
+                  {trips && trips.length === 0 && (
+                     <SidebarMenuItem>
+                      <p className="text-sm text-muted-foreground text-center p-4">
+                        <Translatable text="You have no saved trips."/>
+                      </p>
+                    </SidebarMenuItem>
+                  )}
+                </SidebarMenu>
+              </SidebarContent>
+          </Sidebar>
 
-                            {renderSightsOrRoutesList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
-                            {renderSightsOrRoutesList("Routes", <RouteIcon className="h-6 w-6 text-primary"/>, selectedTrip.routeIds, routes, 'route')}
-                             <Card>
-                                <CardHeader>
-                                    <div className="flex items-center gap-2">
-                                    <Bed className="h-6 w-6 text-primary"/>
-                                    <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground">
-                                        <Translatable text="Accommodation booking feature is coming soon."/>
-                                    </p>
-                                </CardContent>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <div className="flex items-center gap-2">
-                                        <Sparkles className="h-6 w-6 text-primary"/>
-                                        <CardTitle className="text-xl font-headline"><Translatable text="Extras"/></CardTitle>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground">
-                                        <Translatable text="This feature is coming soon."/>
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
-                        <NationalRoadsGuide onSelectRoute={handleSelectRouteForCreation} />
-                    </div>
-                )}
-            </div>
-        </SidebarInset>
-       </div>
+          <SidebarInset>
+              <div className="container mx-auto px-4 py-8" onClick={() => { if (selectedTrip) { handleMinimizeTrip(); } }}>
+                  {selectedTrip ? (
+                      <div className="space-y-6" id="itinerary-to-print" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex justify-between items-center flex-wrap gap-4">
+                              <div className="flex items-center gap-2">
+                                  <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleMinimizeTrip}>
+                                      <Minus className="h-5 w-5" />
+                                      <span className="sr-only">Minimize Trip</span>
+                                  </Button>
+                              </div>
+                              <div className="flex gap-2">
+                                  <Button onClick={handleReverseTrip} variant="outline" size="sm">
+                                      <ArrowRightLeft className="mr-2 h-4 w-4" />
+                                      <Translatable text="Reverse Trip" />
+                                  </Button>
+                                  <Button onClick={handleDownloadPdf} variant="outline" size="sm">
+                                      <Download className="mr-2 h-4 w-4" />
+                                      <Translatable text="Download PDF" />
+                                  </Button>
+                              </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              <Card>
+                                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                      <div className="flex items-center gap-2">
+                                          <MapPin className="h-6 w-6 text-primary"/>
+                                          <CardTitle className="text-xl font-headline"><Translatable text="Towns" /></CardTitle>
+                                      </div>
+                                      <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: 'town' })}>
+                                          <PlusCircle className="mr-2 h-4 w-4" /> Add
+                                      </Button>
+                                  </CardHeader>
+                                  <CardContent>
+                                      {(selectedTrip.towns?.length ?? 0) > 0 ? (
+                                          <Accordion type="multiple" className="w-full">
+                                              {selectedTrip.towns?.map((townData, index) => {
+                                                  const town = towns.find(t => t.slug === townData.slug);
+                                                  if (!town) return null;
+                                                  const isEditing = editingNotes.hasOwnProperty(townData.slug);
+                                                  return (
+                                                      <AccordionItem value={town.slug} key={town.slug}>
+                                                          <div className="flex items-center group">
+                                                              <div className="flex flex-col py-1">
+                                                                  <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => handleReorderTown(index, 'up')} disabled={index === 0}>
+                                                                      <ArrowUp className="h-3 w-3" />
+                                                                  </Button>
+                                                                  <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => handleReorderTown(index, 'down')} disabled={index === selectedTrip.towns!.length - 1}>
+                                                                      <ArrowDown className="h-3 w-3" />
+                                                                  </Button>
+                                                              </div>
+                                                              <span className="font-medium flex-grow pl-2"><Translatable text={town.name} /></span>
+                                                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => handleDeleteTown(town.slug)}>
+                                                                  <Trash2 className="h-4 w-4" />
+                                                              </Button>
+                                                              <AccordionTrigger className="w-8 hover:no-underline" />
+                                                          </div>
+                                                          <AccordionContent>
+                                                              <div className="pl-8 space-y-4">
+                                                                  <div>
+                                                                      <Label htmlFor={`notes-${town.slug}`}><Translatable text="My Notes" /></Label>
+                                                                      <Textarea 
+                                                                          id={`notes-${town.slug}`} 
+                                                                          value={isEditing ? editingNotes[townData.slug] : townData.notes || ''}
+                                                                          onChange={(e) => setEditingNotes(prev => ({...prev, [townData.slug]: e.target.value}))}
+                                                                          placeholder="Add your personal notes for this town..."
+                                                                          className="mt-1"
+                                                                      />
+                                                                      {isEditing && (
+                                                                          <Button size="sm" className="mt-2" onClick={() => handleSaveNotes(townData.slug)}><Translatable text="Save Notes" /></Button>
+                                                                      )}
+                                                                  </div>
+                                                                  <div className="flex gap-2">
+                                                                      <Button asChild variant="outline" size="sm"><Link href={`/towns/${town.slug}`} target="_blank">View Details</Link></Button>
+                                                                      <Button asChild variant="outline" size="sm"><Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(town.name + ", " + (provinces.find(p => p.slug === town.provinceSlug)?.name || 'South Africa'))}`} target="_blank">Map</Link></Button>
+                                                                  </div>
+                                                              </div>
+                                                          </AccordionContent>
+                                                      </AccordionItem>
+                                                  )
+                                              })}
+                                          </Accordion>
+                                      ) : (
+                                          <p className="text-sm text-muted-foreground"><Translatable text="No towns added yet."/></p>
+                                      )}
+                                  </CardContent>
+                              </Card>
 
-        {currentDialogData && dialogState.type === 'town' && (
-             <AddToTripDialog 
-                isOpen={dialogState.isOpen}
-                onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
-                title={currentDialogData.title}
-                items={currentDialogData.items}
-                provinces={currentDialogData.provinces}
-                selectedItems={(selectedTrip?.towns?.map(t => t.slug)) || []}
-                onSave={(selectedSlugs) => handleTownsSave(selectedSlugs)}
-            />
-        )}
-        {currentDialogData && (dialogState.type === 'sight' || dialogState.type === 'route') && (
-             <AddToTripDialog 
-                isOpen={dialogState.isOpen}
-                onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
-                title={currentDialogData.title}
-                items={currentDialogData.items}
-                selectedItems={(selectedTrip?.[currentDialogData.key] as string[]) || []}
-                onSave={(selectedSlugs) => handleItemsSave(currentDialogData.key, selectedSlugs)}
-            />
-        )}
-    </SidebarProvider>
+                              {renderSightsOrRoutesList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
+                              {renderSightsOrRoutesList("Routes", <RouteIcon className="h-6 w-6 text-primary"/>, selectedTrip.routeIds, routes, 'route')}
+                               <Card>
+                                  <CardHeader>
+                                      <div className="flex items-center gap-2">
+                                      <Bed className="h-6 w-6 text-primary"/>
+                                      <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
+                                      </div>
+                                  </CardHeader>
+                                  <CardContent>
+                                      <p className="text-sm text-muted-foreground">
+                                          <Translatable text="Accommodation booking feature is coming soon."/>
+                                      </p>
+                                  </CardContent>
+                              </Card>
+                              <Card>
+                                  <CardHeader>
+                                      <div className="flex items-center gap-2">
+                                          <Sparkles className="h-6 w-6 text-primary"/>
+                                          <CardTitle className="text-xl font-headline"><Translatable text="Extras"/></CardTitle>
+                                      </div>
+                                  </CardHeader>
+                                  <CardContent>
+                                      <p className="text-sm text-muted-foreground">
+                                          <Translatable text="This feature is coming soon."/>
+                                      </p>
+                                  </CardContent>
+                              </Card>
+                          </div>
+                      </div>
+                  ) : (
+                      <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
+                          <NationalRoadsGuide onSelectRoute={handleSelectRouteForCreation} />
+                      </div>
+                  )}
+              </div>
+          </SidebarInset>
+         </div>
+
+          {currentDialogData && dialogState.type === 'town' && (
+               <AddToTripDialog 
+                  isOpen={dialogState.isOpen}
+                  onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
+                  title={currentDialogData.title}
+                  items={currentDialogData.items}
+                  provinces={currentDialogData.provinces}
+                  selectedItems={(selectedTrip?.towns?.map(t => t.slug)) || []}
+                  onSave={(selectedSlugs) => handleTownsSave(selectedSlugs)}
+              />
+          )}
+          {currentDialogData && (dialogState.type === 'sight' || dialogState.type === 'route') && (
+               <AddToTripDialog 
+                  isOpen={dialogState.isOpen}
+                  onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
+                  title={currentDialogData.title}
+                  items={currentDialogData.items}
+                  selectedItems={(selectedTrip?.[currentDialogData.key] as string[]) || []}
+                  onSave={(selectedSlugs) => handleItemsSave(currentDialogData.key, selectedSlugs)}
+              />
+          )}
+      </SidebarProvider>
+    </>
   );
 }
-
-    
-
