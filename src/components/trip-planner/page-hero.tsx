@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -60,7 +61,7 @@ function OriginalHeroText() {
 
 
 export function PlanTripHero() {
-    const heroImage = PlaceHolderImages.find((p) => p.id === 'hero-1');
+    const heroImage = PlaceHolderImages.find((p) => p.id === 'plan-trip-hero');
 
     return (
         <section className="relative flex h-[50vh] min-h-[300px] items-center justify-center text-center text-white">

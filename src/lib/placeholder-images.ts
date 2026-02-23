@@ -1,3 +1,4 @@
+
 export type ImagePlaceholder = {
   id: string;
   description: string;
@@ -261,7 +262,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-soweto",
       "description": "Orlando Towers in Soweto",
-      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1760444748935-3eee7cbbf7c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzb3dldG8lMjB0b3dlcnN8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "soweto towers"
     },
     {
@@ -279,7 +280,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-addo-elephant-park",
       "description": "Elephants in Addo Park",
-      "imageUrl": "https://images.unsplash.com/photo-1683529887016-8a89c672b21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhZGRvJTIwZWxlcGhhbnRzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1683529887016-8a89c672b21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhZGRvJTIwZWxlcGhhbnRzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "addo elephants"
     },
     {
@@ -297,7 +298,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-kimberley-big-hole",
       "description": "The Big Hole",
-      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1627654334722-05479fbed803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraW1iZXJsZXklMjBiaWclMjBob2xlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "kimberley big hole"
     },
     {
@@ -309,7 +310,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-tsitsikamma",
       "description": "Storms River Mouth bridge",
-      "imageUrl": "https://images.unsplash.com/photo-1704034451908-cb1b500900bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2l0c2lrYW1tYSUyMGJyaWRnZXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1704034451908-cb1b500900bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2l0c2lrYW1tYSUyMGJyaWRnZXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "tsitsikamma bridge"
     },
     {
@@ -321,25 +322,25 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "route-panorama-route",
       "description": "Three Rondavels on Panorama Route",
-      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "panorama route"
     },
     {
       "id": "route-route-62",
       "description": "Road sign on Route 62",
-      "imageUrl": "https://images.unsplash.com/photo-1649798992644-25c74faf19b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyb3V0ZSUyMDYyfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1649798992644-25c74faf19b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyb3V0ZSUyMDYyfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "route 62"
     },
     {
       "id": "route-wild-coast",
       "description": "Cows on the beach, Wild Coast",
-      "imageUrl": "https://images.unsplash.com/photo-1566317866591-1ca369ef4cb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2lsZCUyMGNvYXN0fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1566317866591-1ca369ef4cb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2lsZCUyMGNvYXN0fGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "wild coast"
     },
     {
       "id": "route-midlands-meander",
       "description": "Rolling hills of the Midlands",
-      "imageUrl": "https://images.unsplash.com/photo-1667153271259-3b425f57f24b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtaWRsYW5kcyUyMG1lYW5kZXJ8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1667153271259-3b425f57f24b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtaWRsYW5kcyUyMG1lYW5kZXJ8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "midlands meander"
     },
     {
@@ -417,7 +418,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-graaff-reinet",
       "description": "Valley of Desolation near Graaff-Reinet",
-      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "graaff-reinet valley"
     },
     {
@@ -428,7 +429,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-worcester",
-      "imageUrl": "https://images.unsplash.com/photo-1570483976272-b1e77e517bdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JjZXN0ZXIlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1570483976272-b1e77e517bdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JjZXN0ZXIlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Worcester",
       "imageHint": "worcester town"
     },
@@ -440,7 +441,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-ceres",
-      "imageUrl": "https://images.unsplash.com/photo-1693680501611-4432ec5afbef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZXJlcyUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1693680501611-4432ec5afbef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZXJlcyUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Ceres",
       "imageHint": "ceres town"
     },
@@ -482,13 +483,13 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-soweto",
-      "imageUrl": "https://images.unsplash.com/photo-1730234344109-f10c88b864f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzb3dldG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1730234344109-f10c88b864f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzb3dldG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Soweto",
       "imageHint": "soweto town"
     },
     {
       "id": "town-sandton",
-      "imageUrl": "https://images.unsplash.com/photo-1592850696009-60727756ce44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYW5kdG9uJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1592850696009-60727756ce44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYW5kdG9uJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Sandton",
       "imageHint": "sandton town"
     },
@@ -530,7 +531,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-centurion",
-      "imageUrl": "https://images.unsplash.com/photo-1629765604030-ff2f3557ca41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjZW50dXJpb24lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1629765604030-ff2f3557ca41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjZW50dXJpb24lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Centurion",
       "imageHint": "centurion town"
     },
@@ -644,7 +645,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-tzaneen",
-      "imageUrl": "https://images.unsplash.com/photo-1597691854053-a2d6a967d7e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dHphbmVlbiUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUzfDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1597691854053-a2d6a967d7e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dHphbmVlbiUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUzfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Tzaneen",
       "imageHint": "tzaneen town"
     },
@@ -686,7 +687,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-ermelo",
-      "imageUrl": "https://images.unsplash.com/photo-1768470599195-978a609bbd09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxlcm1lbG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1768470599195-978a609bbd09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxlcm1lbG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "description": "A view of Ermelo",
       "imageHint": "ermelo town"
     },
@@ -803,5 +804,11 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
       "description": "A generic town in South Africa",
       "imageUrl": "https://picsum.photos/seed/townGeneric/600/400",
       "imageHint": "south africa town"
+    },
+    {
+      "id": "plan-trip-hero",
+      "description": "A road trip in South Africa.",
+      "imageUrl": "https://i.ibb.co/8ghdZq69/SOUTH-AFRICA-ROAD-TRIP.jpg",
+      "imageHint": "south africa road trip"
     }
 ]
