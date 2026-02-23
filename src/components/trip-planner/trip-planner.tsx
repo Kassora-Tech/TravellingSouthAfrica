@@ -521,6 +521,41 @@ export function TripPlanner({ user }: { user: User }) {
     });
   }
 
+  const provinceMap = useMemo(() => new Map(provinces.map(p => [p.slug, p.name])), []);
+
+  const handleGetMultiStopDirections = () => {
+      if (!selectedTrip || !selectedTrip.towns || selectedTrip.towns.length < 2) {
+          return;
+      }
+  
+      if (selectedTrip.towns.length > 10) {
+          toast({
+              variant: "destructive",
+              title: "Too Many Stops",
+              description: "Google Maps directions can only handle up to 10 stops at a time.",
+          });
+          return;
+      }
+
+      const locationStrings = selectedTrip.towns.map(tripTown => {
+          const town = towns.find(t => t.slug === tripTown.slug);
+          if (!town) return null;
+          const provinceName = provinceMap.get(town.provinceSlug) || '';
+          return `${town.name}, ${provinceName}, South Africa`;
+      }).filter((item): item is string => item !== null);
+  
+      if (locationStrings.length < 2) {
+          return;
+      }
+
+      const destination = locationStrings.pop()!;
+      const waypoints = locationStrings.join('|');
+      
+      const url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${encodeURIComponent(destination)}&waypoints=${encodeURIComponent(waypoints)}&travelmode=driving`;
+      
+      window.open(url, '_blank');
+  };
+
   const filteredItems = useMemo(() => {
     return { towns, sights, routes };
   }, []);
@@ -731,6 +766,7 @@ export function TripPlanner({ user }: { user: User }) {
                                   </CardHeader>
                                   <CardContent>
                                       {(selectedTrip.towns?.length ?? 0) > 0 ? (
+                                        <>
                                           <Accordion type="multiple" className="w-full">
                                               {selectedTrip.towns?.map((townData, index) => {
                                                   const town = towns.find(t => t.slug === townData.slug);
@@ -778,6 +814,19 @@ export function TripPlanner({ user }: { user: User }) {
                                                   )
                                               })}
                                           </Accordion>
+                                          {selectedTrip.towns && selectedTrip.towns.length >= 2 && (
+                                            <div className="mt-6 pt-6 border-t">
+                                                <Button 
+                                                    onClick={handleGetMultiStopDirections}
+                                                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                                                    size="lg"
+                                                >
+                                                    <Car className="mr-2 h-5 w-5" />
+                                                    <Translatable text="Map All Stops" />
+                                                </Button>
+                                            </div>
+                                          )}
+                                        </>
                                       ) : (
                                           <p className="text-sm text-muted-foreground"><Translatable text="No towns added yet."/></p>
                                       )}
