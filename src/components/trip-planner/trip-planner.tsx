@@ -54,7 +54,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError, errorEmitter } from '@/firebase';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
@@ -214,6 +214,8 @@ export function TripPlanner({ user }: { user: User }) {
   const firestore = useFirestore();
   const { toast } = useToast();
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const tripsQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -234,28 +236,30 @@ export function TripPlanner({ user }: { user: User }) {
 
   const [editingNotes, setEditingNotes] = useState<Record<string, string | undefined>>({});
 
-  useEffect(() => {
-    if (!trips) return; // Wait for trips to load.
-    
-    const tripIdFromQuery = searchParams.get('tripId');
-    
-    // If a tripId is in the URL, select it.
-    if (tripIdFromQuery) {
-        const tripFromQuery = trips.find(t => t.id === tripIdFromQuery);
-        if (tripFromQuery && selectedTrip?.id !== tripFromQuery.id) {
-            setSelectedTrip(tripFromQuery);
-        }
-        // If trip from query not found, we don't want to do anything,
-        // it should default to null and show the roads guide.
-        return;
-    }
+  const handleSelectTrip = (trip: WithId<Trip>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tripId', trip.id);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
-    // If there's a selected trip, check if it still exists in the `trips` array.
-    // If not, it means it was deleted. So, deselect it by setting to null.
-    if (selectedTrip && !trips.find(t => t.id === selectedTrip.id)) {
-        setSelectedTrip(null);
+  const handleMinimizeTrip = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('tripId');
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const tripIdFromQuery = searchParams.get('tripId');
+
+  useEffect(() => {
+    if (tripsLoading) {
+      return;
     }
-  }, [trips, searchParams, selectedTrip]);
+    const tripFromQuery = tripIdFromQuery
+      ? trips?.find((t) => t.id === tripIdFromQuery)
+      : null;
+    
+    setSelectedTrip(tripFromQuery || null);
+  }, [tripIdFromQuery, trips, tripsLoading]);
 
 
   const handleCreateTrip = () => {
@@ -319,8 +323,7 @@ export function TripPlanner({ user }: { user: User }) {
     });
     
     updateTripTowns(firestore, user.uid, selectedTrip.id, newTowns);
-    setSelectedTrip(prev => prev ? { ...prev, towns: newTowns } : null);
-
+    
     toast({
         title: "Itinerary Updated!",
         description: `Towns in "${selectedTrip.name}" have been updated.`,
@@ -342,10 +345,8 @@ export function TripPlanner({ user }: { user: User }) {
             };
         });
         updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
-        setSelectedTrip(prev => prev ? ({ ...prev, routeIds: selectedSlugs, tripRoutes: newTripRoutes }) : null);
     } else {
         updateTripItems(firestore, user.uid, selectedTrip.id, itemType, selectedSlugs);
-        setSelectedTrip(prev => prev ? ({ ...prev, [itemType]: selectedSlugs }) : null);
     }
     toast({
         title: "Itinerary Updated!",
@@ -363,6 +364,9 @@ export function TripPlanner({ user }: { user: User }) {
             title: "Trip Deleted",
             description: "Your trip has been successfully deleted.",
         });
+        if (tripId === tripIdFromQuery) {
+          handleMinimizeTrip();
+        }
       })
       .catch(async (serverError) => {
         const permissionError = new FirestorePermissionError({
@@ -458,7 +462,6 @@ export function TripPlanner({ user }: { user: User }) {
       });
   
       updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
-      setSelectedTrip(prev => prev ? ({...prev, tripRoutes: newTripRoutes}) : null);
       toast({
           title: "Road removed",
           description: `${road} has been removed from your itinerary.`
@@ -479,7 +482,6 @@ export function TripPlanner({ user }: { user: User }) {
     });
 
     updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
-    setSelectedTrip(prev => prev ? ({...prev, tripRoutes: newTripRoutes}) : null);
     toast({
         title: "Route Reversed",
         description: `The order of roads for ${routes.find(r => r.slug === routeSlug)?.name} has been reversed.`
@@ -491,7 +493,6 @@ export function TripPlanner({ user }: { user: User }) {
 
     const newTowns = selectedTrip.towns.filter(t => t.slug !== townSlug);
     updateTripTowns(firestore, user.uid, selectedTrip.id, newTowns);
-    setSelectedTrip(prev => prev ? { ...prev, towns: newTowns } : null);
     toast({
         title: "Town Removed",
         description: `${towns.find(t => t.slug === townSlug)?.name} has been removed from your itinerary.`
@@ -510,7 +511,6 @@ export function TripPlanner({ user }: { user: User }) {
     newTowns.splice(targetIndex, 0, movedItem);
     
     updateTripTowns(firestore, user.uid, selectedTrip.id, newTowns);
-    setSelectedTrip(prev => prev ? { ...prev, towns: newTowns } : null);
   }
 
   const handleSaveNotes = (townSlug: string) => {
@@ -521,7 +521,6 @@ export function TripPlanner({ user }: { user: User }) {
     );
 
     updateTripTowns(firestore, user.uid, selectedTrip.id, newTowns);
-    setSelectedTrip(prev => prev ? { ...prev, towns: newTowns } : null);
 
     setEditingNotes(prev => {
         const newEditing = {...prev};
@@ -539,7 +538,6 @@ export function TripPlanner({ user }: { user: User }) {
     if (!selectedTrip || !selectedTrip.towns) return;
     const reversedTowns = [...selectedTrip.towns].reverse();
     updateTripTowns(firestore, user.uid, selectedTrip.id, reversedTowns);
-    setSelectedTrip(prev => prev ? { ...prev, towns: reversedTowns } : null);
     toast({
         title: "Trip Reversed",
         description: "The sequence of towns in your trip has been reversed."
@@ -735,7 +733,7 @@ export function TripPlanner({ user }: { user: User }) {
                 {trips && trips.map(trip => (
                     <SidebarMenuItem key={trip.id}>
                         <SidebarMenuButton
-                            onClick={() => setSelectedTrip(trip)}
+                            onClick={() => handleSelectTrip(trip)}
                             isActive={selectedTrip?.id === trip.id}
                         >
                             <RouteIcon />
@@ -761,13 +759,13 @@ export function TripPlanner({ user }: { user: User }) {
         </Sidebar>
 
         <SidebarInset>
-            <div className="container mx-auto px-4 py-8" onClick={() => { if (selectedTrip) { setSelectedTrip(null); } }}>
+            <div className="container mx-auto px-4 py-8" onClick={() => { if (selectedTrip) { handleMinimizeTrip(); } }}>
                 {selectedTrip ? (
                     <div className="space-y-6" id="itinerary-to-print" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center flex-wrap gap-4">
                             <div className="flex items-center gap-2">
                                 <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTrip.name}</h1>
-                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setSelectedTrip(null)}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleMinimizeTrip}>
                                     <Minus className="h-5 w-5" />
                                     <span className="sr-only">Minimize Trip</span>
                                 </Button>
@@ -915,3 +913,4 @@ export function TripPlanner({ user }: { user: User }) {
 }
 
     
+
