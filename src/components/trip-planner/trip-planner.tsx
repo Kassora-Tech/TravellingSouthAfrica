@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { User } from 'firebase/auth';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, doc, deleteDoc } from 'firebase/firestore';
@@ -220,31 +220,39 @@ export function TripPlanner({ user }: { user: User }) {
 
   const [editingNotes, setEditingNotes] = useState<Record<string, string | undefined>>({});
 
+  const tripIdFromQuery = searchParams.get('tripId');
+
+  const handleMinimizeTrip = useCallback(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('tripId');
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [router, pathname, searchParams]);
+
+  useEffect(() => {
+    if (tripsLoading) {
+      return; // Wait until trips are loaded
+    }
+  
+    if (tripIdFromQuery) {
+      const tripFromQuery = trips?.find((t) => t.id === tripIdFromQuery);
+      if (tripFromQuery) {
+        setSelectedTrip(tripFromQuery);
+      } else if (trips) {
+        // If the tripId in the URL doesn't match any loaded trip (and trips are loaded), clear the URL
+        handleMinimizeTrip();
+      }
+    } else {
+      // If there's no tripId in the URL, no trip should be selected
+      setSelectedTrip(null);
+    }
+  }, [tripIdFromQuery, trips, tripsLoading, handleMinimizeTrip]);
+  
+
   const handleSelectTrip = (trip: WithId<Trip>) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('tripId', trip.id);
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
-
-  const handleMinimizeTrip = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete('tripId');
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const tripIdFromQuery = searchParams.get('tripId');
-
-  useEffect(() => {
-    if (tripsLoading) {
-      return;
-    }
-    const tripFromQuery = tripIdFromQuery
-      ? trips?.find((t) => t.id === tripIdFromQuery)
-      : null;
-    
-    setSelectedTrip(tripFromQuery || null);
-  }, [tripIdFromQuery, trips, tripsLoading]);
-
 
   const handleCreateTrip = (name: string, routeSlug?: string, reverse?: boolean) => {
     let initialTowns: TripTown[] = [];
@@ -665,10 +673,12 @@ export function TripPlanner({ user }: { user: User }) {
                               <RouteIcon />
                               <span>{trip.name}</span>
                           </SidebarMenuButton>
-                          <SidebarMenuAction asChild>
-                              <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
-                                  <Trash2 className="h-4 w-4"/>
-                              </Button>
+                          <SidebarMenuAction
+                            onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}
+                            className="text-muted-foreground hover:text-destructive"
+                            showOnHover
+                          >
+                            <Trash2 />
                           </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}
@@ -779,8 +789,8 @@ export function TripPlanner({ user }: { user: User }) {
                                <Card>
                                   <CardHeader>
                                       <div className="flex items-center gap-2">
-                                      <Bed className="h-6 w-6 text-primary"/>
-                                      <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
+                                          <Bed className="h-6 w-6 text-primary"/>
+                                          <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
                                       </div>
                                   </CardHeader>
                                   <CardContent>
