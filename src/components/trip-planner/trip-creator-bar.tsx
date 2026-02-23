@@ -52,7 +52,7 @@ export function TripCreatorBar({ onTripCreate }: TripCreatorBarProps) {
         <div className="absolute top-0 left-0 right-0 z-10 p-4 bg-gradient-to-b from-black/60 to-transparent">
             <div className="container mx-auto">
                 <form onSubmit={handleCreateTrip} className="flex flex-col md:flex-row gap-4 items-center justify-center p-4 bg-black/30 backdrop-blur-sm rounded-lg border border-white/20">
-                    <div className="flex-grow w-full md:w-auto">
+                    <div className="w-full md:w-auto">
                         <Label htmlFor="trip-name" className="sr-only">Trip Name</Label>
                         <Input
                             id="trip-name"
