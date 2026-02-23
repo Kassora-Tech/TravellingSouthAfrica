@@ -235,20 +235,25 @@ export function TripPlanner({ user }: { user: User }) {
   const [editingNotes, setEditingNotes] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
-    if (!trips) return;
+    if (!trips) return; // Wait for trips to load.
     
     const tripIdFromQuery = searchParams.get('tripId');
+    
+    // If a tripId is in the URL, select it.
     if (tripIdFromQuery) {
         const tripFromQuery = trips.find(t => t.id === tripIdFromQuery);
-        if (tripFromQuery) {
+        if (tripFromQuery && selectedTrip?.id !== tripFromQuery.id) {
             setSelectedTrip(tripFromQuery);
-            return;
         }
+        // If trip from query not found, we don't want to do anything,
+        // it should default to null and show the roads guide.
+        return;
     }
 
-    if (!selectedTrip || !trips.find(t => t.id === selectedTrip.id)) {
-        const sortedTrips = [...trips].sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
-        setSelectedTrip(sortedTrips.length > 0 ? sortedTrips[0] : null);
+    // If there's a selected trip, check if it still exists in the `trips` array.
+    // If not, it means it was deleted. So, deselect it by setting to null.
+    if (selectedTrip && !trips.find(t => t.id === selectedTrip.id)) {
+        setSelectedTrip(null);
     }
   }, [trips, searchParams, selectedTrip]);
 
@@ -659,9 +664,9 @@ export function TripPlanner({ user }: { user: User }) {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={true}>
       <div className="flex min-h-[calc(100vh_-_350px)]">
-        <Sidebar collapsible="icon" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
+        <Sidebar collapsible="none" className="max-h-[calc(100vh_-_80px)] top-20 sticky">
             <SidebarHeader>
                  <h2 className="text-xl font-bold font-headline px-2 pt-1">
                     <Translatable text="My Trips"/>
@@ -721,7 +726,9 @@ export function TripPlanner({ user }: { user: User }) {
                 
                 {tripsLoading && (
                   <SidebarMenuItem>
-                    <SidebarMenuButton disabled>Loading trips...</SidebarMenuButton>
+                    <p className="text-sm text-muted-foreground text-center p-4">
+                      <Translatable text="Loading trips..."/>
+                    </p>
                   </SidebarMenuItem>
                 )}
 
@@ -734,7 +741,7 @@ export function TripPlanner({ user }: { user: User }) {
                             <RouteIcon />
                             <span>{trip.name}</span>
                         </SidebarMenuButton>
-                        <SidebarMenuAction asChild showOnHover>
+                        <SidebarMenuAction asChild>
                             <Button variant="ghost" size="icon" className="h-full w-full text-muted-foreground hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDeleteTrip(trip.id); }}>
                                 <Trash2 className="h-4 w-4"/>
                             </Button>
