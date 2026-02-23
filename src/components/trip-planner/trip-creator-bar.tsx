@@ -49,7 +49,7 @@ export function TripCreatorBar({ onTripCreate }: TripCreatorBarProps) {
     }
 
     return (
-        <div className="absolute top-0 left-0 right-0 z-10 p-4 bg-gradient-to-b from-black/60 to-transparent">
+        <div className="absolute inset-0 flex items-center justify-center z-10 p-4">
             <div className="container mx-auto">
                 <div className="flex justify-center">
                     <form onSubmit={handleCreateTrip} className="inline-flex flex-col md:flex-row gap-4 items-center p-4 bg-black/30 backdrop-blur-sm rounded-lg border border-white/20">
