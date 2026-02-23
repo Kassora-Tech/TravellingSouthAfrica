@@ -51,35 +51,37 @@ export function TripCreatorBar({ onTripCreate }: TripCreatorBarProps) {
     return (
         <div className="absolute top-0 left-0 right-0 z-10 p-4 bg-gradient-to-b from-black/60 to-transparent">
             <div className="container mx-auto">
-                <form onSubmit={handleCreateTrip} className="flex flex-col md:flex-row gap-4 items-center justify-center p-4 bg-black/30 backdrop-blur-sm rounded-lg border border-white/20">
-                    <div className="w-full md:w-auto">
-                        <Label htmlFor="trip-name" className="sr-only">Trip Name</Label>
-                        <Input
-                            id="trip-name"
-                            placeholder="Name your new trip..."
-                            value={newTripName}
-                            onChange={(e) => setNewTripName(e.target.value)}
-                            className="bg-white/10 border-white/30 placeholder:text-white/70 text-white focus-visible:ring-accent"
-                        />
-                    </div>
-                    <div className="flex gap-4 items-center">
-                        <Select value={selectedRoute} onValueChange={handleRouteChange}>
-                            <SelectTrigger className="w-full md:w-[220px] bg-white/10 border-white/30 text-white focus:ring-accent">
-                                <SelectValue placeholder="Or create from a route" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a,b) => a.name.localeCompare(b.name)).map(r => <SelectItem key={r.slug} value={r.slug}>{r.name}</SelectItem>)}
-                            </SelectContent>
-                        </Select>
-                         <div className="flex items-center space-x-2">
-                            <Checkbox id="reverse-route" checked={reverseRoute} onCheckedChange={(checked) => setReverseRoute(checked as boolean)} className="border-white/50 data-[state=checked]:bg-accent data-[state=checked]:border-accent" />
-                            <Label htmlFor="reverse-route" className="text-white text-sm"><Translatable text="Reverse"/></Label>
+                <div className="flex justify-center">
+                    <form onSubmit={handleCreateTrip} className="inline-flex flex-col md:flex-row gap-4 items-center p-4 bg-black/30 backdrop-blur-sm rounded-lg border border-white/20">
+                        <div className="w-full md:w-auto">
+                            <Label htmlFor="trip-name" className="sr-only">Trip Name</Label>
+                            <Input
+                                id="trip-name"
+                                placeholder="Name your new trip..."
+                                value={newTripName}
+                                onChange={(e) => setNewTripName(e.target.value)}
+                                className="bg-white/10 border-white/30 placeholder:text-white/70 text-white focus-visible:ring-accent"
+                            />
                         </div>
-                    </div>
-                    <Button type="submit" variant="outline" className="bg-transparent border-accent text-accent hover:bg-accent hover:text-accent-foreground w-full md:w-auto">
-                        <Translatable text="Create Trip" />
-                    </Button>
-                </form>
+                        <div className="flex gap-4 items-center">
+                            <Select value={selectedRoute} onValueChange={handleRouteChange}>
+                                <SelectTrigger className="w-full md:w-[220px] bg-white/10 border-white/30 text-white focus:ring-accent">
+                                    <SelectValue placeholder="Or create from a route" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a,b) => a.name.localeCompare(b.name)).map(r => <SelectItem key={r.slug} value={r.slug}>{r.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                             <div className="flex items-center space-x-2">
+                                <Checkbox id="reverse-route" checked={reverseRoute} onCheckedChange={(checked) => setReverseRoute(checked as boolean)} className="border-white/50 data-[state=checked]:bg-accent data-[state=checked]:border-accent" />
+                                <Label htmlFor="reverse-route" className="text-white text-sm"><Translatable text="Reverse"/></Label>
+                            </div>
+                        </div>
+                        <Button type="submit" variant="outline" className="bg-transparent border-accent text-accent hover:bg-accent hover:text-accent-foreground w-full md:w-auto">
+                            <Translatable text="Create Trip" />
+                        </Button>
+                    </form>
+                </div>
             </div>
         </div>
     );
