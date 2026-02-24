@@ -9,13 +9,13 @@ export function PromotionalBanner() {
         <div className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap">
           <p className="font-semibold text-sm sm:text-base text-foreground mx-8 py-3">
             <Translatable text={bannerText} />
-            <Link href="/accommodations#list-accommodation" className="ml-2 font-bold text-primary underline hover:text-primary/80">
+            <Link href="/accommodations#list-accommodation" className="ml-2 font-bold text-primary hover:underline hover:text-primary/80">
               <Translatable text="Click here" />
             </Link>
           </p>
           <p className="font-semibold text-sm sm:text-base text-foreground mx-8 py-3">
             <Translatable text={bannerText} />
-            <Link href="/accommodations#list-accommodation" className="ml-2 font-bold text-primary underline hover:text-primary/80">
+            <Link href="/accommodations#list-accommodation" className="ml-2 font-bold text-primary hover:underline hover:text-primary/80">
               <Translatable text="Click here" />
             </Link>
           </p>
