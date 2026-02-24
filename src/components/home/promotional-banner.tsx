@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Translatable } from '@/components/translatable';
 
 export function PromotionalBanner() {
-  const bannerText = "For a limited time, list your accommodation on Travelling South Africa for only R200.";
+  const bannerText = "For a limited time, advertise your accommodation, restaurants & must-see services in your town for only R200 per year.";
   return (
     <div className="bg-primary/10 w-full overflow-x-hidden">
       <div className="flex h-12 items-center">
