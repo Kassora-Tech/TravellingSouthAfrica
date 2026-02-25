@@ -40,37 +40,37 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "featured-2",
       "description": "An elephant in Kruger National Park.",
-      "imageUrl": "https://images.unsplash.com/photo-1451310738724-390e54c756a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxrcnVnZXIlMjBuYXRpb25hbCUyMHBhcmt8ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1451310738724-390e54c756a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxrcnVnZXIlMjBuYXRpb25hbCUyMHBhcmt8ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "kruger national park"
     },
     {
       "id": "featured-3",
       "description": "The Drakensberg mountain range.",
-      "imageUrl": "https://images.unsplash.com/photo-1631785557160-eaac373ddaf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZHJha2Vuc2JlcmclMjBtb3VudGFpbnN8ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1631785557160-eaac373ddaf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZHJha2Vuc2JlcmclMjBtb3VudGFpbnN8ZW58MHx8fHwxNzY5MDAzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "drakensberg mountains"
     },
     {
       "id": "featured-4",
       "description": "The skyline of Johannesburg.",
-      "imageUrl": "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxqb2hhbm5lc2J1cmclMjBza3lsaW5lfGVufDB8fHx8MTc2OTAwMzkwM3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxqb2hhbm5lc2J1cmclMjBza3lsaW5lfGVufDB8fHx8MTc2OTAwMzkwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "johannesburg skyline"
     },
     {
       "id": "featured-5",
       "description": "A scenic view of the Garden Route.",
-      "imageUrl": "https://images.unsplash.com/photo-1699292352199-35e0b930c7b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1699292352199-35e0b930c7b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "garden route"
     },
     {
       "id": "province-western-cape",
       "description": "Iconic view of Table Mountain and Cape Town.",
-      "imageUrl": "https://images.unsplash.com/photo-1585061528750-3baca2cb6a10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjYXBlJTIwdG93bnxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1585061528750-3baca2cb6a10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjYXBlJTIwdG93bnxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cape town"
     },
     {
       "id": "province-gauteng",
       "description": "Johannesburg city skyline.",
-      "imageUrl": "https://images.unsplash.com/photo-1678777724000-1438f926c09d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8am9oYW5uZXNidXJnJTIwY2l0eXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1678777724000-1438f926c09d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8am9oYW5uZXNidXJnJTIwY2l0eXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "johannesburg city"
     },
     {
@@ -118,7 +118,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-cape-town",
       "description": "Cape Town city bowl",
-      "imageUrl": "https://images.unsplash.com/photo-1582217672945-c6c145ae796b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYXBlJTIwdG93biUyMGNpdHl8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1582217672945-c6c145ae796b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYXBlJTIwdG93biUyMGNpdHl8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cape town city"
     },
     {
@@ -130,19 +130,19 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-durban",
       "description": "Durban beachfront",
-      "imageUrl": "https://images.unsplash.com/photo-1626951876321-3b7137628f83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkdXJiYW4lMjBiZWFjaHxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1626951876321-3b7137628f83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkdXJiYW4lMjBiZWFjaHxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "durban beach"
     },
     {
       "id": "town-pretoria",
       "description": "Jacaranda trees in Pretoria",
-      "imageUrl": "https://images.unsplash.com/photo-1698052842701-8368f97c255a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcmV0b3JpYSUyMGphY2FyYW5kYXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1698052842701-8368f97c255a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcmV0b3JpYSUyMGphY2FyYW5kYXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "pretoria jacaranda"
     },
     {
       "id": "town-port-elizabeth",
       "description": "Gqeberha harbor",
-      "imageUrl": "https://images.unsplash.com/photo-1709730411805-b77bc98aea82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0JTIwZWxpemFiZXRoJTIwaGFyYm9yfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1709730411805-b77bc98aea82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0JTIwZWxpemFiZXRoJTIwaGFyYm9yfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "port elizabeth harbor"
     },
     {
@@ -154,7 +154,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-mbombela",
       "description": "Lowveld Botanical Garden",
-      "imageUrl": "https://images.unsplash.com/photo-1713030394152-1f2b68904907?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bG93dmVsZCUyMGdhcmRlbnxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1713030394152-1f2b68904907?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bG93dmVsZCUyMGdhcmRlbnxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "lowveld garden"
     },
     {
@@ -208,7 +208,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-plettenberg-bay",
       "description": "Beach in Plettenberg Bay",
-      "imageUrl": "https://images.unsplash.com/photo-1578909517279-ae3e8c5050a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwbGV0dGVuYmVyZyUyMGJheXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1578909517279-ae3e8c5050a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwbGV0dGVuYmVyZyUyMGJheXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "plettenberg bay"
     },
     {
@@ -220,7 +220,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-graskop",
       "description": "View from Graskop",
-      "imageUrl": "https://images.unsplash.com/photo-1743062660367-0b2e1074889c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxncmFza29wJTIwdmlld3xlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1743062660367-0b2e1074889c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxncmFza29wJTIwdmlld3xlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "graskop view"
     },
     {
@@ -292,7 +292,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-sun-city",
       "description": "Palace of the Lost City",
-      "imageUrl": "https://images.unsplash.com/photo-1726302011092-e85cdafa7e5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW4lMjBjaXR5JTIwcGFsYWNlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1726302011092-e85cdafa7e5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW4lMjBjaXR5JTIwcGFsYWNlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "sun city palace"
     },
     {
@@ -310,7 +310,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-tsitsikamma",
       "description": "Storms River Mouth bridge",
-      "imageUrl": "https://images.unsplash.com/photo-1704034451908-cb1b500900bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2l0c2lrYW1tYSUyMGJyaWRnZXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1704034451908-cb1b500900bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2l0c2lrYW1tYSUyMGJyaWRnZXxlbnwwfHx8fDE3NjkwMDc5MTd8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "tsitsikamma bridge"
     },
     {
@@ -322,7 +322,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "route-panorama-route",
       "description": "Three Rondavels on Panorama Route",
-      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1662301648859-af64d2ff623d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5vcmFtYSUyMHJvdXRlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "panorama route"
     },
     {
@@ -346,13 +346,13 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "route-west-coast-flower-route",
       "description": "Flower fields on West Coast",
-      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "west coast flowers"
     },
     {
       "id": "route-waterberg-meander",
       "description": "Sunset over the Waterberg",
-      "imageUrl": "https://images.unsplash.com/photo-1638978693414-c84ca052fa00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlcmJlcmclMjBzdW5zZXR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1638978693414-c84ca052fa00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlcmJlcmclMjBzdW5zZXR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "waterberg sunset"
     },
     {
@@ -382,7 +382,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-hermanus",
       "description": "Whale watching in Hermanus",
-      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "hermanus whale"
     },
     {
@@ -423,7 +423,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-swellendam",
-      "imageUrl": "https://images.unsplash.com/photo-1726482478344-97855f8f4dde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2VsbGVuZGFtJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1726482478344-97855f8f4dde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2VsbGVuZGFtJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "description": "A view of Swellendam",
       "imageHint": "swellendam town"
     },
@@ -483,7 +483,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-soweto",
-      "imageUrl": "https://images.unsplash.com/photo-1730234344109-f10c88b864f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzb3dldG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1730234344109-f10c88b864f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzb3dldG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Soweto",
       "imageHint": "soweto town"
     },
@@ -531,7 +531,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-centurion",
-      "imageUrl": "https://images.unsplash.com/photo-1629765604030-ff2f3557ca41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjZW50dXJpb24lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1629765604030-ff2f3557ca41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjZW50dXJpb24lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Centurion",
       "imageHint": "centurion town"
     },
@@ -645,7 +645,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-tzaneen",
-      "imageUrl": "https://images.unsplash.com/photo-1597691854053-a2d6a967d7e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dHphbmVlbiUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUzfDA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1597691854053-a2d6a967d7e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dHphbmVlbiUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUzfDA&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Tzaneen",
       "imageHint": "tzaneen town"
     },
