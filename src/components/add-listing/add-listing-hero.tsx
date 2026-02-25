@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Logo from '@/components/logo';
-import { AnimatedTagline } from '../animated-tagline';
 import { useLanguage } from '@/hooks/use-language';
 
 const sentence = {
@@ -78,7 +77,6 @@ export function AddListingHero() {
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex flex-col items-center px-4">
         <Logo className="w-72 md:w-96" />
-        <AnimatedTagline className='h-12 w-auto' />
         <HeroText />
       </div>
     </section>
