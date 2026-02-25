@@ -61,7 +61,7 @@ function HeroText() {
 
 
 export function AddListingHero() {
-  const heroImage = PlaceHolderImages.find((p) => p.id === 'hero-1');
+  const heroImage = PlaceHolderImages.find((p) => p.id === 'add-your-listing-hero-background');
 
   return (
     <section className="relative flex h-[50vh] min-h-[400px] items-center justify-center text-center text-white">

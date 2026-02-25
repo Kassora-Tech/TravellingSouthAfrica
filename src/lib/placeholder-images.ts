@@ -286,13 +286,13 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "sight-namaqualand-flowers",
       "description": "Flowers in Namaqualand",
-      "imageUrl": "https://images.unsplash.com/photo-1696436686609-bba4f3fbe29b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmFtYXF1YWxhbmQlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1696436686609-bba4f3fbe29b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmFtYXF1YWxhbmQlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "namaqualand flowers"
     },
     {
       "id": "sight-sun-city",
       "description": "Palace of the Lost City",
-      "imageUrl": "https://images.unsplash.com/photo-1726302011092-e85cdafa7e5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW4lMjBjaXR5JTIwcGFsYWNlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1726302011092-e85cdafa7e5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW4lMjBjaXR5JTIwcGFsYWNlfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "sun city palace"
     },
     {
@@ -316,7 +316,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "route-garden-route",
       "description": "Storms River Mouth, Garden Route",
-      "imageUrl": "https://images.unsplash.com/photo-1520796412393-db86e624492e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1520796412393-db86e624492e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYXJkZW4lMjByb3V0ZXxlbnwwfHx8fDE3NjkwMDM5MDN8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "garden route"
     },
     {
@@ -346,19 +346,19 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "route-west-coast-flower-route",
       "description": "Flower fields on West Coast",
-      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1745791688891-a8520e3c3f46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZXN0JTIwY29hc3QlMjBmbG93ZXJzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "west coast flowers"
     },
     {
       "id": "route-waterberg-meander",
       "description": "Sunset over the Waterberg",
-      "imageUrl": "https://images.unsplash.com/photo-1638978693414-c84ca052fa00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlcmJlcmclMjBzdW5zZXR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1638978693414-c84ca052fa00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlcmJlcmclMjBzdW5zZXR8ZW58MHx8fHwxNzY5MDA3OTE3fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "waterberg sunset"
     },
     {
       "id": "route-clarens-golden-gate-route",
       "description": "Golden Gate sandstone cliffs",
-      "imageUrl": "https://images.unsplash.com/photo-1720670275485-12c8371ff5c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnb2xkZW4lMjBnYXRlJTIwY2xpZmZzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1720670275485-12c8371ff5c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnb2xkZW4lMjBnYXRlJTIwY2xpZmZzfGVufDB8fHx8MTc2OTAwNzkxN3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "golden gate cliffs"
     },
     {
@@ -382,7 +382,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-hermanus",
       "description": "Whale watching in Hermanus",
-      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1541954902471-4503b47641a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJtYW51cyUyMHdoYWxlfGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "hermanus whale"
     },
     {
@@ -418,7 +418,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "town-graaff-reinet",
       "description": "Valley of Desolation near Graaff-Reinet",
-      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1584551395436-6444f9d40a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxncmFhZmYtcmVpbmV0JTIwdmFsbGV5fGVufDB8fHx8MTc2OTU5NjkzNXww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "graaff-reinet valley"
     },
     {
@@ -429,7 +429,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-worcester",
-      "imageUrl": "https://images.unsplash.com/photo-1570483976272-b1e77e517bdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JjZXN0ZXIlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1570483976272-b1e77e517bdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JjZXN0ZXIlMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1Mnww&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Worcester",
       "imageHint": "worcester town"
     },
@@ -441,7 +441,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-ceres",
-      "imageUrl": "https://images.unsplash.com/photo-1693680501611-4432ec5afbef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZXJlcyUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1693680501611-4432ec5afbef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZXJlcyUyMHRvd258ZW58MHx8fHwxNzY5NzAyMjUyfDA&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Ceres",
       "imageHint": "ceres town"
     },
@@ -489,7 +489,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-sandton",
-      "imageUrl": "https://images.unsplash.com/photo-1592850696009-60727756ce44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYW5kdG9uJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1592850696009-60727756ce44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYW5kdG9uJTIwdG93bnxlbnwwfHx8fDE3Njk3MDIyNTJ8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Sandton",
       "imageHint": "sandton town"
     },
@@ -687,7 +687,7 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
     },
     {
       "id": "town-ermelo",
-      "imageUrl": "https://images.unsplash.com/photo-1768470599195-978a609bbd09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxlcm1lbG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1768470599195-978a609bbd09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxlcm1lbG8lMjB0b3dufGVufDB8fHx8MTc2OTcwMjI1M3ww&ixlib-rb-4.1.0&q=80&w=1080",
       "description": "A view of Ermelo",
       "imageHint": "ermelo town"
     },
@@ -810,5 +810,11 @@ export const PlaceHolderImages: ImagePlaceholder[] = [
       "description": "A road trip in South Africa.",
       "imageUrl": "https://i.ibb.co/8ghdZq69/SOUTH-AFRICA-ROAD-TRIP.jpg",
       "imageHint": "south africa road trip"
+    },
+    {
+      "id": "add-your-listing-hero-background",
+      "description": "A scenic road winding through mountains in South Africa.",
+      "imageUrl": "https://i.ibb.co/DHjs0cg7/Gemini-Generated-Image-yne6r7yne6r7yne6.png",
+      "imageHint": "mountain road"
     }
 ]
