@@ -4,23 +4,23 @@ import { Translatable } from '@/components/translatable';
 export function PromotionalBanner() {
   const bannerText = "For a limited time, advertise your accommodation, restaurants & must-see services in your town for only R200 per year.";
   return (
-    <div className="bg-blue-900 w-full overflow-x-hidden">
+    <Link href="/accommodations#list-accommodation" className="group block w-full overflow-x-hidden bg-blue-900">
       <div className="flex h-12 items-center">
-        <div className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap">
-          <p className="font-semibold text-sm sm:text-base text-white mx-8 py-3">
+        <div className="flex animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
+          <p className="mx-8 py-3 text-sm font-semibold text-white sm:text-base">
             <Translatable text={bannerText} />
-            <Link href="/accommodations#list-accommodation" className="ml-2 font-bold text-accent hover:underline">
+            <span className="ml-2 font-bold text-accent group-hover:underline">
               <Translatable text="Click here" />
-            </Link>
+            </span>
           </p>
-          <p className="font-semibold text-sm sm:text-base text-white mx-8 py-3">
+          <p className="mx-8 py-3 text-sm font-semibold text-white sm:text-base">
             <Translatable text={bannerText} />
-            <Link href="/accommodations#list-accommodation" className="ml-2 font-bold text-accent hover:underline">
+            <span className="ml-2 font-bold text-accent group-hover:underline">
               <Translatable text="Click here" />
-            </Link>
+            </span>
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
