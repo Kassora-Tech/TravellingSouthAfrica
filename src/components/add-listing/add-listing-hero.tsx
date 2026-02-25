@@ -4,7 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import Logo from '@/components/logo';
 
 export function AddListingHero() {
   const heroImage = PlaceHolderImages.find((p) => p.id === 'add-your-listing-hero-background');
@@ -23,7 +22,7 @@ export function AddListingHero() {
       )}
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex flex-col items-center px-4">
-        <Logo className="w-72 md:w-96" />
+        
       </div>
     </section>
   );
