@@ -54,6 +54,9 @@ export function Header() {
               </Button>
             ))}
             <Button variant="ghost" asChild>
+                <Link href="/add-your-listing"><Translatable text="Add Your Listing" /></Link>
+            </Button>
+            <Button variant="ghost" asChild>
                 <Link href="/service-providers"><Translatable text="Service Providers" /></Link>
             </Button>
             <Button variant="ghost" asChild>
@@ -96,7 +99,7 @@ export function Header() {
                         </Button>
                     </div>
                   <nav className="flex flex-col space-y-4">
-                    {[...navLinks, { href: '/service-providers', label: 'Service Providers' }].map((link) => (
+                    {[...navLinks, { href: '/add-your-listing', label: 'Add Your Listing' }, { href: '/service-providers', label: 'Service Providers' }].map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
