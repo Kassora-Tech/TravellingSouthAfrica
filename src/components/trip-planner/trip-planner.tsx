@@ -8,7 +8,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, MapPin, Mountain, Bed, Route as RouteIcon, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, Minus } from 'lucide-react';
+import { PlusCircle, MapPin, Mountain, Bed, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, Minus } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -20,7 +20,7 @@ import { routes } from '@/lib/data/routes';
 import { sights } from '@/lib/data/sights';
 
 
-import { createTrip, updateTripItems, updateTripRoutes, type TripRoute, updateTripTowns, type TripTown } from '@/firebase/firestore/trips';
+import { createTrip, updateTripItems, type TripTown, updateTripTowns } from '@/firebase/firestore/trips';
 
 import {
   Accordion,
@@ -57,15 +57,13 @@ interface Trip {
   name: string;
   towns?: TripTown[];
   sightIds?: string[];
-  routeIds?: string[];
-  tripRoutes?: TripRoute[];
   accommodationIds?: string[];
   createdAt?: { seconds: number; nanoseconds: number };
 }
 
 type DialogState = {
   isOpen: boolean;
-  type: 'town' | 'sight' | 'route' | null;
+  type: 'town' | 'sight' | null;
 }
 
 const findTownSlug = (name: string, allTowns: { slug: string, name: string }[]) => {
@@ -256,7 +254,6 @@ export function TripPlanner({ user }: { user: User }) {
 
   const handleCreateTrip = (name: string, routeSlug?: string, reverse?: boolean) => {
     let initialTowns: TripTown[] = [];
-    let initialRoutes: string[] = [];
     if (routeSlug) {
         const routeData = routes.find(r => r.slug === routeSlug);
         if (routeData) {
@@ -265,7 +262,6 @@ export function TripPlanner({ user }: { user: User }) {
                 townSlugs = [...townSlugs].reverse();
             }
             initialTowns = townSlugs.map(slug => ({ slug, notes: '' }));
-            initialRoutes.push(routeData.slug);
         }
     }
 
@@ -273,7 +269,6 @@ export function TripPlanner({ user }: { user: User }) {
       name: name,
       userId: user.uid,
       towns: initialTowns,
-      routeIds: initialRoutes,
     });
     toast({
         title: "Trip Created!",
@@ -308,23 +303,11 @@ export function TripPlanner({ user }: { user: User }) {
   };
 
 
-  const handleItemsSave = (itemType: 'sightIds' | 'routeIds', selectedSlugs: string[]) => {
+  const handleItemsSave = (itemType: 'sightIds' | 'accommodationIds', selectedSlugs: string[]) => {
     if (!selectedTrip) return;
 
-    if (itemType === 'routeIds') {
-        const newTripRoutes = selectedSlugs.map(slug => {
-            const existing = selectedTrip.tripRoutes?.find(tr => tr.routeSlug === slug);
-            if (existing) return existing;
-            const routeData = routes.find(r => r.slug === slug);
-            return {
-                routeSlug: slug,
-                includedRoads: routeData?.roads || [],
-            };
-        });
-        updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
-    } else {
-        updateTripItems(firestore, user.uid, selectedTrip.id, itemType, selectedSlugs);
-    }
+    updateTripItems(firestore, user.uid, selectedTrip.id, itemType, selectedSlugs);
+    
     toast({
         title: "Itinerary Updated!",
         description: `Your trip "${selectedTrip.name}" has been updated.`,
@@ -425,46 +408,6 @@ export function TripPlanner({ user }: { user: User }) {
     });
   };
 
-  const handleRemoveRoad = (routeSlug: string, road: string) => {
-      if (!selectedTrip || !selectedTrip.tripRoutes) return;
-  
-      const newTripRoutes = selectedTrip.tripRoutes.map(r => {
-          if (r.routeSlug === routeSlug) {
-              return {
-                  ...r,
-                  includedRoads: r.includedRoads.filter(roadName => roadName !== road)
-              };
-          }
-          return r;
-      });
-  
-      updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
-      toast({
-          title: "Road removed",
-          description: `${road} has been removed from your itinerary.`
-      });
-  };
-
-  const handleReverseRoads = (routeSlug: string) => {
-    if (!selectedTrip || !selectedTrip.tripRoutes) return;
-
-    const newTripRoutes = selectedTrip.tripRoutes.map(r => {
-        if (r.routeSlug === routeSlug) {
-            return {
-                ...r,
-                includedRoads: [...r.includedRoads].reverse()
-            };
-        }
-        return r;
-    });
-
-    updateTripRoutes(firestore, user.uid, selectedTrip.id, newTripRoutes);
-    toast({
-        title: "Route Reversed",
-        description: `The order of roads for ${routes.find(r => r.slug === routeSlug)?.name} has been reversed.`
-    });
-  };
-
   const handleDeleteTown = (townSlug: string) => {
     if (!selectedTrip || !selectedTrip.towns) return;
 
@@ -557,87 +500,24 @@ export function TripPlanner({ user }: { user: User }) {
   };
 
   const filteredItems = useMemo(() => {
-    return { towns, sights, routes };
+    return { towns, sights };
   }, []);
 
   const dataMap = useMemo(() => ({
     town: { title: "Add Towns", items: filteredItems.towns, provinces: provinces },
     sight: { title: "Add Sights", items: filteredItems.sights, key: 'sightIds' as const },
-    route: { title: "Add Routes", items: filteredItems.routes, key: 'routeIds' as const },
   }), [filteredItems]);
 
   const currentDialogData = dialogState.type ? dataMap[dialogState.type] : null;
 
-  const renderSightsOrRoutesList = (
+  const renderSightsList = (
     title: string,
     icon: React.ReactNode,
     itemIds: string[] | undefined,
     allItems: any[],
-    type: 'sight' | 'route'
+    type: 'sight'
   ) => {
       const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean);
-  
-      if (type === 'route') {
-        const tripRoutes = selectedTrip?.tripRoutes?.filter(tr => selectedTrip.routeIds?.includes(tr.routeSlug)) || [];
-        const routeItems = tripRoutes.map(tr => {
-            const routeData = allItems.find(r => r.slug === tr.routeSlug);
-            return routeData ? {
-                ...routeData,
-                includedRoads: tr.includedRoads,
-            } : null;
-        }).filter(Boolean);
-
-        return (
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <div className="flex items-center gap-2">
-                    {icon}
-                    <CardTitle className="text-xl font-headline"><Translatable text={title}/></CardTitle>
-                </div>
-                <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: type })}>
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add
-                </Button>
-            </CardHeader>
-            <CardContent>
-                {routeItems && routeItems.length > 0 ? (
-                    <Accordion type="multiple" className="w-full">
-                        {routeItems.map(item => (
-                            item && <AccordionItem value={item.slug} key={item.slug}>
-                                <AccordionTrigger><Translatable text={item.name}/></AccordionTrigger>
-                                <AccordionContent>
-                                    {item.includedRoads.length > 0 ? (
-                                        <>
-                                            <div className="flex justify-end -mb-2">
-                                                <Button variant="ghost" size="sm" onClick={() => handleReverseRoads(item.slug)}>
-                                                    <ArrowRightLeft className="mr-2 h-4 w-4" />
-                                                    <Translatable text="Reverse Route"/>
-                                                </Button>
-                                            </div>
-                                            <ul className="space-y-2 pt-2">
-                                                {item.includedRoads.map((road: string) => (
-                                                    <li key={road} className="flex justify-between items-center text-sm text-muted-foreground pl-2">
-                                                        <span>{road}</span>
-                                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive" onClick={() => handleRemoveRoad(item.slug, road)}>
-                                                            <Trash2 className="h-3 w-3" />
-                                                        </Button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </>
-                                    ) : (
-                                        <p className="text-sm text-muted-foreground pt-2 pl-2"><Translatable text="No roads in this route."/></p>
-                                    )}
-                                </AccordionContent>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
-                ) : (
-                    <p className="text-sm text-muted-foreground"><Translatable text={`No ${title.toLowerCase()} added yet.`} /></p>
-                )}
-            </CardContent>
-        </Card>
-        );
-      }
   
       return (
         <Card>
@@ -705,7 +585,7 @@ export function TripPlanner({ user }: { user: User }) {
                               onClick={() => handleSelectTrip(trip)}
                               isActive={selectedTrip?.id === trip.id}
                           >
-                              <RouteIcon />
+                              <Route />
                               <span>{trip.name}</span>
                           </SidebarMenuButton>
                           <SidebarMenuAction
@@ -833,8 +713,8 @@ export function TripPlanner({ user }: { user: User }) {
                                   </CardContent>
                               </Card>
 
-                              {renderSightsOrRoutesList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
-                              {renderSightsOrRoutesList("Routes", <RouteIcon className="h-6 w-6 text-primary"/>, selectedTrip.routeIds, routes, 'route')}
+                              {renderSightsList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
+                              
                                <Card>
                                   <CardHeader>
                                       <div className="flex items-center gap-2">
@@ -883,7 +763,7 @@ export function TripPlanner({ user }: { user: User }) {
                   onSave={(selectedSlugs) => handleTownsSave(selectedSlugs)}
               />
           )}
-          {currentDialogData && (dialogState.type === 'sight' || dialogState.type === 'route') && (
+          {currentDialogData && (dialogState.type === 'sight') && (
                <AddToTripDialog 
                   isOpen={dialogState.isOpen}
                   onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
