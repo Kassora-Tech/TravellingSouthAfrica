@@ -21,6 +21,7 @@ interface Item {
   slug: string;
   name: string;
   provinceSlug?: string;
+  location?: string;
 }
 
 interface Province {
@@ -69,6 +70,7 @@ export function AddToTripDialog({
   };
   
   const showProvinceFilter = provinces && provinces.length > 0;
+  const isSightsDialog = title.includes('Sights');
 
   const provinceMap = useMemo(() => {
     if (!provinces) return new Map();
@@ -76,13 +78,21 @@ export function AddToTripDialog({
   }, [provinces]);
 
   const filteredItems = useMemo(() => {
-    let provinceFiltered = items;
+    let results = [...items];
+
     if (showProvinceFilter && selectedProvince !== 'all') {
-      provinceFiltered = items.filter(item => item.provinceSlug === selectedProvince);
+      results = results.filter(item => item.provinceSlug === selectedProvince);
     }
-    return provinceFiltered.filter(item => 
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+
+    if (searchTerm) {
+      results = results.filter(item => 
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    results.sort((a, b) => a.name.localeCompare(b.name));
+
+    return results;
   }, [items, searchTerm, selectedProvince, showProvinceFilter]);
 
   const totalTownsInProvince = useMemo(() => {
@@ -118,12 +128,16 @@ export function AddToTripDialog({
             </Select>
           )}
           
-          {showProvinceFilter && (
-            <p className="text-sm text-muted-foreground px-1">
+          <p className="text-sm text-muted-foreground px-1">
+            {isSightsDialog ? (
+              <Translatable text={`Showing ${filteredItems.length} of ${items.length} sights`} />
+            ) : (
+              <>
                 <Translatable text={`Showing ${filteredItems.length} of ${totalTownsInProvince} towns`} />
                 {selectedProvince !== 'all' && <Translatable text={` in ${provinceMap.get(selectedProvince)}`} />}
-            </p>
-          )}
+              </>
+            )}
+          </p>
 
           <ScrollArea className="h-72">
             <div className="space-y-2 pr-4">
@@ -135,7 +149,11 @@ export function AddToTripDialog({
                     onCheckedChange={() => handleSelect(item.slug)}
                   />
                   <Label htmlFor={item.slug} className="font-normal cursor-pointer flex-grow">
-                     <Translatable text={showProvinceFilter && item.provinceSlug ? `${item.name} (${provinceMap.get(item.provinceSlug) || 'N/A'})` : item.name} />
+                    {isSightsDialog ? (
+                      <Translatable text={`${item.name} (${item.location}, ${provinceMap.get(item.provinceSlug ?? '') || 'N/A'})`} />
+                    ) : (
+                      <Translatable text={showProvinceFilter && item.provinceSlug ? `${item.name} (${provinceMap.get(item.provinceSlug) || 'N/A'})` : item.name} />
+                    )}
                   </Label>
                 </div>
               ))}

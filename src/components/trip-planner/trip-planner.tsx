@@ -8,7 +8,7 @@ import { collection, doc, deleteDoc } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, MapPin, Mountain, Bed, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, Minus } from 'lucide-react';
+import { PlusCircle, MapPin, Mountain, Bed, Trash2, Download, Sparkles, Car, ArrowRightLeft, ArrowUp, ArrowDown, ExternalLink, Route, Minus, X } from 'lucide-react';
 import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
@@ -40,7 +40,7 @@ import {
   SidebarInset,
   SidebarMenuAction,
 } from '@/components/ui/sidebar';
-
+import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useToast } from '@/hooks/use-toast';
@@ -499,16 +499,37 @@ export function TripPlanner({ user }: { user: User }) {
       window.open(url, '_blank');
   };
 
-  const filteredItems = useMemo(() => {
-    return { towns, sights };
-  }, []);
+  const townNameMap = useMemo(() => new Map(towns.map(t => [t.slug, t.name])), []);
+
+  const sightsForDialog = useMemo(() => {
+    if (!selectedTrip || !selectedTrip.towns || selectedTrip.towns.length === 0) {
+      return sights;
+    }
+
+    const selectedTownNames = new Set(
+      selectedTrip.towns.map(t => townNameMap.get(t.slug)).filter(Boolean)
+    );
+
+    return sights.filter(sight => selectedTownNames.has(sight.location));
+  }, [selectedTrip, townNameMap]);
 
   const dataMap = useMemo(() => ({
-    town: { title: "Add Towns", items: filteredItems.towns, provinces: provinces },
-    sight: { title: "Add Sights", items: filteredItems.sights, key: 'sightIds' as const },
-  }), [filteredItems]);
+    town: { title: "Add Towns", items: towns, provinces: provinces },
+    sight: { title: "Add Sights", items: sightsForDialog, key: 'sightIds' as const, provinces: provinces },
+  }), [sightsForDialog]);
 
   const currentDialogData = dialogState.type ? dataMap[dialogState.type] : null;
+
+  const handleRemoveSight = (sightSlug: string) => {
+    if (!selectedTrip || !selectedTrip.sightIds) return;
+    const newSightIds = selectedTrip.sightIds.filter(id => id !== sightSlug);
+    const sightName = sights.find(s => s.slug === sightSlug)?.name || 'Sight';
+    updateTripItems(firestore, user.uid, selectedTrip.id, 'sightIds', newSightIds);
+    toast({
+        title: "Sight Removed",
+        description: `"${sightName}" has been removed from your trip.`
+    });
+  };
 
   const renderSightsList = (
     title: string,
@@ -532,19 +553,19 @@ export function TripPlanner({ user }: { user: User }) {
             </CardHeader>
             <CardContent>
                 {items && items.length > 0 ? (
-                    <ul className="space-y-3">
-                        {items.map(item => (
-                            <li key={item.slug} className="flex justify-between items-center">
-                                <span className="text-muted-foreground"><Translatable text={item.name}/></span>
-                                <Button asChild size="sm" variant="outline" className="h-auto px-2 py-1 text-xs">
-                                    <Link href={`/sights/${item.slug}`} target="_blank">
-                                        <ExternalLink className="mr-1 h-3 w-3" />
-                                        <Translatable text="View" />
-                                    </Link>
-                                </Button>
-                            </li>
-                        ))}
-                    </ul>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map(item => (
+                        <Badge key={item.slug} variant="secondary" className="flex items-center gap-2 pr-1">
+                            <Link href={`/sights/${item.slug}`} target="_blank" className="hover:underline">
+                                <Translatable text={item.name}/>
+                            </Link>
+                            <button onClick={() => handleRemoveSight(item.slug)} className="rounded-full hover:bg-muted-foreground/20 p-0.5">
+                               <X className="h-3 w-3" />
+                               <span className="sr-only">Remove {item.name}</span>
+                            </button>
+                        </Badge>
+                    ))}
+                  </div>
                 ) : (
                     <p className="text-sm text-muted-foreground"><Translatable text={`No ${title.toLowerCase()} added yet.`} /></p>
                 )}
@@ -769,6 +790,7 @@ export function TripPlanner({ user }: { user: User }) {
                   onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
                   title={currentDialogData.title}
                   items={currentDialogData.items}
+                  provinces={currentDialogData.provinces}
                   selectedItems={(selectedTrip?.[currentDialogData.key] as string[]) || []}
                   onSave={(selectedSlugs) => handleItemsSave(currentDialogData.key, selectedSlugs)}
               />
