@@ -36,6 +36,9 @@ const accommodationSchema = z.object({
   contactEmail: z.string().email(),
   contactPhone: z.string().min(1, 'Phone number is required'),
   description: z.string().min(1, 'Description is required').max(500),
+  terms: z.literal(true, {
+    errorMap: () => ({ message: "You must agree to the listing fee." }),
+  }),
 });
 
 const restaurantSchema = z.object({
@@ -46,6 +49,9 @@ const restaurantSchema = z.object({
   contactEmail: z.string().email(),
   contactPhone: z.string().min(1, 'Phone number is required'),
   description: z.string().min(1, 'Description is required').max(500),
+  terms: z.literal(true, {
+    errorMap: () => ({ message: "You must agree to the listing fee." }),
+  }),
 });
 
 const serviceProviderSchema = z.object({
@@ -56,6 +62,9 @@ const serviceProviderSchema = z.object({
     contactEmail: z.string().email(),
     contactPhone: z.string().min(1, 'Phone number is required'),
     description: z.string().min(1, 'Description is required').max(500),
+    terms: z.literal(true, {
+        errorMap: () => ({ message: "You must agree to the listing fee." }),
+    }),
 });
 
 const attractionSchema = z.object({
@@ -65,6 +74,9 @@ const attractionSchema = z.object({
     websiteUrl: z.string().url().optional().or(z.literal('')),
     contactEmail: z.string().email().optional().or(z.literal('')),
     description: z.string().min(1, 'Description is required').max(500),
+    terms: z.literal(true, {
+        errorMap: () => ({ message: "You must agree to the listing fee." }),
+    }),
 });
 
 
@@ -207,7 +219,11 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
 
     const form = useForm({
         resolver: zodResolver(formSchema),
-        defaultValues: fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
+        defaultValues: {
+            ...fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
+            terms: false,
+        },
+        mode: 'onChange',
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -322,7 +338,33 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                             )}
                         </div>
                         
-                        <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
+                        <div className="space-y-4 rounded-lg border bg-secondary p-4">
+                            <p className="text-sm italic text-muted-foreground">
+                                <Translatable text="By submitting this listing, you agree to a non-refundable annual fee of R200 per year. This fee covers your listing on Travelling South Africa and is payable upon approval. You will be invoiced after review and acceptance of your submission." />
+                            </p>
+                            <FormField
+                                control={form.control}
+                                name="terms"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center space-x-3 pt-2">
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel>
+                                                <Translatable text="I understand and agree to the R200 annual listing fee upon approval" />
+                                            </FormLabel>
+                                            <FormMessage />
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <Button type="submit" disabled={isSubmitting || !form.formState.isValid} className="w-full" size="lg">
                             {isSubmitting ? <Translatable text="Submitting..." /> : <Translatable text="Submit for Approval" />}
                         </Button>
                     </form>
