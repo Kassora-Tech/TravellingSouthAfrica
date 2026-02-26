@@ -18,7 +18,6 @@ import { useUser } from '@/firebase';
 import { UserNav } from './auth/user-nav';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
   { href: '/provinces', label: 'Provinces' },
   { href: '/towns', label: 'Towns' },
   { href: '/sights', label: 'Sights' },
