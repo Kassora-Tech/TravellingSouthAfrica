@@ -112,12 +112,15 @@ export function Hero() {
         <div className="embla__container h-full">
           {slidesData.map((slide, index) => {
             const image = PlaceHolderImages.find((p) => p.id === slide.id);
+            const altText = slide.isOriginal 
+              ? "A stunning landscape of the Drakensberg mountains in South Africa"
+              : `${slide.headline} - ${slide.subheadline}`;
             return (
               <div className="embla__slide relative flex h-full items-center justify-center" key={index}>
                 {image && (
                   <Image
                     src={image.imageUrl}
-                    alt={image.description}
+                    alt={altText}
                     fill
                     className="object-cover"
                     priority={index === 0}

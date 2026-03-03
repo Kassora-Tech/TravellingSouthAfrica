@@ -19,6 +19,7 @@ export function FeaturedProvinces() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {provinces.map((province) => {
                 const image = PlaceHolderImages.find(p => p.id === province.imageId);
+                const altText = `A scenic view of the ${province.name} province, known for being ${province.shortDescription}`;
                 return (
                     <Link href={`/provinces/${province.slug}`} key={province.slug}>
                         <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
@@ -27,7 +28,7 @@ export function FeaturedProvinces() {
                                     {image && (
                                         <Image
                                             src={image.imageUrl}
-                                            alt={image.description}
+                                            alt={altText}
                                             fill
                                             className="object-cover transition-transform duration-300 group-hover:scale-105"
                                             data-ai-hint={image.imageHint}

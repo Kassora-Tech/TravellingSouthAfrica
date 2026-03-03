@@ -5,6 +5,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export const metadata: Metadata = {
+  title: 'South African Slang Guide | Learn Local Lingo',
+  description: 'Learn common and not-so-common South African slang terms like "braai", "howzit", and "lekker" to sound like a local on your travels.',
+  alternates: {
+    canonical: '/service-providers/slang',
+  },
+};
 
 const slangData = [
   { term: 'Bag', definition: 'Refers to kissing someone or hooking up with them. Can be used as Did you bag? or Did you get baggings? meaning Didyoukissormake-out with someone?.' },
@@ -84,9 +95,50 @@ const slangData = [
   { term: 'veld', definition: 'virgin bush, especially grassland or wide open rural spaces.' },
 ];
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: slangData.map(item => ({
+    '@type': 'Question',
+    name: `What does '${item.term}' mean in South Africa?`,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.definition,
+    },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Service Providers',
+      item: `${siteUrl}/service-providers`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: 'South African Slang',
+      item: `${siteUrl}/service-providers/slang`,
+    },
+  ],
+};
+
+
 export default function SlangPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/ccNkGKgF/South-African-English-word-cloud-featured.jpg')" }}>
         <div className="absolute inset-0 bg-black/50" />
         <div className="container relative mx-auto px-4 text-center">

@@ -15,7 +15,43 @@ import {
 } from '@/components/ui/carousel';
 import Link from 'next/link';
 import { ArrowRight, MapPin } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const province = provinces.find((p) => p.slug === params.slug);
+  if (!province) {
+    return {
+      title: "Province Not Found",
+      description: "The province you are looking for does not exist on Travelling South Africa.",
+    };
+  }
+
+  const title = `${province.name} Travel Guide | Best Towns, Sights & Routes`;
+  const description = `Your complete travel guide to ${province.name}, South Africa. Discover the best towns, sights, attractions, and key facts for planning your trip.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/provinces/${province.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/provinces/${province.slug}`,
+      images: [
+        {
+          url: PlaceHolderImages.find(p => p.id === province.imageId)?.imageUrl || '',
+          width: 600,
+          height: 400,
+          alt: `A scenic view of ${province.name}`,
+        }
+      ]
+    }
+  };
+}
 
 export async function generateStaticParams() {
   return provinces.map((province) => ({
@@ -35,13 +71,53 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
 
   const heroImage = PlaceHolderImages.find((p) => p.id === province.imageId);
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Provinces',
+        item: `${siteUrl}/provinces`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: province.name,
+        item: `${siteUrl}/provinces/${province.slug}`,
+      },
+    ],
+  };
+
+  const provinceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'AdministrativeArea',
+    name: province.name,
+    description: province.description,
+    image: heroImage?.imageUrl,
+    containedInPlace: {
+      '@type': 'Country',
+      name: 'South Africa',
+    },
+    url: `${siteUrl}/provinces/${province.slug}`,
+  };
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(provinceSchema) }} />
       <section className="relative h-[50vh] text-white">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
-            alt={heroImage.description}
+            alt={`Hero image for ${province.name}, South Africa`}
             fill
             className="object-cover"
             priority
@@ -87,12 +163,13 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
         <section className="bg-secondary py-16 lg:py-24">
           <div className="container mx-auto px-4">
             <h2 className="mb-12 text-center text-3xl font-bold font-headline md:text-4xl">
-              <Translatable text="Top Sights" />
+              <Translatable text={`Top Sights in ${province.name}`} />
             </h2>
             <Carousel opts={{ loop: true, align: 'start' }} className="w-full">
               <CarouselContent>
                 {provinceSights.map((sight) => {
                   const image = PlaceHolderImages.find((p) => p.id === sight.imageId);
+                  const altText = `${sight.name} - a popular tourist attraction in ${sight.location}, ${province.name}`;
                   return (
                     <CarouselItem key={sight.slug} className="md:basis-1/2 lg:basis-1/3">
                       <div className="p-1">
@@ -103,7 +180,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
                                 {image && (
                                   <Image
                                     src={image.imageUrl}
-                                    alt={image.description}
+                                    alt={altText}
                                     fill
                                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                                     data-ai-hint={image.imageHint}
@@ -139,11 +216,12 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
         <section className="py-16 lg:py-24">
           <div className="container mx-auto px-4">
             <h2 className="mb-12 text-center text-3xl font-bold font-headline md:text-4xl">
-              <Translatable text="Major Towns" />
+              <Translatable text={`Major Towns in ${province.name}`} />
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {provinceTowns.map((town) => {
                     const image = PlaceHolderImages.find((p) => p.id === town.imageId);
+                    const altText = `A view of ${town.name}, a town in the ${province.name} province`;
                     return (
                         <Link href={`/towns/${town.slug}`} key={town.slug}>
                             <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
@@ -151,7 +229,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
                                     <div className="relative h-40 w-full">
                                         <Image
                                             src={image.imageUrl}
-                                            alt={image.description}
+                                            alt={altText}
                                             fill
                                             className="object-cover"
                                             data-ai-hint={image.imageHint}

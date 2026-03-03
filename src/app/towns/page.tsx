@@ -11,6 +11,32 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState, useMemo } from 'react';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+// Note: Metadata for client components is not directly supported.
+// This is a placeholder; for full SEO, this page could be refactored to a Server Component
+// or use a different pattern to set metadata.
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Towns',
+      item: `${siteUrl}/towns`,
+    },
+  ],
+};
 
 export default function TownsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,9 +65,31 @@ export default function TownsPage() {
     return filtered;
   }, [searchTerm, selectedProvince, sortOrder]);
 
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Towns of South Africa',
+    numberOfItems: filteredTowns.length,
+    itemListElement: filteredTowns.map((town, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'City',
+        name: town.name,
+        url: `${siteUrl}/towns/${town.slug}`,
+      },
+    })),
+  };
 
   return (
     <>
+      <head>
+        <title>Explore Over 800 Towns & Cities in South Africa | Travelling South Africa</title>
+        <meta name="description" content="Search and discover towns and cities across South Africa. Filter by province and find your next destination with our comprehensive guide." />
+        <link rel="canonical" href={`${siteUrl}/towns`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      </head>
       <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/7tDhbF45/20484249406-c92d5b103a-k.jpg')" }}>
         <div className="absolute inset-0 bg-black/50" />
         <div className="container relative mx-auto px-4 text-center">
@@ -88,6 +136,7 @@ export default function TownsPage() {
                 {filteredTowns.map((town) => {
                     const province = provinces.find(p => p.slug === town.provinceSlug);
                     const image = PlaceHolderImages.find(p => p.id === town.imageId);
+                    const altText = `View of ${town.name}, a town in ${province?.name || 'South Africa'}`;
                     return (
                         <Link href={`/towns/${town.slug}`} key={town.slug}>
                             <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 h-full">
@@ -95,7 +144,7 @@ export default function TownsPage() {
                                     <div className="relative h-40 w-full">
                                         <Image
                                             src={image.imageUrl}
-                                            alt={image.description}
+                                            alt={altText}
                                             fill
                                             className="object-cover"
                                             data-ai-hint={image.imageHint}
@@ -106,7 +155,7 @@ export default function TownsPage() {
                                     {province && (
                                         <Badge variant="secondary" className="font-normal"><Translatable text={province.name} /></Badge>
                                     )}
-                                    <h3 className="font-headline text-xl font-bold mt-1"><Translatable text={town.name} /></h3>
+                                    <h2 className="font-headline text-xl font-bold mt-1"><Translatable text={town.name} /></h2>
                                     <p className="text-muted-foreground mt-2">
                                        <Translatable text={`Population: ${town.population}`}/>
                                     </p>

@@ -6,6 +6,43 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Translatable } from '@/components/translatable';
 import { Badge } from '@/components/ui/badge';
 import { MapPin } from 'lucide-react';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const sight = sights.find((p) => p.slug === params.slug);
+  if (!sight) {
+    return {
+      title: "Sight Not Found",
+      description: "The sight or attraction you are looking for does not exist on Travelling South Africa.",
+    };
+  }
+
+  const title = `${sight.name} Guide | Tickets, Best Views & Info`;
+  const description = `Your travel guide to ${sight.name}. Find information on tickets, opening hours, best times to visit, and how to get there.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/sights/${sight.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/sights/${sight.slug}`,
+      images: [
+        {
+          url: PlaceHolderImages.find(p => p.id === sight.imageId)?.imageUrl || '',
+          width: 600,
+          height: 400,
+          alt: `A scenic view of ${sight.name}`,
+        }
+      ]
+    }
+  };
+}
 
 export async function generateStaticParams() {
   return sights.map((sight) => ({
@@ -23,13 +60,55 @@ export default function SightDetailPage({ params }: { params: { slug: string } }
   const province = provinces.find(p => p.slug === sight.provinceSlug);
   const heroImage = PlaceHolderImages.find((p) => p.id === sight.imageId);
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Sights',
+        item: `${siteUrl}/sights`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: sight.name,
+        item: `${siteUrl}/sights/${sight.slug}`,
+      },
+    ],
+  };
+
+  const attractionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: sight.name,
+    description: sight.description,
+    image: heroImage?.imageUrl,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: sight.location,
+      addressRegion: province?.name,
+      addressCountry: 'ZA',
+    },
+    url: `${siteUrl}/sights/${sight.slug}`,
+  };
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(attractionSchema) }} />
       <section className="relative h-[60vh] text-white">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
-            alt={heroImage.description}
+            alt={`Hero image of ${sight.name}, a popular attraction in ${sight.location}`}
             fill
             className="object-cover"
             priority
@@ -55,7 +134,7 @@ export default function SightDetailPage({ params }: { params: { slug: string } }
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
-                <h2 className="font-headline text-3xl font-bold mb-4"><Translatable text="About the Sight" /></h2>
+                <h2 className="font-headline text-3xl font-bold mb-4"><Translatable text={`About ${sight.name}`} /></h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                     <Translatable text={sight.description} />
                 </p>

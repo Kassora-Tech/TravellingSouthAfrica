@@ -6,10 +6,58 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export const metadata: Metadata = {
+  title: 'Explore the 9 Provinces of South Africa',
+  description: 'Discover the unique character and beauty of each of South Africa\'s nine provinces, from the Western Cape to Limpopo. Your comprehensive travel guide starts here.',
+  alternates: {
+    canonical: '/provinces',
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Provinces',
+      item: `${siteUrl}/provinces`,
+    },
+  ],
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'South African Provinces',
+  itemListElement: provinces.map((province, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'AdministrativeArea',
+      name: province.name,
+      url: `${siteUrl}/provinces/${province.slug}`,
+      description: province.shortDescription,
+    },
+  })),
+};
 
 export default function ProvincesPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
       <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/1Ycpf7ZZ/Nine-provinces-South-Africa-top.jpg')" }}>
         <div className="absolute inset-0 bg-black/50" />
         <div className="container relative mx-auto px-4 text-center">
@@ -27,13 +75,14 @@ export default function ProvincesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {provinces.map((province) => {
                     const image = PlaceHolderImages.find(p => p.id === province.imageId);
+                    const altText = `Scenic view of ${province.name}, known for ${province.shortDescription}`;
                     return (
                         <Card key={province.slug} className="group overflow-hidden flex flex-col">
                             {image && (
                                 <div className="relative h-56 w-full overflow-hidden">
                                     <Image
                                         src={image.imageUrl}
-                                        alt={image.description}
+                                        alt={altText}
                                         fill
                                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                                         data-ai-hint={image.imageHint}

@@ -9,6 +9,44 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, Users } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const town = towns.find((p) => p.slug === params.slug);
+  if (!town) {
+    return {
+      title: "Town Not Found",
+      description: "The town you are looking for does not exist on Travelling South Africa.",
+    };
+  }
+
+  const province = provinces.find(p => p.slug === town.provinceSlug);
+  const title = `${town.name} Travel Guide 2026 | Attractions & Accommodation`;
+  const description = `Plan your visit to ${town.name}, ${province?.name || 'South Africa'}. Find nearby sights, accommodation, and key information with our travel guide.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/towns/${town.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/towns/${town.slug}`,
+      images: [
+        {
+          url: PlaceHolderImages.find(p => p.id === town.imageId)?.imageUrl || '',
+          width: 600,
+          height: 400,
+          alt: `A scenic view of ${town.name}`,
+        }
+      ]
+    }
+  };
+}
 
 export async function generateStaticParams() {
   return towns.map((town) => ({
@@ -27,13 +65,56 @@ export default function TownDetailPage({ params }: { params: { slug:string } }) 
   const heroImage = PlaceHolderImages.find((p) => p.id === town.imageId);
   const nearbySights = sights.filter(s => town.nearbySightSlugs?.includes(s.slug));
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Towns',
+        item: `${siteUrl}/towns`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: town.name,
+        item: `${siteUrl}/towns/${town.slug}`,
+      },
+    ],
+  };
+
+  const citySchema = {
+    '@context': 'https://schema.org',
+    '@type': 'City',
+    name: town.name,
+    description: town.description,
+    image: heroImage?.imageUrl,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: town.name,
+      addressRegion: province?.name,
+      addressCountry: 'ZA',
+    },
+    url: `${siteUrl}/towns/${town.slug}`,
+  };
+
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(citySchema) }} />
       <section className="relative h-[50vh] text-white">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
-            alt={heroImage.description}
+            alt={`A scenic view of ${town.name}, ${province?.name || 'South Africa'}`}
             fill
             className="object-cover"
             priority
@@ -62,7 +143,7 @@ export default function TownDetailPage({ params }: { params: { slug:string } }) 
               </p>
             </div>
             <div className="bg-secondary p-6 rounded-lg space-y-4">
-              <h3 className="font-headline text-2xl font-bold border-b pb-2"><Translatable text="Town Info" /></h3>
+              <h2 className="font-headline text-2xl font-bold border-b pb-2"><Translatable text="Town Info" /></h2>
               <div className="flex items-center">
                 <MapPin className="w-5 h-5 mr-3 text-primary" />
                 <span><Translatable text="Province:" /> <strong className="font-semibold"><Translatable text={province?.name ?? 'N/A'} /></strong></span>
@@ -85,6 +166,7 @@ export default function TownDetailPage({ params }: { params: { slug:string } }) 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {nearbySights.map((sight) => {
                 const image = PlaceHolderImages.find((p) => p.id === sight.imageId);
+                const altText = `${sight.name}, a tourist attraction near ${town.name}`;
                 return (
                   <Link href={`/sights/${sight.slug}`} key={sight.slug}>
                     <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
@@ -92,7 +174,7 @@ export default function TownDetailPage({ params }: { params: { slug:string } }) 
                         <div className="relative h-48 w-full">
                           <Image
                             src={image.imageUrl}
-                            alt={image.description}
+                            alt={altText}
                             fill
                             className="object-cover"
                             data-ai-hint={image.imageHint}
