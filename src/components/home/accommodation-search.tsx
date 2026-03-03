@@ -4,7 +4,7 @@ import { Bed } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Translatable } from '@/components/translatable';
 import { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { towns } from '@/lib/data/towns';
 
 export function AccommodationSearch() {
@@ -13,7 +13,10 @@ export function AccommodationSearch() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (destination) {
-        window.location.href = `/accommodations?town=${destination}`;
+        const searchTerm = destination.toLowerCase().trim();
+        const town = towns.find(t => t.name.toLowerCase() === searchTerm);
+        const slug = town ? town.slug : searchTerm.replace(/\s+/g, '-');
+        window.location.href = `/accommodations?town=${slug}`;
     } else {
         window.location.href = '/accommodations';
     }
@@ -38,18 +41,13 @@ export function AccommodationSearch() {
             {/* Location */}
             <div className="relative flex items-center flex-grow w-full">
               <Bed className="absolute left-4 h-5 w-5 text-gray-500 z-10" />
-              <Select value={destination} onValueChange={setDestination}>
-                <SelectTrigger className="w-full h-14 pl-12 text-base border-0 lg:border-r rounded-none focus:ring-0 focus:ring-offset-0 text-left justify-start gap-2">
-                  <SelectValue placeholder="Pick your Town" />
-                </SelectTrigger>
-                <SelectContent>
-                  {towns.map((town) => (
-                    <SelectItem key={town.slug} value={town.slug}>
-                      <Translatable text={town.name} />
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                placeholder="Enter a town or city..."
+                className="w-full h-14 pl-12 text-base border-0 lg:border-r rounded-none focus:ring-0 focus:ring-offset-0 text-foreground placeholder:text-muted-foreground"
+              />
             </div>
 
             {/* Search Button */}
