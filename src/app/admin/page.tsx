@@ -6,6 +6,9 @@ import { isAdmin } from '@/lib/admin';
 import { Translatable } from '@/components/translatable';
 import { AdminListingsPanel } from '@/components/admin/admin-listings-panel';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { PlusCircle } from 'lucide-react';
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
@@ -27,8 +30,18 @@ export default function AdminPage() {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
-      <p className="mt-2 text-lg text-muted-foreground">Manage user-submitted listings.</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
+          <p className="mt-2 text-lg text-muted-foreground">Manage user-submitted listings.</p>
+        </div>
+        <Button asChild>
+          <Link href="/add-your-listing">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            <Translatable text="Add Listing" />
+          </Link>
+        </Button>
+      </div>
       <Tabs defaultValue="accommodations" className="mt-8">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
           <TabsTrigger value="accommodations">Accommodations</TabsTrigger>
