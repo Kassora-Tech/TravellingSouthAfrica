@@ -15,7 +15,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+      return request.auth.token.email == 'maryke@travellingsouthafrica.co.za' || request.auth.token.email == 'tristan@industrialgrowthhub.com';
     }
     
     // -------------------------------------------------------------------------
@@ -57,18 +57,14 @@ service cloud.firestore {
     match /{collection}/{listingId}
         where collection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
 
-      // Anyone can read approved listings, admins can read all
       allow read: if resource.data.approved == true || isAdmin();
 
-      // Only admins can list entire collections (for the admin dashboard)
       allow list: if isAdmin();
 
-      // Let authenticated users create their own listings.
-      // Admins can bypass the 'approved == false' check.
       allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid &&
-                    (request.resource.data.approved == false || isAdmin());
+                    ((isAdmin() && request.resource.data.approved == true) || 
+                     (!isAdmin() && request.resource.data.approved == false));
 
-      // Only admins can update or delete listings
       allow update, delete: if isAdmin();
     }
   }
