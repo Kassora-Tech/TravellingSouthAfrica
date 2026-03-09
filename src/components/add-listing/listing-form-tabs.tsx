@@ -22,6 +22,7 @@ import { addListing } from '@/firebase/firestore/listings';
 import { towns } from '@/lib/data/towns';
 import { Camera, CheckCircle } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
+import { useFirestore } from '@/firebase';
 
 interface ListingFormTabsProps {
   user: User;
@@ -201,6 +202,7 @@ interface ListingFormProps {
 }
 
 function ListingForm({ user, collectionName, formSchema, title, description, fields, isAdmin }: ListingFormProps) {
+    const firestore = useFirestore();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -227,7 +229,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         setIsSubmitting(true);
         // Note: File upload logic to Firebase Storage is not implemented here.
         // In a real app, you'd upload files and get URLs before saving to Firestore.
-        const result = await addListing(collectionName, { 
+        const result = await addListing(firestore, collectionName, { 
             ...values,
             ownerUid: user.uid,
             ownerEmail: user.email,
