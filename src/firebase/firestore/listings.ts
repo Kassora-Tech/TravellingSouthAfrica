@@ -21,17 +21,8 @@ export async function addListing(firestore: Firestore, collectionName: string, d
     const docRef = await addDoc(listingCollection, dataWithTimestamp);
     return { success: true, id: docRef.id };
   } catch (serverError: any) {
-      // On failure, emit the detailed permission error for debugging
-      errorEmitter.emit(
-        'permission-error',
-        new FirestorePermissionError({
-          path: listingCollection.path,
-          operation: 'create',
-          requestResourceData: dataWithTimestamp,
-        })
-      );
       // Also, return a failure object for the UI to handle gracefully
       console.error("Firestore 'addListing' operation failed:", serverError);
-      return { success: false, error: serverError.message };
+      return { success: false, error: "Submission failed - please try again" };
   }
 }
