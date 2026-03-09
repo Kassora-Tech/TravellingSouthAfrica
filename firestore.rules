@@ -60,7 +60,6 @@ service cloud.firestore {
       allow read: if true;
       
       // Regular users can create unapproved listings, admins can create approved ones.
-      // All creations must be by the document owner.
       allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid &&
           (request.resource.data.approved == false || isAdmin());
 
