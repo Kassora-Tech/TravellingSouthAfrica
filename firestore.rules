@@ -61,32 +61,28 @@ service cloud.firestore {
     match /accommodations/{listingId} {
       allow read: if resource.data.approved == true || isAdmin();
       allow list: if isAdmin();
-      allow create: if !isAdmin() && request.auth.uid == request.resource.data.ownerUid && request.resource.data.approved == false;
-      allow create: if isAdmin() && request.auth.uid == request.resource.data.ownerUid;
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
       allow update, delete: if isAdmin();
     }
 
     match /restaurants/{listingId} {
       allow read: if resource.data.approved == true || isAdmin();
       allow list: if isAdmin();
-      allow create: if !isAdmin() && request.auth.uid == request.resource.data.ownerUid && request.resource.data.approved == false;
-      allow create: if isAdmin() && request.auth.uid == request.resource.data.ownerUid;
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
       allow update, delete: if isAdmin();
     }
 
     match /service_providers/{listingId} {
       allow read: if resource.data.approved == true || isAdmin();
       allow list: if isAdmin();
-      allow create: if !isAdmin() && request.auth.uid == request.resource.data.ownerUid && request.resource.data.approved == false;
-      allow create: if isAdmin() && request.auth.uid == request.resource.data.ownerUid;
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
       allow update, delete: if isAdmin();
     }
 
     match /attractions/{listingId} {
       allow read: if resource.data.approved == true || isAdmin();
       allow list: if isAdmin();
-      allow create: if !isAdmin() && request.auth.uid == request.resource.data.ownerUid && request.resource.data.approved == false;
-      allow create: if isAdmin() && request.auth.uid == request.resource.data.ownerUid;
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
       allow update, delete: if isAdmin();
     }
   }
