@@ -53,15 +53,67 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
-    // --- Combined Rule for ALL Listing Types ---
-    match /{collection}/{listingId}
-        where collection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
+    // --- Listing Type Rules (Separated for clarity) ---
 
+    match /accommodations/{listingId} {
       allow read: if resource.data.approved == true || isAdmin();
-
       allow list: if isAdmin();
 
-      // Admins can create listings that are pre-approved
+      // Admins can create pre-approved listings
+      allow create: if isAdmin() &&
+                       request.resource.data.approved == true &&
+                       request.resource.data.ownerUid == request.auth.uid;
+                       
+      // Regular users can create listings that are pending approval
+      allow create: if !isAdmin() &&
+                       request.auth != null &&
+                       request.resource.data.approved == false &&
+                       request.resource.data.ownerUid == request.auth.uid;
+
+      allow update, delete: if isAdmin();
+    }
+    
+    match /restaurants/{listingId} {
+      allow read: if resource.data.approved == true || isAdmin();
+      allow list: if isAdmin();
+
+      // Admins can create pre-approved listings
+      allow create: if isAdmin() &&
+                       request.resource.data.approved == true &&
+                       request.resource.data.ownerUid == request.auth.uid;
+                       
+      // Regular users can create listings that are pending approval
+      allow create: if !isAdmin() &&
+                       request.auth != null &&
+                       request.resource.data.approved == false &&
+                       request.resource.data.ownerUid == request.auth.uid;
+
+      allow update, delete: if isAdmin();
+    }
+    
+    match /service_providers/{listingId} {
+      allow read: if resource.data.approved == true || isAdmin();
+      allow list: if isAdmin();
+
+      // Admins can create pre-approved listings
+      allow create: if isAdmin() &&
+                       request.resource.data.approved == true &&
+                       request.resource.data.ownerUid == request.auth.uid;
+                       
+      // Regular users can create listings that are pending approval
+      allow create: if !isAdmin() &&
+                       request.auth != null &&
+                       request.resource.data.approved == false &&
+                       request.resource.data.ownerUid == request.auth.uid;
+
+      allow update, delete: if isAdmin();
+    }
+    
+    match /attractions/{listingId} {
+      allow read: if resource.data.approved == true || isAdmin();
+      allow list: if isAdmin();
+
+      // Admins can create pre-approved listings
       allow create: if isAdmin() &&
                        request.resource.data.approved == true &&
                        request.resource.data.ownerUid == request.auth.uid;
