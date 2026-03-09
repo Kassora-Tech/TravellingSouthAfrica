@@ -61,9 +61,16 @@ service cloud.firestore {
 
       allow list: if isAdmin();
 
-      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid &&
-                    ((isAdmin() && request.resource.data.approved == true) || 
-                     (!isAdmin() && request.resource.data.approved == false));
+      // Admins can create listings that are pre-approved
+      allow create: if isAdmin() &&
+                       request.resource.data.approved == true &&
+                       request.resource.data.ownerUid == request.auth.uid;
+                       
+      // Regular users can create listings that are pending approval
+      allow create: if !isAdmin() &&
+                       request.auth != null &&
+                       request.resource.data.approved == false &&
+                       request.resource.data.ownerUid == request.auth.uid;
 
       allow update, delete: if isAdmin();
     }
