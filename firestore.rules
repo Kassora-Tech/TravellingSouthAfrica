@@ -14,14 +14,12 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isAdmin() {
-      return isSignedIn() && 
-             (request.auth.token.email == 'maryke@travellingsouthafrica.co.za' || 
-              request.auth.token.email == 'tristan@industrialgrowthhub.com');
-    }
-
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
     }
     
     // -------------------------------------------------------------------------
@@ -62,11 +60,16 @@ service cloud.firestore {
     // --- LISTINGS (Accommodations, Restaurants, Service Providers, Attractions) ---
     match /{collection}/{listingId}
       where collection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
-        allow read: if resource.data.approved == true || isAdmin();
-        allow list: if isAdmin();
-        allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid
-          && (request.resource.data.approved == false || request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com']);
-        allow update, delete: if request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+      
+      allow read: if resource.data.approved == true || isAdmin();
+      
+      allow list: if isAdmin();
+
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid &&
+          ( (isAdmin() && request.resource.data.approved == true) ||
+            (!isAdmin() && request.resource.data.approved == false) );
+
+      allow update, delete: if isAdmin();
     }
   }
 }
