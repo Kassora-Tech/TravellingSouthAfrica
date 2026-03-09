@@ -1,7 +1,6 @@
 'use client';
 
 import { addDoc, collection, serverTimestamp, Firestore } from 'firebase/firestore';
-import { errorEmitter, FirestorePermissionError } from '@/firebase';
 
 interface ListingData {
   ownerUid: string;
@@ -20,14 +19,9 @@ export async function addListing(firestore: Firestore, collectionName: string, d
     const docRef = await addDoc(listingCollection, dataWithTimestamp);
     return { success: true, id: docRef.id };
   } catch (error) {
-    errorEmitter.emit(
-      'permission-error',
-      new FirestorePermissionError({
-        path: listingCollection.path,
-        operation: 'create',
-        requestResourceData: dataWithTimestamp,
-      })
-    );
+    // Log the full error for debugging but don't throw the custom overlay error.
+    console.error("Firestore 'addListing' operation failed:", error);
+    // Return a generic failure response for the UI to handle gracefully.
     return { success: false, error: (error as Error).message };
   }
 }
