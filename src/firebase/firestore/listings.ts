@@ -1,6 +1,8 @@
 'use client';
 
 import { addDoc, collection, serverTimestamp, Firestore } from 'firebase/firestore';
+import { errorEmitter } from '../error-emitter';
+import { FirestorePermissionError } from '../errors';
 
 interface ListingData {
   ownerUid: string;
@@ -18,10 +20,18 @@ export async function addListing(firestore: Firestore, collectionName: string, d
   try {
     const docRef = await addDoc(listingCollection, dataWithTimestamp);
     return { success: true, id: docRef.id };
-  } catch (error) {
-    // The permission error is now handled gracefully by returning a failure state
-    // to the UI, which will display a toast notification without crashing.
-    console.error("Firestore 'addListing' operation failed:", error);
-    return { success: false, error: (error as Error).message };
+  } catch (serverError: any) {
+      // On failure, emit the detailed permission error for debugging
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: listingCollection.path,
+          operation: 'create',
+          requestResourceData: dataWithTimestamp,
+        })
+      );
+      // Also, return a failure object for the UI to handle gracefully
+      console.error("Firestore 'addListing' operation failed:", serverError);
+      return { success: false, error: serverError.message };
   }
 }

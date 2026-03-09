@@ -1,7 +1,3 @@
-/**
- * This ruleset defines the security model for the "Travelling South Africa" application.
- * It segregates access between public content, private user data, and admin-managed listings.
- */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -19,7 +15,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return request.auth.token.email == 'maryke@travellingsouthafrica.co.za' || request.auth.token.email == 'tristan@industrialgrowthhub.com';
+      return request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
     }
     
     // -------------------------------------------------------------------------
@@ -57,32 +53,22 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
-    // --- LISTINGS ---
-    match /accommodations/{listingId} {
-      allow read: if resource.data.approved == true || isAdmin();
-      allow list: if isAdmin();
-      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
-      allow update, delete: if isAdmin();
-    }
+    // --- Combined Rule for ALL Listing Types ---
+    match /{collection}/{listingId}
+        where collection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
 
-    match /restaurants/{listingId} {
+      // Anyone can read approved listings, admins can read all
       allow read: if resource.data.approved == true || isAdmin();
-      allow list: if isAdmin();
-      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
-      allow update, delete: if isAdmin();
-    }
 
-    match /service_providers/{listingId} {
-      allow read: if resource.data.approved == true || isAdmin();
+      // Only admins can list entire collections (for the admin dashboard)
       allow list: if isAdmin();
-      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
-      allow update, delete: if isAdmin();
-    }
 
-    match /attractions/{listingId} {
-      allow read: if resource.data.approved == true || isAdmin();
-      allow list: if isAdmin();
-      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid && ((isAdmin() && request.resource.data.approved == true) || (!isAdmin() && request.resource.data.approved == false));
+      // Let authenticated users create their own listings.
+      // Admins can bypass the 'approved == false' check.
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid &&
+                    (request.resource.data.approved == false || isAdmin());
+
+      // Only admins can update or delete listings
       allow update, delete: if isAdmin();
     }
   }
