@@ -24,26 +24,6 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
     
-    function isListingOwner() {
-      return isSignedIn() && resource.data.ownerUid == request.auth.uid;
-    }
-
-    function createsValidUserData(userId) {
-      return request.resource.data.id == userId;
-    }
-
-    function updatesValidUserData() {
-      return request.resource.data.id == resource.data.id;
-    }
-
-    function createsValidUserSubcollectionData(userId) {
-      return request.resource.data.userId == userId;
-    }
-
-    function updatesValidUserSubcollectionData() {
-      return request.resource.data.userId == resource.data.userId;
-    }
-    
     // -------------------------------------------------------------------------
     // User Data Rules
     // -------------------------------------------------------------------------
@@ -51,8 +31,8 @@ service cloud.firestore {
     match /users/{userId} {
       allow get: if isOwner(userId);
       allow list: if false;
-      allow create: if isOwner(userId) && createsValidUserData(userId);
-      allow update: if isOwner(userId) && updatesValidUserData();
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
       allow delete: if isOwner(userId);
 
       match /trips/{tripId} {
@@ -79,44 +59,29 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
-    // --- ACCOMMODATIONS ---
-    match /accommodations/{listingId} {
-      allow get: if isAdmin() || (resource.data.approved == true);
-      allow list: if isAdmin();
-      allow create: if isAdmin() && request.resource.data.approved == true && request.resource.data.ownerUid == request.auth.uid;
-      allow create: if !isAdmin() && request.resource.data.approved == false && request.resource.data.ownerUid == request.auth.uid;
-      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-    }
+    // --- LISTINGS (Accommodations, Restaurants, Service Providers, Attractions) ---
+    match /{collection}/{listingId}
+      where collection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
 
-    // --- RESTAURANTS ---
-    match /restaurants/{listingId} {
-      allow get: if isAdmin() || (resource.data.approved == true);
-      allow list: if isAdmin();
-      allow create: if isAdmin() && request.resource.data.approved == true && request.resource.data.ownerUid == request.auth.uid;
-      allow create: if !isAdmin() && request.resource.data.approved == false && request.resource.data.ownerUid == request.auth.uid;
-      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-    }
-    
-    // --- SERVICE PROVIDERS ---
-    match /service_providers/{listingId} {
-      allow get: if isAdmin() || (resource.data.approved == true);
-      allow list: if isAdmin();
-      allow create: if isAdmin() && request.resource.data.approved == true && request.resource.data.ownerUid == request.auth.uid;
-      allow create: if !isAdmin() && request.resource.data.approved == false && request.resource.data.ownerUid == request.auth.uid;
-      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-    }
+        function isListingOwner() {
+          return isSignedIn() && resource.data.ownerUid == request.auth.uid;
+        }
 
-    // --- ATTRACTIONS ---
-    match /attractions/{listingId} {
-      allow get: if isAdmin() || (resource.data.approved == true);
-      allow list: if isAdmin();
-      allow create: if isAdmin() && request.resource.data.approved == true && request.resource.data.ownerUid == request.auth.uid;
-      allow create: if !isAdmin() && request.resource.data.approved == false && request.resource.data.ownerUid == request.auth.uid;
-      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
-      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+        // Public can get approved listings. Admins can get any.
+        allow get: if isAdmin() || (resource.data.approved == true);
+
+        // Only admins can list documents.
+        allow list: if isAdmin();
+
+        // Users must own the doc. Create is allowed if it's unapproved OR the user is an admin.
+        allow create: if isSignedIn() && request.resource.data.ownerUid == request.auth.uid &&
+          (request.resource.data.approved == false || isAdmin());
+
+        // Admins can update. Owners can update but cannot change the approval status.
+        allow update: if isAdmin() || (isListingOwner() && request.resource.data.approved == resource.data.approved);
+
+        // Only admins can delete.
+        allow delete: if isAdmin();
     }
   }
 }
