@@ -14,7 +14,6 @@ export async function addListing(collectionName: string, data: ListingData) {
   
   const dataWithTimestamp = {
     ...data,
-    approved: false,
     createdAt: serverTimestamp(),
   };
 

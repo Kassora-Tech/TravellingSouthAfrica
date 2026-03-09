@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -25,6 +25,7 @@ import { ScrollArea } from '../ui/scroll-area';
 
 interface ListingFormTabsProps {
   user: User;
+  isAdmin: boolean;
 }
 
 const accommodationSchema = z.object({
@@ -69,7 +70,7 @@ const serviceProviderSchema = z.object({
 
 const attractionSchema = z.object({
     name: z.string().min(1, 'Attraction name is required'),
-    townSlug: z.string().min(1, 'Town is required'),
+    townSlug: z.string().min(1, 'Nearest Town is required'),
     category: z.string().min(1, 'Category is required'),
     websiteUrl: z.string().url().optional().or(z.literal('')),
     contactEmail: z.string().email().optional().or(z.literal('')),
@@ -88,24 +89,7 @@ const serviceCategories = ['Car Hire', 'Tour Operator', 'Guide', 'Transport', 'O
 const attractionCategories = ['Nature', 'Culture', 'Adventure', 'Historical', 'Other'];
 
 
-export function ListingFormTabs({ user }: ListingFormTabsProps) {
-  const { toast } = useToast();
-
-  const createFormSubmitHandler = (collectionName: string, reset: () => void, setSuccess: (s: boolean) => void) => async (values: FormSchema) => {
-    const result = await addListing(collectionName, { ...values, ownerUid: user.uid });
-    if (result.success) {
-      setSuccess(true);
-      reset();
-      setTimeout(() => setSuccess(false), 5000);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Submission Failed',
-        description: result.error || 'An unexpected error occurred.',
-      });
-    }
-  };
-
+export function ListingFormTabs({ user, isAdmin }: ListingFormTabsProps) {
   return (
     <Tabs defaultValue="accommodation" className="w-full">
       <TabsList className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 h-auto">
@@ -118,6 +102,7 @@ export function ListingFormTabs({ user }: ListingFormTabsProps) {
         <ListingForm
             key="accommodation"
             user={user}
+            isAdmin={isAdmin}
             collectionName="accommodations"
             formSchema={accommodationSchema}
             title="Accommodation"
@@ -138,6 +123,7 @@ export function ListingFormTabs({ user }: ListingFormTabsProps) {
         <ListingForm
             key="restaurant"
             user={user}
+            isAdmin={isAdmin}
             collectionName="restaurants"
             formSchema={restaurantSchema}
             title="Restaurant"
@@ -157,6 +143,7 @@ export function ListingFormTabs({ user }: ListingFormTabsProps) {
         <ListingForm
             key="service"
             user={user}
+            isAdmin={isAdmin}
             collectionName="service_providers"
             formSchema={serviceProviderSchema}
             title="Service Provider"
@@ -176,6 +163,7 @@ export function ListingFormTabs({ user }: ListingFormTabsProps) {
         <ListingForm
             key="attraction"
             user={user}
+            isAdmin={isAdmin}
             collectionName="attractions"
             formSchema={attractionSchema}
             title="Attraction / Sight"
@@ -209,9 +197,10 @@ interface ListingFormProps {
     title: string;
     description: string;
     fields: FieldConfig[];
+    isAdmin: boolean;
 }
 
-function ListingForm({ user, collectionName, formSchema, title, description, fields }: ListingFormProps) {
+function ListingForm({ user, collectionName, formSchema, title, description, fields, isAdmin }: ListingFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -226,11 +215,22 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         mode: 'onChange',
     });
 
+    useEffect(() => {
+        if (isAdmin) {
+            form.setValue('terms', true);
+        }
+    }, [isAdmin, form]);
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsSubmitting(true);
         // Note: File upload logic to Firebase Storage is not implemented here.
         // In a real app, you'd upload files and get URLs before saving to Firestore.
-        const result = await addListing(collectionName, { ...values, ownerUid: user.uid });
+        const result = await addListing(collectionName, { 
+            ...values,
+            ownerUid: user.uid,
+            approved: isAdmin,
+        });
+
         if (result.success) {
             setSuccess(true);
             form.reset();
@@ -264,7 +264,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                  <CardContent className="p-8 text-center">
                     <CheckCircle className="h-16 w-16 mx-auto text-green-500" />
                     <h2 className="mt-4 text-2xl font-bold font-headline"><Translatable text="Listing Submitted!" /></h2>
-                    <p className="mt-2 text-muted-foreground"><Translatable text="Thank you. Your listing has been submitted for approval. We will review it shortly." /></p>
+                    <p className="mt-2 text-muted-foreground"><Translatable text={`Thank you. Your listing has been submitted for approval. We will review it shortly.${isAdmin ? ' It has been automatically approved.' : ''}`} /></p>
                 </CardContent>
             </Card>
         )
@@ -338,31 +338,33 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                             )}
                         </div>
                         
-                        <div className="space-y-4 rounded-lg border bg-secondary p-4">
-                            <p className="text-sm italic text-muted-foreground">
-                                <Translatable text="By submitting this listing, you agree to a non-refundable annual fee of R200 per year. This fee covers your listing on Travelling South Africa and is payable upon approval. You will be invoiced after review and acceptance of your submission." />
-                            </p>
-                            <FormField
-                                control={form.control}
-                                name="terms"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-center space-x-3 pt-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <div className="space-y-1 leading-none">
-                                            <FormLabel>
-                                                <Translatable text="I understand and agree to the R200 annual listing fee upon approval" />
-                                            </FormLabel>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                        {!isAdmin && (
+                            <div className="space-y-4 rounded-lg border bg-secondary p-4">
+                                <p className="text-sm italic text-muted-foreground">
+                                    <Translatable text="By submitting this listing, you agree to a non-refundable annual fee of R200 per year. This fee covers your listing on Travelling South Africa and is payable upon approval. You will be invoiced after review and acceptance of your submission." />
+                                </p>
+                                <FormField
+                                    control={form.control}
+                                    name="terms"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-center space-x-3 pt-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                            <div className="space-y-1 leading-none">
+                                                <FormLabel>
+                                                    <Translatable text="I understand and agree to the R200 annual listing fee upon approval" />
+                                                </FormLabel>
+                                                <FormMessage />
+                                            </div>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
 
                         <Button type="submit" disabled={isSubmitting || !form.formState.isValid} className="w-full" size="lg">
                             {isSubmitting ? <Translatable text="Submitting..." /> : <Translatable text="Submit for Approval" />}
