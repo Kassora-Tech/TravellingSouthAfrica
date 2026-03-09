@@ -210,6 +210,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         resolver: zodResolver(formSchema),
         defaultValues: {
             ...fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
+            contactEmail: user.email || '',
             terms: false,
         },
         mode: 'onChange',
@@ -219,7 +220,8 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         if (isAdmin) {
             form.setValue('terms', true);
         }
-    }, [isAdmin, form]);
+        form.setValue('contactEmail', user.email || '');
+    }, [isAdmin, user.email, form]);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsSubmitting(true);
@@ -228,6 +230,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         const result = await addListing(collectionName, { 
             ...values,
             ownerUid: user.uid,
+            ownerEmail: user.email,
             approved: isAdmin,
         });
 
@@ -264,7 +267,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                  <CardContent className="p-8 text-center">
                     <CheckCircle className="h-16 w-16 mx-auto text-green-500" />
                     <h2 className="mt-4 text-2xl font-bold font-headline"><Translatable text="Listing Submitted!" /></h2>
-                    <p className="mt-2 text-muted-foreground"><Translatable text={`Thank you. Your listing has been submitted for approval. We will review it shortly.${isAdmin ? ' It has been automatically approved.' : ''}`} /></p>
+                    <p className="mt-2 text-muted-foreground"><Translatable text={`Thank you. Your listing has been submitted for review. We will review it shortly.${isAdmin ? ' It has been automatically approved.' : ''}`} /></p>
                 </CardContent>
             </Card>
         )
@@ -305,7 +308,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                                                 ) : field.type === 'textarea' ? (
                                                     <Textarea {...formField} placeholder={`A bit about your ${title.toLowerCase()}...`} />
                                                 ) : (
-                                                    <Input {...formField} type={field.type} />
+                                                    <Input {...formField} type={field.type} disabled={field.name === 'contactEmail'} />
                                                 )}
                                             </FormControl>
                                             <FormMessage />
