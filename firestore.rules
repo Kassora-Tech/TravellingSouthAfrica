@@ -84,16 +84,16 @@ service cloud.firestore {
     match /{listingCollection}/{listingId}
       where listingCollection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
         
-      // Admins can read and write everything in these collections
+      // Admins can read and write everything.
       allow read, write: if isAdmin();
       
-      // Public can read APPROVED documents.
-      // The client MUST filter lists using where('approved', '==', true).
+      // Public users can get a single document if it's approved.
       allow get: if resource.data.approved == true;
-      allow list: if true;
       
-      // A signed-in user can CREATE a NEW listing, but it MUST be marked as NOT approved
-      // and they must be the owner.
+      // Public users can list documents only if they query for approved documents.
+      allow list: if request.query.where.approved == true;
+      
+      // A signed-in user can CREATE a NEW listing.
       allow create: if isSignedIn() 
                     && request.resource.data.ownerUid == request.auth.uid
                     && request.resource.data.approved == false;
