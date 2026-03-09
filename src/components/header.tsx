@@ -16,6 +16,7 @@ import { useScroll } from '@/hooks/use-scroll';
 import { Translatable } from './translatable';
 import { useUser } from '@/firebase';
 import { UserNav } from './auth/user-nav';
+import { isAdmin } from '@/lib/admin';
 
 const navLinks = [
   { href: '/provinces', label: 'Provinces' },
@@ -30,6 +31,7 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const scrolled = useScroll(50);
   const { user, isUserLoading } = useUser();
+  const isAdminUser = isAdmin(user);
 
   return (
     <header
@@ -52,6 +54,11 @@ export function Header() {
                 </Link>
               </Button>
             ))}
+            {isAdminUser && (
+              <Button variant="ghost" asChild>
+                  <Link href="/admin"><Translatable text="Admin" /></Link>
+              </Button>
+            )}
             <Button variant="ghost" asChild>
                 <Link href="/add-your-listing"><Translatable text="Add Your Listing" /></Link>
             </Button>
@@ -108,6 +115,15 @@ export function Header() {
                         <Translatable text={link.label} />
                       </Link>
                     ))}
+                    {isAdminUser && (
+                       <Link
+                        href="/admin"
+                        onClick={() => setIsOpen(false)}
+                        className="text-lg font-medium"
+                      >
+                        <Translatable text="Admin" />
+                      </Link>
+                    )}
                      <Link
                         href="/contact"
                         onClick={() => setIsOpen(false)}

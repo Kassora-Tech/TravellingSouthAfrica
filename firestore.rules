@@ -1,46 +1,6 @@
 /**
  * This ruleset defines the security model for the "Travelling South Africa" application.
- *
- * Core Philosophy:
- * The security model is split into two distinct categories: private user data and public
- * application content.
- * 1. Private Data: All user-specific information (profiles, trips, bookings) is strictly
- *    controlled using an ownership model. Users can only access and modify their own data.
- * 2. Public Content: General application content like provinces, towns, and accommodations
- *    is publicly readable by anyone, including unauthenticated users, to allow for browsing.
- *    Writes to this public data are disabled by default, assuming they will be managed by
- *    administrators through a separate, secure process (e.g., the Firebase Console or a
- *    dedicated admin SDK).
- *
- * Data Structure:
- * - /users/{userId}: The root of all private data. Each user's profile is stored here.
- * - /users/{userId}/trips/{tripId}: Subcollection for a user's planned trips.
- * - /users/{userId}/bookings/{bookingId}: Subcollection for a user's accommodation bookings.
- * - /provinces, /towns, /sights, /routes, /accommodations: Top-level collections for public content.
- *
- * Key Security Decisions:
- * - Strict Ownership: A user's authentication UID (`request.auth.uid`) must match the
- *   `{userId}` wildcard in the path for any access to the `/users` tree.
- * - No User Listing: To protect user privacy, it is not possible to list all documents
- *   in the top-level `/users` collection.
- * - Public Data is Read-Only: All top-level content collections are configured to be
- *   read-only for clients. This is a secure default that prevents unauthorized modification
- *   of shared application data.
- * - Relational Integrity: On creation, documents inside a user's data tree (e.g., a new
- *   booking) MUST contain a `userId` field that correctly links back to the parent user.
- *   This field is then made immutable to prevent re-association.
- *
- * Denormalization for Authorization:
- * Each document in a user-specific subcollection (e.g., `/trips` or `/bookings`) contains
- * a denormalized `userId` field. This allows security rules to validate ownership directly
- * from the document's data without needing costly `get()` calls to parent documents,
- * resulting in faster and more scalable rules.
- *
- * Structural Segregation:
- * Private data (user profiles, trips, bookings) is structurally segregated into a dedicated
- * `/users/{userId}` tree. Publicly accessible data (provinces, towns, sights) is stored in
- * separate top-level collections. This clear separation simplifies rule writing and ensures
- * that queries for public data cannot accidentally leak private user information.
+ * It segregates access between public content, private user data, and admin-managed listings.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -50,218 +10,96 @@ service cloud.firestore {
     // Helper Functions
     // -------------------------------------------------------------------------
 
-    /**
-     * isSignedIn
-     * Checks if the user is authenticated.
-     */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /**
-     * isOwner
-     * Checks if the currently authenticated user's UID matches the provided userId.
-     * This is the foundation of the user-ownership security model.
-     * @param userId The user ID to check against the authenticated user.
-     */
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email in [
+        'maryke@travellingsouthafrica.co.za',
+        'tristan@industrialgrowthhub.com'
+      ];
+    }
+
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
-
-    /**
-     * isExistingOwner
-     * A robust check for update/delete operations, ensuring the user is the owner
-     * AND the document they are trying to modify actually exists. This prevents
-     * invalid writes and ensures idempotency.
-     * @param userId The user ID to check against the authenticated user.
-     */
-    function isExistingOwner(userId) {
-      return isOwner(userId) && resource != null;
-    }
     
-    /**
-     * createsValidUserData
-     * On create, validates that the new user document's internal 'id' field
-     * matches the document ID ({userId}), ensuring path and data consistency.
-     * @param userId The wildcard userId from the document path.
-     */
+    function isListingOwner() {
+      return isSignedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+
     function createsValidUserData(userId) {
       return request.resource.data.id == userId;
     }
 
-    /**
-     * updatesValidUserData
-     * On update, ensures the 'id' field of a user document cannot be changed,
-     * protecting the fundamental link between the document and its path ID.
-     */
     function updatesValidUserData() {
       return request.resource.data.id == resource.data.id;
     }
 
-    /**
-     * createsValidUserSubcollectionData
-     * On create, validates that a new document in a user subcollection (e.g., trips)
-     * has its 'userId' field correctly set to the owner's ID from the path.
-     * @param userId The wildcard userId from the document path.
-     */
     function createsValidUserSubcollectionData(userId) {
       return request.resource.data.userId == userId;
     }
 
-    /**
-     * updatesValidUserSubcollectionData
-     * On update, ensures the 'userId' field within a subcollection document is immutable.
-     * This prevents a user's trip or booking from being reassigned to another user.
-     */
     function updatesValidUserSubcollectionData() {
       return request.resource.data.userId == resource.data.userId;
     }
-
 
     // -------------------------------------------------------------------------
     // User Data Rules
     // -------------------------------------------------------------------------
 
-    /**
-     * @description Manages user profile documents.
-     * @path /users/{userId}
-     * @allow (get) A logged-in user with auth.uid = 'user123' reading their own profile at /users/user123.
-     * @allow (create) A new user with auth.uid = 'user123' creating their own profile at /users/user123.
-     * @deny (list) Any user attempting to list all documents in the /users collection.
-     * @deny (get) A user 'userABC' trying to read the profile of 'user123'.
-     * @principle Restricts access to a user's own data tree and prevents user enumeration.
-     */
     match /users/{userId} {
       allow get: if isOwner(userId);
       allow list: if false;
       allow create: if isOwner(userId) && createsValidUserData(userId);
-      allow update: if isExistingOwner(userId) && updatesValidUserData();
-      allow delete: if isExistingOwner(userId);
+      allow update: if isOwner(userId) && updatesValidUserData();
+      allow delete: if isOwner(userId);
 
-      /**
-       * @description Manages a user's planned trips.
-       * @path /users/{userId}/trips/{tripId}
-       * @allow (create) A logged-in user 'user123' creating a new trip document in their own subcollection.
-       * @allow (list) A logged-in user 'user123' listing all trips at /users/user123/trips.
-       * @deny (get) A user 'userABC' trying to read a trip from /users/user123/trips/trip456.
-       * @deny (update) A user 'user123' trying to change the 'userId' field on an existing trip.
-       * @principle Enforces strict ownership for all personal data within a user's data tree.
-       */
       match /trips/{tripId} {
-        allow get: if isOwner(userId);
-        allow list: if isOwner(userId);
-        allow create: if isOwner(userId) && createsValidUserSubcollectionData(userId);
-        allow update: if isExistingOwner(userId) && updatesValidUserSubcollectionData();
-        allow delete: if isExistingOwner(userId);
+        allow get, list, create, update, delete: if isOwner(userId);
       }
 
-      /**
-       * @description Manages a user's accommodation bookings.
-       * @path /users/{userId}/bookings/{bookingId}
-       * @allow (create) A logged-in user 'user123' creating a new booking document in their own subcollection.
-       * @allow (list) A logged-in user 'user123' listing all bookings at /users/user123/bookings.
-       * @deny (get) A user 'userABC' trying to read a booking from /users/user123/bookings/booking789.
-       * @deny (update) A user 'user123' trying to change the 'userId' field on an existing booking.
-       * @principle Enforces strict ownership for all personal data within a user's data tree.
-       */
       match /bookings/{bookingId} {
-        allow get: if isOwner(userId);
-        allow list: if isOwner(userId);
-        allow create: if isOwner(userId) && createsValidUserSubcollectionData(userId);
-        allow update: if isExistingOwner(userId) && updatesValidUserSubcollectionData();
-        allow delete: if isExistingOwner(userId);
+        allow get, list, create, update, delete: if isOwner(userId);
       }
     }
 
-
     // -------------------------------------------------------------------------
-    // Public Content Rules
+    // Public & Listing Content Rules
     // -------------------------------------------------------------------------
 
-    /**
-     * @description Stores province data.
-     * @path /provinces/{provinceId}
-     * @allow (get) Any user, including anonymous, reading a province document.
-     * @allow (list) Any user, including anonymous, listing all province documents.
-     * @deny (create) Any client attempting to create a new province document.
-     * @deny (delete) Any client attempting to delete a province document.
-     * @principle Provides public read access for general content while prohibiting all client-side writes.
-     */
-    match /provinces/{provinceId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+    // Rules for static content like provinces, towns, sights, routes
+    match /{publicCollection}/{docId}
+      where publicCollection in ['provinces', 'towns', 'sights', 'routes'] {
+      
+      // Anyone can read this data
+      allow get, list: if true;
+      
+      // Only admins can write to this data
+      allow write: if isAdmin();
     }
-
-    /**
-     * @description Stores town data.
-     * @path /towns/{townId}
-     * @allow (get) Any user, including anonymous, reading a town document.
-     * @allow (list) Any user, including anonymous, listing all town documents.
-     * @deny (create) Any client attempting to create a new town document.
-     * @deny (delete) Any client attempting to delete a town document.
-     * @principle Provides public read access for general content while prohibiting all client-side writes.
-     */
-    match /towns/{townId} {
-      allow get: if true;
+    
+    // Rules for user-submitted listings
+    match /{listingCollection}/{listingId}
+      where listingCollection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
+        
+      // Admins can read and write everything in these collections
+      allow read, write: if isAdmin();
+      
+      // Public can read APPROVED documents.
+      // The client MUST filter lists using where('approved', '==', true).
+      allow get: if resource.data.approved == true;
       allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+      
+      // A signed-in user can CREATE a NEW listing, but it MUST be marked as NOT approved
+      // and they must be the owner.
+      allow create: if isSignedIn() 
+                    && request.resource.data.ownerUid == request.auth.uid
+                    && request.resource.data.approved == false;
+                    
+      // The owner of a PENDING listing can UPDATE or DELETE it.
+      allow update, delete: if isListingOwner() && resource.data.approved == false;
     }
-
-    /**
-     * @description Stores sight data.
-     * @path /sights/{sightId}
-     * @allow (get) Any user, including anonymous, reading a sight document.
-     * @allow (list) Any user, including anonymous, listing all sight documents.
-     * @deny (create) Any client attempting to create a new sight document.
-     * @deny (delete) Any client attempting to delete a sight document.
-     * @principle Provides public read access for general content while prohibiting all client-side writes.
-     */
-    match /sights/{sightId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
-    }
-
-    /**
-     * @description Stores route data.
-     * @path /routes/{routeId}
-     * @allow (get) Any user, including anonymous, reading a route document.
-     * @allow (list) Any user, including anonymous, listing all route documents.
-     * @deny (create) Any client attempting to create a new route document.
-     * @deny (delete) Any client attempting to delete a route document.
-     * @principle Provides public read access for general content while prohibiting all client-side writes.
-     */
-    match /routes/{routeId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
-    }
-
-    /**
-     * @description Stores accommodation data.
-     * @path /accommodations/{accommodationId}
-     * @allow (get) Any user, including anonymous, reading an accommodation document.
-     * @allow (list) Any user, including anonymous, listing all accommodation documents.
-     * @deny (create) Any client attempting to create a new accommodation document.
-     * @deny (delete) Any client attempting to delete an accommodation document.
-     * @principle Provides public read access for general content while prohibiting all client-side writes.
-     */
-    match /accommodations/{accommodationId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
-    }
-
   }
 }

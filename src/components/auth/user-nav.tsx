@@ -16,6 +16,7 @@ import { Translatable } from "../translatable";
 import { logout } from "@/firebase/auth/actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { isAdmin } from "@/lib/admin";
 
 export function UserNav() {
   const { user } = useUser();
@@ -36,6 +37,8 @@ export function UserNav() {
     const initials = names.map(n => n[0]).join('');
     return initials.toUpperCase();
   }
+
+  const isAdminUser = isAdmin(user);
 
   return (
     <DropdownMenu>
@@ -66,6 +69,11 @@ export function UserNav() {
           <DropdownMenuItem asChild>
             <Link href="/dashboard"><Translatable text="Dashboard" /></Link>
           </DropdownMenuItem>
+          {isAdminUser && (
+            <DropdownMenuItem asChild>
+              <Link href="/admin"><Translatable text="Admin Dashboard" /></Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem disabled><Translatable text="Account Settings" /></DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
