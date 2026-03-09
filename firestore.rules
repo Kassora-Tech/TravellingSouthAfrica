@@ -80,21 +80,51 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
-    // Rules for user-submitted listings
-    match /{listingCollection}/{listingId}
-      where listingCollection in ['accommodations', 'restaurants', 'service_providers', 'attractions'] {
-        
+    // --- ACCOMMODATIONS ---
+    match /accommodations/{listingId} {
       allow get: if isAdmin() || (resource.data.approved == true);
-
-      allow list: if isAdmin() || (request.query.where.approved == true);
-      
+      allow list: if isAdmin();
       allow create: if isAdmin() || 
                     (isSignedIn() 
                       && request.resource.data.ownerUid == request.auth.uid
                       && request.resource.data.approved == false);
-                    
       allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+    }
 
+    // --- RESTAURANTS ---
+    match /restaurants/{listingId} {
+      allow get: if isAdmin() || (resource.data.approved == true);
+      allow list: if isAdmin();
+      allow create: if isAdmin() || 
+                    (isSignedIn() 
+                      && request.resource.data.ownerUid == request.auth.uid
+                      && request.resource.data.approved == false);
+      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+    }
+    
+    // --- SERVICE PROVIDERS ---
+    match /service_providers/{listingId} {
+      allow get: if isAdmin() || (resource.data.approved == true);
+      allow list: if isAdmin();
+      allow create: if isAdmin() || 
+                    (isSignedIn() 
+                      && request.resource.data.ownerUid == request.auth.uid
+                      && request.resource.data.approved == false);
+      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+      allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
+    }
+
+    // --- ATTRACTIONS ---
+    match /attractions/{listingId} {
+      allow get: if isAdmin() || (resource.data.approved == true);
+      allow list: if isAdmin();
+      allow create: if isAdmin() || 
+                    (isSignedIn() 
+                      && request.resource.data.ownerUid == request.auth.uid
+                      && request.resource.data.approved == false);
+      allow update: if isAdmin() || (isListingOwner() && resource.data.approved == false);
       allow delete: if isAdmin() || (isListingOwner() && resource.data.approved == false);
     }
   }
