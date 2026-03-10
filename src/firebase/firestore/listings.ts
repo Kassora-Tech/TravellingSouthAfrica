@@ -1,6 +1,7 @@
 'use client';
 
 import { addDoc, collection, serverTimestamp, Firestore } from 'firebase/firestore';
+import { FirestorePermissionError, errorEmitter } from '@/firebase';
 
 interface ListingData {
   ownerUid: string;
@@ -19,9 +20,14 @@ export async function addListing(firestore: Firestore, collectionName: string, d
     const docRef = await addDoc(listingCollection, dataWithTimestamp);
     return { success: true, id: docRef.id };
   } catch (serverError: any) {
-    // The client-side exception is removed to let Firestore rules handle permissions.
-    // A console log and a gentle error for the UI are returned instead.
-    console.error("Firestore 'addListing' operation failed:", serverError);
-    return { success: false, error: "Submission failed - please try again" };
+    errorEmitter.emit(
+      'permission-error',
+      new FirestorePermissionError({
+        path: listingCollection.path,
+        operation: 'create',
+        requestResourceData: dataWithTimestamp,
+      })
+    );
+    return { success: false, error: "Submission failed due to permissions - please check the console." };
   }
 }
