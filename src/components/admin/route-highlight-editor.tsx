@@ -1,12 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { doc, setDoc, Firestore } from 'firebase/firestore';
-import { useDoc, useMemoFirebase } from '@/firebase';
+import { useDoc, useMemoFirebase, FirestorePermissionError, errorEmitter } from '@/firebase';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { FirestorePermissionError, errorEmitter } from '@/firebase/errors';
 import type { routes } from '@/lib/data/routes';
 
 type Route = typeof routes[0];
@@ -80,5 +79,3 @@ export function RouteHighlightEditor({ route, firestore }: RouteHighlightEditorP
     </div>
   );
 }
-
-    
