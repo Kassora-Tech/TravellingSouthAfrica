@@ -47,6 +47,9 @@ const accommodationSchema = z.object({
   terms: z.literal(true, {
     errorMap: () => ({ message: "You must agree to the listing fee." }),
   }),
+  termsAndConditions: z.literal(true, {
+    errorMap: () => ({ message: "You must agree to the Terms & Conditions." }),
+  }),
 });
 
 const restaurantSchema = z.object({
@@ -60,6 +63,9 @@ const restaurantSchema = z.object({
   description: z.string().min(1, 'Description is required').max(500),
   terms: z.literal(true, {
     errorMap: () => ({ message: "You must agree to the listing fee." }),
+  }),
+  termsAndConditions: z.literal(true, {
+    errorMap: () => ({ message: "You must agree to the Terms & Conditions." }),
   }),
 });
 
@@ -75,6 +81,9 @@ const serviceProviderSchema = z.object({
     terms: z.literal(true, {
         errorMap: () => ({ message: "You must agree to the listing fee." }),
     }),
+    termsAndConditions: z.literal(true, {
+      errorMap: () => ({ message: "You must agree to the Terms & Conditions." }),
+    }),
 });
 
 const attractionSchema = z.object({
@@ -87,6 +96,9 @@ const attractionSchema = z.object({
     description: z.string().min(1, 'Description is required').max(500),
     terms: z.literal(true, {
         errorMap: () => ({ message: "You must agree to the listing fee." }),
+    }),
+    termsAndConditions: z.literal(true, {
+      errorMap: () => ({ message: "You must agree to the Terms & Conditions." }),
     }),
 });
 
@@ -229,6 +241,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
             ...fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
             contactEmail: user.email || '',
             terms: false,
+            termsAndConditions: false,
         },
         mode: 'onChange',
     });
@@ -439,6 +452,33 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                                 />
                             </div>
                         )}
+
+                        <div className="space-y-4 rounded-lg border bg-secondary p-4">
+                            <p className="text-sm text-muted-foreground">
+                                <Translatable text="Travelling South Africa reserves the right to decline any listing application if it is found not reputable or possibly harmful. Travelling South Africa does not bear any responsibility for any transactions made between guests/users and clients/advertisers." />
+                            </p>
+                            <FormField
+                                control={form.control}
+                                name="termsAndConditions"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center space-x-3 pt-2">
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel>
+                                                <Translatable text="I have read and agree to the Terms & Conditions above" />
+                                            </FormLabel>
+                                            <FormMessage />
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
 
                         <Button type="submit" disabled={isSubmitting || !form.formState.isValid} className="w-full" size="lg">
                             {isSubmitting ? <Translatable text="Submitting..." /> : <Translatable text="Submit for Approval" />}
