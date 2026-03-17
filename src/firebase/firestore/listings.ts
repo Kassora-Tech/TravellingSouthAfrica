@@ -19,6 +19,9 @@ export async function addListing(firestore: Firestore, collectionName: string, d
     const docRef = await addDoc(listingCollection, dataWithTimestamp);
     return { success: true, id: docRef.id };
   } catch (serverError: any) {
-    return { success: false, error: "Submission failed due to permissions - please check the console." };
+    // Log the detailed error for debugging purposes on the server/client console
+    console.error("Firestore addListing error:", serverError);
+    // Return a generic error to the UI to prevent crashing and show a friendly message
+    return { success: false, error: "Submission failed - please try again." };
   }
 }
