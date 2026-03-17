@@ -82,6 +82,17 @@
     @apply bg-background text-foreground;
   }
 
+  header img[alt="Travelling South Africa Logo"] {
+    object-fit: contain !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: 65px !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    -webkit-backface-visibility: visible !important;
+    transform: translateZ(0) !important;
+  }
+
   .embla {
     overflow: hidden;
   }
