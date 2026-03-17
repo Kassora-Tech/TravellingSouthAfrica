@@ -8,8 +8,6 @@ import {
   FirestoreError,
   DocumentSnapshot,
 } from 'firebase/firestore';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
 
 /** Utility type to add an 'id' field to a given type T. */
 type WithId<T> = T & { id: string };
@@ -72,17 +70,16 @@ export function useDoc<T = any>(
         setIsLoading(false);
       },
       (error: FirestoreError) => {
-        const contextualError = new FirestorePermissionError({
-          operation: 'get',
-          path: memoizedDocRef.path,
-        })
+        // Gracefully handle Firestore errors (including permission-denied)
+        // by setting data to null and not crashing the app.
+        console.error(`Firestore 'useDoc' hook error on path '${memoizedDocRef.path}':`, error);
+        
+        setError(error); // Set local error state for debugging.
+        setData(null);
+        setIsLoading(false);
 
-        setError(contextualError)
-        setData(null)
-        setIsLoading(false)
-
-        // trigger global error propagation
-        errorEmitter.emit('permission-error', contextualError);
+        // We explicitly DO NOT emit a global error here to prevent a crash.
+        // The UI component will handle the null data state as a fallback.
       }
     );
 
