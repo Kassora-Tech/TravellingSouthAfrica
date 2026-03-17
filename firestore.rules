@@ -69,10 +69,8 @@ service cloud.firestore {
     }
 
     match /routeHighlightLinks/{routeId} {
-      allow get, list: if true;
+      allow read: if true;
       allow write: if isAdmin();
     }
   }
 }
-
-    
