@@ -8,7 +8,7 @@ const Logo = ({ className }: { className?: string }) => {
       alt="Travelling South Africa Logo"
       width={300}
       height={150}
-      className={cn('h-auto w-64', className)}
+      className={cn('logo', 'h-auto w-64', className)}
     />
   );
 };

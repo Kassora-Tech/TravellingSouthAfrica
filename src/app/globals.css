@@ -10,6 +10,26 @@
       isolation: isolate;
     }
   }
+
+  img.logo, .logo img, [class*="logo"] img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    -webkit-transform: translateZ(0) !important; /* fix Safari rendering glitch */
+    transform: translateZ(0) !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+  }
+  .logo-container, .header-logo, [class*="logo"] {
+    background: transparent !important;
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
 }
 
 @layer base {
