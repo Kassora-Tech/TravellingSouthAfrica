@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
 import { AdminRouteHighlightsPanel } from '@/components/admin/admin-route-highlights-panel';
+import { SiteTrafficPanel } from '@/components/admin/site-traffic-panel';
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
@@ -34,7 +35,7 @@ export default function AdminPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
-          <p className="mt-2 text-lg text-muted-foreground">Manage user-submitted listings.</p>
+          <p className="mt-2 text-lg text-muted-foreground">Manage user-submitted listings and site content.</p>
         </div>
         <Button asChild>
           <Link href="/add-your-listing">
@@ -44,11 +45,12 @@ export default function AdminPage() {
         </Button>
       </div>
       <Tabs defaultValue="accommodations" className="mt-8">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
           <TabsTrigger value="accommodations">Accommodations</TabsTrigger>
           <TabsTrigger value="restaurants">Restaurants</TabsTrigger>
           <TabsTrigger value="service_providers">Services</TabsTrigger>
           <TabsTrigger value="attractions">Attractions</TabsTrigger>
+          <TabsTrigger value="site-traffic">Site Traffic</TabsTrigger>
         </TabsList>
         <TabsContent value="accommodations">
           <AdminListingsPanel collectionName="accommodations" />
@@ -62,6 +64,9 @@ export default function AdminPage() {
         <TabsContent value="attractions">
           <AdminListingsPanel collectionName="attractions" />
         </TabsContent>
+        <TabsContent value="site-traffic">
+          <SiteTrafficPanel />
+        </TabsContent>
       </Tabs>
 
       <div className="mt-8">
@@ -70,5 +75,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-    
