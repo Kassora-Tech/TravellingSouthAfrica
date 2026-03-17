@@ -72,7 +72,6 @@ export function useDoc<T = any>(
       (error: FirestoreError) => {
         // Gracefully handle Firestore errors (including permission-denied)
         // by setting data to null and not crashing the app.
-        console.error(`Firestore 'useDoc' hook error on path '${memoizedDocRef.path}':`, error);
         
         setError(error); // Set local error state for debugging.
         setData(null);

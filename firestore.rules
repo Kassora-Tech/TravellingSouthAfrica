@@ -42,15 +42,9 @@ service cloud.firestore {
     // Public & Listing Content Rules
     // -------------------------------------------------------------------------
 
-    // Specific rule for route highlight links
-    match /routeHighlightLinks/{routeId} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-
     // Rules for other static content
     match /{publicCollection}/{docId}
-      where publicCollection in ['provinces', 'towns', 'sights', 'routes'] {
+      where publicCollection in ['provinces', 'towns', 'sights', 'routes', 'routeHighlightLinks'] {
       
       // Anyone can read this data
       allow read: if true;
