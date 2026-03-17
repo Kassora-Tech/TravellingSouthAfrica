@@ -44,7 +44,7 @@ service cloud.firestore {
 
     // Rules for static content like provinces, towns, sights, routes
     match /{publicCollection}/{docId}
-      where publicCollection in ['provinces', 'towns', 'sights', 'routes'] {
+      where publicCollection in ['provinces', 'towns', 'sights', 'routes', 'routeHighlightLinks'] {
       
       // Anyone can read this data
       allow get, list: if true;
@@ -66,11 +66,6 @@ service cloud.firestore {
                        (isAdmin() == request.resource.data.approved);
 
       allow update, delete: if isAdmin();
-    }
-
-    match /routeHighlightLinks/{routeId} {
-      allow read: if true;
-      allow write: if isAdmin();
     }
   }
 }
