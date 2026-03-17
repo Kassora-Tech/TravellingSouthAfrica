@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
+import { AdminRouteHighlightsPanel } from '@/components/admin/admin-route-highlights-panel';
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
@@ -62,6 +63,12 @@ export default function AdminPage() {
           <AdminListingsPanel collectionName="attractions" />
         </TabsContent>
       </Tabs>
+
+      <div className="mt-8">
+        <AdminRouteHighlightsPanel />
+      </div>
     </div>
   );
 }
+
+    

@@ -347,6 +347,15 @@
         "imageUrl",
         "pricePerNight"
       ]
+    },
+    "RouteHighlightLinks": {
+      "title": "Route Highlight Links",
+      "type": "object",
+      "description": "A map of highlight texts to their corresponding URLs.",
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      }
     }
   },
   "auth": {
@@ -493,8 +502,25 @@
             }
           ]
         }
+      },
+      {
+        "path": "/routeHighlightLinks/{routeId}",
+        "definition": {
+          "entityName": "RouteHighlightLinks",
+          "schema": {
+            "$ref": "#/backend/entities/RouteHighlightLinks"
+          },
+          "description": "Stores links for route highlights. Publicly readable, admin writable.",
+          "params": [
+            {
+              "name": "routeId",
+              "description": "The unique identifier for the route (slug)."
+            }
+          ]
+        }
       }
     ],
     "reasoning": "The Firestore structure is designed to support user authentication, booking, trip planning, and personalization features for the \"Travelling South Africa\" website. It prioritizes security, scalability, and ease of debugging, adhering to the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).\n\n**Authorization Independence:** The structure avoids hierarchical authorization dependencies by using path-based ownership and denormalization. For example, user-specific data like trips and bookings are stored under `/users/{userId}`. There is no need to get() parent documents to check authorization. \n\n**Structural Segregation:** Collections are segregated based on security requirements. User-specific data (trips, bookings) is kept separate from global data (provinces, towns, sights, routes, accommodations).\n\n**Access Modeling:** Path-based ownership (`/users/{userId}/trips/{tripId}`, `/users/{userId}/bookings/{bookingId}`) is used for private user data. Global data (provinces, towns, etc.) can have different access rules as needed.\n\n**Data Clarity and Predictability:** Explicit state modeling is used (e.g., the `role` field in the `User` document). The schema is predictable, avoiding dynamic keys. Consistent naming conventions are used for authorization fields (e.g., `userId`).\n\n**QAPs (Rules are not Filters):** The structure supports secure `list` operations. For example, listing trips is done within the scope of a user's trips collection (`/users/{userId}/trips`). This ensures that only the trips belonging to the authenticated user are listed.\n\n**Denormalization Strategy:** This structure currently assumes all content (provinces, towns, sights, routes, accommodations) are publicly readable, and that user-specific data (trips, bookings) require authentication and ownership validation (i.e., the `userId` in the document matches `request.auth.uid`). If access control is added to global content entities, the membership model would be applied.\n\nThis structure ensures that security rules can be written in a straightforward manner, without the need for complex `get()` calls or nested conditions. It also simplifies debugging and maintenance by making authorization intent explicit in the data structure."
   }
 }
+    

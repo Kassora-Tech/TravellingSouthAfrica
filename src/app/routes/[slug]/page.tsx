@@ -7,6 +7,7 @@ import { Translatable } from '@/components/translatable';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { MapPin, Milestone, Mountain } from 'lucide-react';
+import { RouteHighlights } from '@/components/routes/route-highlights';
 
 export async function generateStaticParams() {
   return routes.map((route) => ({
@@ -71,21 +72,7 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
         </div>
       </section>
 
-      <section className="bg-secondary py-16 lg:py-24">
-        <div className="container mx-auto px-4">
-            <h2 className="mb-12 text-center text-3xl font-bold font-headline md:text-4xl">
-              <Translatable text="Route Highlights" />
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {route.highlights.map((highlight, index) => (
-                    <Card key={index} className="bg-card p-6">
-                        <Mountain className="w-8 h-8 text-primary mb-4" />
-                        <h3 className="font-headline text-xl font-bold"><Translatable text={highlight} /></h3>
-                    </Card>
-                ))}
-            </div>
-        </div>
-      </section>
+      <RouteHighlights route={route} />
       
       {routeTowns.length > 0 && (
         <section className="py-16 lg:py-24">
@@ -125,3 +112,5 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
     </div>
   );
 }
+
+    
