@@ -15,7 +15,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+      return isSignedIn() && request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
     }
 
     function canCreateListing() {
@@ -79,7 +79,7 @@ service cloud.firestore {
     
     // --- Contact Form Submissions ---
     match /contactMessages/{messageId} {
-      allow create: if true;
+      allow create: if isSignedIn();
       allow read, update, delete: if isAdmin();
     }
   }
