@@ -10,8 +10,8 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
 export const metadata: Metadata = {
-  title: 'South African Slang Guide | Learn Local Lingo',
-  description: 'Learn common and not-so-common South African slang terms like "braai", "howzit", and "lekker" to sound like a local on your travels.',
+  title: 'South African Slang Guide | Travel SA Lingo | TravellingSA',
+  description: 'Learn local lingo for your trip to South Africa with the TravellingSA slang guide. Understand "braai", "howzit", and more to travel SA like a local.',
   alternates: {
     canonical: '/service-providers/slang',
   },

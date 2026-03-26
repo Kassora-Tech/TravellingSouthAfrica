@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const title = `${sight.name} Guide | Tickets, Best Views & Info`;
-  const description = `Your travel guide to ${sight.name}. Find information on tickets, opening hours, best times to visit, and how to get there.`;
+  const title = `${sight.name} Guide | Travel South Africa | TravellingSA`;
+  const description = `Your travel guide to ${sight.name} with Travelling South Africa (Travel SA). Find info on tickets, hours, and the best time to visit this iconic SA attraction.`;
 
   return {
     title,

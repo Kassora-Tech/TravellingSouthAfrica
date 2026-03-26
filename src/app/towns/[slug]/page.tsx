@@ -32,7 +32,19 @@ export default function TownDetailPage() {
 
   useEffect(() => {
     if (staticTown) {
-      document.title = `${staticTown.name} Travel Guide | Travelling South Africa`;
+      const province = provinces.find(p => p.slug === staticTown.provinceSlug);
+      const newTitle = `${staticTown.name} Travel Guide | Travelling South Africa | Travel SA`;
+      const newDescription = `Your travel guide to ${staticTown.name}, ${province?.name || 'South Africa'}. Discover highlights, attractions, and more with Travelling South Africa (Travel SA).`;
+      
+      document.title = newTitle;
+
+      let meta = document.querySelector('meta[name="description"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = 'description';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      }
+      meta.setAttribute('content', newDescription);
     }
   }, [staticTown]);
 

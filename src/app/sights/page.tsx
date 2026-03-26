@@ -11,8 +11,8 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
 export const metadata: Metadata = {
-  title: 'Top Sights & Attractions in South Africa',
-  description: 'Explore the must-see sights in South Africa, from Table Mountain to Kruger National Park. Your guide to the best attractions across the nation.',
+  title: 'Top Sights in South Africa | Travel SA | TravellingSA',
+  description: 'Explore the must-see sights and attractions in South Africa with Travelling South Africa (Travel SA). Your guide to Table Mountain, Kruger Park, and more.',
   alternates: {
     canonical: '/sights',
   },

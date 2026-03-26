@@ -84,8 +84,8 @@ export default function TownsPage() {
   return (
     <>
       <head>
-        <title>Explore Over 800 Towns & Cities in South Africa | Travelling South Africa</title>
-        <meta name="description" content="Search and discover towns and cities across South Africa. Filter by province and find your next destination with our comprehensive guide." />
+        <title>South African Towns & Cities | Travel SA | TravellingSA</title>
+        <meta name="description" content="Search and discover over 800 towns and cities with Travelling South Africa (Travel SA). Your guide to finding your next destination in South Africa." />
         <link rel="canonical" href={`${siteUrl}/towns`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />

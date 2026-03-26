@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const title = `${province.name} Travel Guide | Best Towns, Sights & Routes`;
-  const description = `Your complete travel guide to ${province.name}, South Africa. Discover the best towns, sights, attractions, and key facts for planning your trip.`;
+  const title = `${province.name} Travel Guide | Travelling South Africa | Travel SA`;
+  const description = `Your complete travel guide to ${province.name} with Travelling South Africa (Travel SA). Discover the best towns, sights, and routes for your trip.`;
 
   return {
     title,

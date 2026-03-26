@@ -11,10 +11,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafri
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Travelling South Africa | Free Guide to Provinces, Towns, Sights, Routes & Accommodations 2026',
+    default: 'Travelling South Africa | Travel SA | TravellingSA | Free Guide to Provinces, Towns, Sights & Routes',
     template: '%s | Travelling South Africa',
   },
-  description: 'Your free, comprehensive guide to travelling South Africa. Discover the Rainbow Nation with our guides to provinces, towns, sights, routes, and trip planning tools.',
+  description: 'Travelling South Africa (Travel SA) – Your free comprehensive guide to provinces, towns, sights, routes, accommodations, restaurants & attractions in South Africa. Plan your trip today.',
   openGraph: {
     title: 'Travelling South Africa | Free Guide to Provinces, Towns, Sights & Routes 2026',
     description: 'Your free, comprehensive guide to travelling South Africa. Discover the Rainbow Nation with our guides to provinces, towns, sights, routes, and trip planning tools.',
@@ -45,6 +45,7 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Travelling South Africa',
+  alternateName: ["Travel SA", "TravellingSA"],
   url: siteUrl,
   logo: 'https://i.ibb.co/0prkKCw3/2026-Logo-1-Photoroom.png',
   address: {
@@ -57,7 +58,8 @@ const organizationSchema = {
     'https://www.instagram.com/travellingsouthafrica.co.za?utm_source=qr&igsh=ZTV6OGM4MWx2MW1r',
     'https://www.tiktok.com/@travellingsouthaf?_r=1&_t=ZS-949r0bDVUzV',
     'https://za.pinterest.com/travellingsouthafrica/?invite_code=ce83b92eb4ef48c7a45fd836c5619898&sender=1107674608259442133'
-  ]
+  ],
+  keywords: "travel south africa, travelling south africa, travel sa, travellingsa, south africa travel guide"
 };
 
 const websiteSchema = {
@@ -65,6 +67,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   url: siteUrl,
   name: 'Travelling South Africa',
+  alternateName: ["Travel SA", "TravellingSA"],
   potentialAction: {
     '@type': 'SearchAction',
     target: {
@@ -73,6 +76,27 @@ const websiteSchema = {
     },
     'query-input': 'required name=search_term_string',
   },
+  keywords: "travel south africa, travelling south africa, travel sa, travellingsa, south africa travel guide"
+};
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Travelling South Africa',
+  image: 'https://i.ibb.co/0prkKCw3/2026-Logo-1-Photoroom.png',
+  '@id': siteUrl,
+  url: siteUrl,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Cape Town',
+    addressCountry: 'ZA'
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -33.9249,
+    longitude: 18.4241
+  },
+  keywords: "travel south africa, travelling south africa, travel sa, travellingsa"
 };
 
 
@@ -113,6 +137,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
       <body className="font-body antialiased text-base">

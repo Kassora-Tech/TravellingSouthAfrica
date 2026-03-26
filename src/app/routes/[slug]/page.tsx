@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       };
     }
   
-    const title = `${route.name} Guide | South Africa Scenic Drive`;
-    const description = `Your guide to driving the ${route.name} in South Africa. Discover key towns, highlights, distances, and tips for this iconic route. ${route.tagline}`;
+    const title = `${route.name} Guide | South Africa Scenic Drive | Travel SA`;
+    const description = `Your guide to driving the ${route.name} with Travelling South Africa (Travel SA). Discover key towns, highlights, and tips for this iconic South African route.`;
   
     return {
       title,
@@ -175,5 +175,3 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
     </div>
   );
 }
-
-    

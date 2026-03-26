@@ -11,8 +11,8 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
 export const metadata: Metadata = {
-  title: 'Iconic South African Routes | Scenic Drives & Road Trips',
-  description: 'Discover South Africa\'s most iconic road trips and scenic drives. From the Garden Route to the Panorama Route, plan your unforgettable journey here.',
+  title: 'South African Routes | Scenic Drives | Travel SA',
+  description: 'Discover iconic road trips with Travelling South Africa (Travel SA). Your guide to scenic drives like the Garden Route and Panorama Route.',
   alternates: {
     canonical: '/routes',
   },

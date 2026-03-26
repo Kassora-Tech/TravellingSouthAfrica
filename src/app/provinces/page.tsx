@@ -11,8 +11,8 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
 export const metadata: Metadata = {
-  title: 'Explore the 9 Provinces of South Africa',
-  description: 'Discover the unique character and beauty of each of South Africa\'s nine provinces, from the Western Cape to Limpopo. Your comprehensive travel guide starts here.',
+  title: 'Provinces of South Africa | Travel SA Guide | TravellingSA',
+  description: 'Explore all 9 provinces of South Africa with Travelling South Africa (Travel SA). Your free guide to the Western Cape, Gauteng, KZN, and more for your trip.',
   alternates: {
     canonical: '/provinces',
   },
