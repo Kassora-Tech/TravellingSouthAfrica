@@ -58,25 +58,7 @@ service cloud.firestore {
         allow write: if isAdmin();
     }
 
-    match /accommodations/{listingId} {
-      allow read: if true;
-      allow create: if canCreateListing();
-      allow update, delete: if isAdmin();
-    }
-
-    match /restaurants/{listingId} {
-      allow read: if true;
-      allow create: if canCreateListing();
-      allow update, delete: if isAdmin();
-    }
-
-    match /service_providers/{listingId} {
-      allow read: if true;
-      allow create: if canCreateListing();
-      allow update, delete: if isAdmin();
-    }
-
-    match /attractions/{listingId} {
+    match /{collection=**(accommodations, restaurants, service_providers, attractions)}/{docId} {
       allow read: if true;
       allow create: if canCreateListing();
       allow update, delete: if isAdmin();
