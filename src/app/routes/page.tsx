@@ -6,10 +6,41 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Map } from 'lucide-react';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export const metadata: Metadata = {
+  title: 'Iconic South African Routes | Scenic Drives & Road Trips',
+  description: 'Discover South Africa\'s most iconic road trips and scenic drives. From the Garden Route to the Panorama Route, plan your unforgettable journey here.',
+  alternates: {
+    canonical: '/routes',
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Routes',
+      item: `${siteUrl}/routes`,
+    },
+  ],
+};
 
 export default function RoutesPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/YTWNRJJH/South-Africa-Images-for-Landing-Pages-3-1024x696.webp')" }}>
         <div className="absolute inset-0 bg-black/50" />
         <div className="container relative mx-auto px-4 text-center">

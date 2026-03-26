@@ -8,6 +8,43 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { MapPin, Milestone, Mountain } from 'lucide-react';
 import { RouteHighlights } from '@/components/routes/route-highlights';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const route = routes.find((p) => p.slug === params.slug);
+    if (!route) {
+      return {
+        title: "Route Not Found",
+        description: "The route you are looking for does not exist on Travelling South Africa.",
+      };
+    }
+  
+    const title = `${route.name} Guide | South Africa Scenic Drive`;
+    const description = `Your guide to driving the ${route.name} in South Africa. Discover key towns, highlights, distances, and tips for this iconic route. ${route.tagline}`;
+  
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `/routes/${route.slug}`,
+      },
+      openGraph: {
+        title,
+        description,
+        url: `${siteUrl}/routes/${route.slug}`,
+        images: [
+          {
+            url: PlaceHolderImages.find(p => p.id === route.imageId)?.imageUrl || '',
+            width: 600,
+            height: 400,
+            alt: `A scenic view along the ${route.name}`,
+          }
+        ]
+      }
+    };
+}
 
 export async function generateStaticParams() {
   return routes.map((route) => ({
@@ -25,8 +62,34 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
   const routeTowns = allTowns.filter(t => route.townSlugs.includes(t.slug));
   const heroImage = PlaceHolderImages.find((p) => p.id === route.imageId);
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Routes',
+        item: `${siteUrl}/routes`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: route.name,
+        item: `${siteUrl}/routes/${route.slug}`,
+      },
+    ],
+  };
+
   return (
     <div>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <section className="relative h-[50vh] text-white">
         {heroImage && (
           <Image

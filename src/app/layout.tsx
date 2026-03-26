@@ -11,7 +11,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafri
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Travelling South Africa | Free Guide to Provinces, Towns, Sights & Routes 2026',
+    default: 'Travelling South Africa | Free Guide to Provinces, Towns, Sights, Routes & Accommodations 2026',
     template: '%s | Travelling South Africa',
   },
   description: 'Your free, comprehensive guide to travelling South Africa. Discover the Rainbow Nation with our guides to provinces, towns, sights, routes, and trip planning tools.',
@@ -36,6 +36,9 @@ export const metadata: Metadata = {
     description: 'Your free, comprehensive guide to travelling South Africa.',
     images: ['https://i.ibb.co/nNDFjwr0/Why-2025-Is-Africas-Year-for-Travellers-1140x530.jpg'],
   },
+  alternates: {
+    canonical: '/',
+  }
 };
 
 const organizationSchema = {

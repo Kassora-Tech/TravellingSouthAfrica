@@ -15,6 +15,8 @@ import { doc } from 'firebase/firestore';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
 export default function TownDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -56,8 +58,50 @@ export default function TownDetailPage() {
     )
   }
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Towns',
+        item: `${siteUrl}/towns`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: staticTown.name,
+        item: `${siteUrl}/towns/${staticTown.slug}`,
+      },
+    ],
+  };
+
+  const citySchema = {
+    '@context': 'https://schema.org',
+    '@type': 'City',
+    name: staticTown.name,
+    description: townData?.longDescription || staticTown.description,
+    image: heroImage?.imageUrl,
+    address: {
+        '@type': 'PostalAddress',
+        addressLocality: staticTown.name,
+        addressRegion: province?.name,
+        addressCountry: 'ZA',
+    },
+    url: `${siteUrl}/towns/${staticTown.slug}`,
+  };
+
   return (
     <div>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(citySchema) }} />
       <section className="relative h-[50vh] text-white">
         {heroImage && (
           <Image
