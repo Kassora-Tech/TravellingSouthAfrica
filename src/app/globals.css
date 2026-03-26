@@ -83,6 +83,9 @@
   }
 
   header img[alt="Travelling South Africa Logo"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     object-fit: contain !important;
     width: auto !important;
     height: auto !important;
@@ -91,6 +94,8 @@
     image-rendering: crisp-edges !important;
     -webkit-backface-visibility: visible !important;
     transform: translateZ(0) !important;
+    -webkit-filter: none !important;
+    filter: none !important;
   }
 
   .embla {
