@@ -92,8 +92,64 @@ const defineListingNotification = (collectionName: string) => {
   );
 };
 
+// Helper function to define the Cloud Function for a new contact message
+const defineContactNotification = () => {
+  return onDocumentCreated(
+    {
+      document: `contactMessages/{messageId}`,
+      secrets: ["SENDGRID_API_KEY"],
+    },
+    async (event) => {
+      const snap = event.data;
+      if (!snap) {
+        logger.log("No data associated with the event, skipping.");
+        return;
+      }
+      const message = snap.data();
+
+      const msg = {
+        to: ADMIN_EMAILS,
+        from: {
+          name: "Travelling South Africa Contact Form",
+          email: FROM_EMAIL,
+        },
+        subject: `New Contact Message: ${message.subject}`,
+        replyTo: message.email,
+        html: `
+          <p>You have received a new message from the website contact form:</p>
+          <ul>
+            <li><strong>Name:</strong> ${message.name || "N/A"}</li>
+            <li><strong>Email:</strong> ${message.email || "N/A"}</li>
+            <li><strong>Subject:</strong> ${message.subject || "N/A"}</li>
+          </ul>
+          <hr>
+          <p><strong>Message:</strong></p>
+          <p>${message.message || "N/A"}</p>
+        `,
+      };
+
+      if (!SENDGRID_API_KEY) {
+        logger.error("SendGrid API Key is not configured. Cannot send email.");
+        return;
+      }
+
+      try {
+        await sgMail.send(msg);
+        logger.info(`Contact form notification email sent for message ${event.params.messageId}.`);
+      } catch (error) {
+        logger.error(`Failed to send contact form email for message ${event.params.messageId}:`, error);
+        if (error instanceof Error && 'response' in error) {
+            const sgError = error as any;
+            logger.error("SendGrid response error:", sgError.response.body);
+        }
+      }
+    }
+  );
+};
+
 // Define and export a function for each collection
 exports.onAccommodationsCreate = defineListingNotification("accommodations");
 exports.onRestaurantsCreate = defineListingNotification("restaurants");
 exports.onServiceProvidersCreate = defineListingNotification("service_providers");
 exports.onAttractionsCreate = defineListingNotification("attractions");
+exports.onContactMessageCreate = defineContactNotification();

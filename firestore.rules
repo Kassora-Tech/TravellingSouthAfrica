@@ -65,5 +65,11 @@ service cloud.firestore {
       // Only admins can update or delete.
       allow update, delete: if isAdmin();
     }
+    
+    // --- Contact Form Submissions ---
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
   }
 }
