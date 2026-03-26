@@ -19,6 +19,28 @@ export default function NotFound() {
             <Translatable text="Go Back to Homepage" />
           </Link>
         </Button>
+        <div className="mt-8">
+            <p className="text-sm text-muted-foreground mb-4">
+              <Translatable text="Here are some helpful links instead:" />
+            </p>
+            <div className="flex justify-center gap-4">
+                <Button variant="outline" asChild>
+                    <Link href="/provinces">
+                        <Translatable text="Provinces" />
+                    </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                    <Link href="/towns">
+                        <Translatable text="Towns" />
+                    </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                    <Link href="/sights">
+                        <Translatable text="Sights" />
+                    </Link>
+                </Button>
+            </div>
+        </div>
       </div>
     </div>
   );
