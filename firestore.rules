@@ -80,7 +80,7 @@ service cloud.firestore {
     // --- Contact Form Submissions ---
     match /contactMessages/{messageId} {
       allow read: if request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
-      allow create: if true;
+      allow create: if request.auth != null; // any logged-in user can submit a contact message
       allow update, delete: if request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
     }
   }
