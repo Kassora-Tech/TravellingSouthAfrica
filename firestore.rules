@@ -79,8 +79,9 @@ service cloud.firestore {
     
     // --- Contact Form Submissions ---
     match /contactMessages/{messageId} {
-      allow create: if isSignedIn();
-      allow read, update, delete: if isAdmin();
+      allow read: if request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
     }
   }
 }
