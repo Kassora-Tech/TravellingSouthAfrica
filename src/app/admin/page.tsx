@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
 import { AdminRouteHighlightsPanel } from '@/components/admin/admin-route-highlights-panel';
 import { SiteTrafficPanel } from '@/components/admin/site-traffic-panel';
+import { AdminTownsPanel } from '@/components/admin/admin-towns-panel';
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
@@ -45,12 +46,13 @@ export default function AdminPage() {
         </Button>
       </div>
       <Tabs defaultValue="accommodations" className="mt-8">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6">
           <TabsTrigger value="accommodations">Accommodations</TabsTrigger>
           <TabsTrigger value="restaurants">Restaurants</TabsTrigger>
           <TabsTrigger value="service_providers">Services</TabsTrigger>
           <TabsTrigger value="attractions">Attractions</TabsTrigger>
           <TabsTrigger value="site-traffic">Site Traffic</TabsTrigger>
+          <TabsTrigger value="manage-towns">Manage Towns</TabsTrigger>
         </TabsList>
         <TabsContent value="accommodations">
           <AdminListingsPanel collectionName="accommodations" />
@@ -66,6 +68,9 @@ export default function AdminPage() {
         </TabsContent>
         <TabsContent value="site-traffic">
           <SiteTrafficPanel />
+        </TabsContent>
+        <TabsContent value="manage-towns">
+          <AdminTownsPanel />
         </TabsContent>
       </Tabs>
 
