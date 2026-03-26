@@ -13,7 +13,7 @@ export function AdminRouteHighlightsPanel() {
     return <p>Loading...</p>;
   }
   
-  const nationalRoutes = routes.filter(r => r.name.startsWith('N') || r.name.startsWith('R')).sort((a, b) => a.name.localeCompare(b.name));
+  const allRoutes = routes.sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <Card>
@@ -22,7 +22,7 @@ export function AdminRouteHighlightsPanel() {
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">
-          {nationalRoutes.map(route => (
+          {allRoutes.map(route => (
             <AccordionItem value={route.slug} key={route.slug}>
               <AccordionTrigger>
                 <Translatable text={route.name} />
@@ -37,5 +37,3 @@ export function AdminRouteHighlightsPanel() {
     </Card>
   );
 }
-
-    
