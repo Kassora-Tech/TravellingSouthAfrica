@@ -232,6 +232,8 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [isTownPopoverOpen, setTownPopoverOpen] = useState(false);
     const { toast } = useToast();
 
@@ -263,17 +265,18 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         setIsSubmitting(true);
         // Note: File upload logic to Firebase Storage is not implemented here.
         // In a real app, you'd upload files and get URLs before saving to Firestore.
-        const result = await addListing(firestore, collectionName, { 
+         const result = await addListing(firestore, collectionName, {
             ...values,
             ownerUid: user.uid,
             ownerEmail: user.email,
             approved: isAdmin,
-        });
+        }, imageFiles);  // ← Pass image files here
 
         if (result.success) {
             setSuccess(true);
             form.reset();
             setImagePreviews([]);
+            setImageFiles([]);  // ← Clear files after successful submission
             setTimeout(() => setSuccess(false), 6000);
         } else {
             toast({
@@ -292,6 +295,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                 toast({ variant: 'destructive', title: 'You can upload a maximum of 6 photos.' });
                 return;
             }
+            setImageFiles(prev => [...prev, ...files]);
             const newPreviews = files.map(file => URL.createObjectURL(file));
             setImagePreviews(prev => [...prev, ...newPreviews]);
         }

@@ -11,25 +11,86 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Translatable } from '@/components/translatable';
 import { Camera } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { addListing } from '@/firebase/firestore/listings';
+import { useFirestore } from '@/firebase';
+import { useUser } from '@/firebase/provider';
 
 export function ListYourAccommodationForm() {
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const { toast } = useToast();
+    const firestore = useFirestore();
+    const { user } = useUser();
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const files = Array.from(e.target.files);
+            if (files.length + imagePreviews.length > 6) {
+                toast({ variant: 'destructive', title: 'You can upload a maximum of 6 photos.' });
+                return;
+            }
+            setImageFiles(prev => [...prev, ...files]);
             const newPreviews = files.map(file => URL.createObjectURL(file));
-            setImagePreviews(prev => [...prev, ...newPreviews].slice(0, 5));
+            setImagePreviews(prev => [...prev, ...newPreviews]);
         }
     };
-    
-    // In a real app, you would handle form submission here.
-    // For now, it will just submit to the formspree endpoint.
-    const handleSubmit = (e: React.FormEvent) => {
-        // e.preventDefault();
-        // Handle form data submission, e.g., using FormData
-        console.log('Form submitted');
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!user) {
+            toast({ variant: 'destructive', title: 'You must be logged in to submit a listing.' });
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const formData = new FormData(e.currentTarget);
+
+        const data = {
+            ownerUid: user.uid,
+            ownerEmail: user.email,
+            name: formData.get('propertyName') as string,
+            category: formData.get('propertyType') as string,
+            ownerName: formData.get('ownerName') as string,
+            contactEmail: formData.get('email') as string,
+            contactPhone: formData.get('phone') as string,
+            websiteUrl: formData.get('website') as string,
+            physicalAddress: formData.get('address') as string,
+            description: formData.get('description') as string,
+            approved: false,
+        };
+
+        const result = await addListing(firestore, 'accommodations', data, imageFiles);
+
+        if (result.success) {
+            setSuccess(true);
+            setImagePreviews([]);
+            setImageFiles([]);
+        } else {
+            toast({
+                variant: 'destructive',
+                title: 'Submission Failed',
+                description: 'Please try again later.',
+            });
+        }
+
+        setIsSubmitting(false);
     };
+
+    if (success) {
+        return (
+            <section id="list-accommodation" className="py-16 md:py-24 bg-secondary">
+                <div className="container mx-auto px-4 max-w-4xl text-center">
+                    <h2 className="text-3xl font-bold text-primary">🎉 Listing Submitted!</h2>
+                    <p className="text-muted-foreground mt-4">Thank you! Your listing has been submitted for review. We will be in touch within 2-3 business days.</p>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section id="list-accommodation" className="py-16 md:py-24 bg-secondary">
@@ -44,8 +105,7 @@ export function ListYourAccommodationForm() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="p-8 pt-0">
-                        {/* Replace with your Formspree endpoint */}
-                        <form onSubmit={handleSubmit} action="https://formspree.io/f/YOUR_FORM_ID" method="POST" encType="multipart/form-data" className="space-y-8">
+                        <form onSubmit={handleSubmit} className="space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="propertyName"><Translatable text="Property Name*" /></Label>
@@ -80,20 +140,20 @@ export function ListYourAccommodationForm() {
                                     <Label htmlFor="phone"><Translatable text="Phone/WhatsApp*" /></Label>
                                     <Input id="phone" name="phone" type="tel" placeholder="+27..." required />
                                 </div>
-                                 <div className="space-y-2">
+                                <div className="space-y-2">
                                     <Label htmlFor="website"><Translatable text="Website URL" /></Label>
                                     <Input id="website" name="website" type="url" placeholder="https://..." />
                                 </div>
                             </div>
 
-                             <div className="space-y-2">
+                            <div className="space-y-2">
                                 <Label htmlFor="address"><Translatable text="Physical Address*" /></Label>
                                 <Textarea id="address" name="address" required />
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="description"><Translatable text="Short Description*" /></Label>
-                                <Textarea id="description" name="description" rows={4} placeholder="Describe your property, its unique features, and vibe... (max 300 characters)" maxLength={300} required />
+                                <Textarea id="description" name="description" rows={4} placeholder="Describe your property... (max 300 characters)" maxLength={300} required />
                             </div>
 
                             <div className="space-y-2">
@@ -107,21 +167,21 @@ export function ListYourAccommodationForm() {
                                     ))}
                                 </div>
                             </div>
-                            
+
                             <div className="space-y-2">
-                                <Label htmlFor="photos"><Translatable text="Upload Photos* (up to 5)" /></Label>
+                                <Label htmlFor="photos"><Translatable text="Upload Photos (up to 6)" /></Label>
                                 <div className="flex items-center justify-center w-full">
                                     <label htmlFor="photos" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/80">
                                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                             <Camera className="w-8 h-8 mb-2 text-muted-foreground" />
                                             <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold"><Translatable text="Click to upload" /></span> or drag and drop</p>
-                                            <p className="text-xs text-muted-foreground"><Translatable text="PNG, JPG (at least 3 photos recommended)" /></p>
+                                            <p className="text-xs text-muted-foreground"><Translatable text="PNG, JPG" /></p>
                                         </div>
-                                        <Input id="photos" type="file" className="hidden" name="photos[]" multiple accept="image/png, image/jpeg" required onChange={handleImageChange} />
+                                        <Input id="photos" type="file" className="hidden" multiple accept="image/png, image/jpeg" onChange={handleImageChange} />
                                     </label>
                                 </div>
                                 {imagePreviews.length > 0 && (
-                                     <div id="preview" className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-4">
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-4">
                                         {imagePreviews.map((src, index) => (
                                             <div key={index} className="relative aspect-square">
                                                 <Image src={src} alt={`Preview ${index + 1}`} fill className="object-cover rounded-md" />
@@ -142,11 +202,11 @@ export function ListYourAccommodationForm() {
                                     </p>
                                 </div>
                             </div>
-                            
-                            <Button type="submit" className="w-full" size="lg">
-                                <Translatable text="Submit Your Listing for Review" />
+
+                            <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
+                                {isSubmitting ? <Translatable text="Submitting..." /> : <Translatable text="Submit Your Listing for Review" />}
                             </Button>
-                             <p className="text-xs text-muted-foreground text-center pt-4">
+                            <p className="text-xs text-muted-foreground text-center pt-4">
                                 <Translatable text="Submissions are reviewed within 2–3 business days. We'll email payment instructions if your listing is approved." />
                             </p>
                         </form>
