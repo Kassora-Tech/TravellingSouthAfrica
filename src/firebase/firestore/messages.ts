@@ -13,8 +13,21 @@ export async function addContactMessage(firestore: Firestore, data: ContactMessa
   const messagesCollection = collection(firestore, 'contactMessages');
   
   const dataWithTimestamp = {
-    ...data,
+    name: data.name,
+    email: data.email,
+    subject: data.subject,
+    userMessage: data.message,
     createdAt: serverTimestamp(),
+    to: 'maryke@travellingsouthafrica.co.za',
+    message: {
+      subject: `New Contact Message: ${data.subject}`,
+      html: `
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Subject:</strong> ${data.subject}</p>
+        <p><strong>Message:</strong> ${data.message}</p>
+      `,
+    },
   };
 
   try {
