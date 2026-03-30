@@ -1,8 +1,7 @@
 'use client';
 
 import { addDoc, collection, serverTimestamp, Firestore } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getApp } from 'firebase/app';
+import { ref, uploadBytes, getDownloadURL, FirebaseStorage } from 'firebase/storage';
 
 interface ListingData {
   ownerUid: string;
@@ -11,6 +10,7 @@ interface ListingData {
 
 export async function addListing(
   firestore: Firestore,
+  storage: FirebaseStorage,
   collectionName: string,
   data: ListingData,
   imageFiles?: File[]
@@ -20,8 +20,6 @@ export async function addListing(
     let imageUrls: string[] = [];
 
     if (imageFiles && imageFiles.length > 0) {
-      const storage = getStorage(getApp());
-
       const uploadPromises = imageFiles.map(async (file) => {
         const storageRef = ref(
           storage,

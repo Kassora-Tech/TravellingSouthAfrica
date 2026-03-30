@@ -13,7 +13,7 @@ import { Translatable } from '@/components/translatable';
 import { Camera } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { addListing } from '@/firebase/firestore/listings';
-import { useFirestore } from '@/firebase';
+import { useFirestore, useStorage } from '@/firebase';
 import { useUser } from '@/firebase/provider';
 
 export function ListYourAccommodationForm() {
@@ -23,6 +23,7 @@ export function ListYourAccommodationForm() {
     const [success, setSuccess] = useState(false);
     const { toast } = useToast();
     const firestore = useFirestore();
+    const storage = useStorage();
     const { user } = useUser();
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +65,7 @@ export function ListYourAccommodationForm() {
             approved: false,
         };
 
-        const result = await addListing(firestore, 'accommodations', data, imageFiles);
+        const result = await addListing(firestore, storage, 'accommodations', data, imageFiles);
 
         if (result.success) {
             setSuccess(true);
