@@ -1,6 +1,7 @@
 // @ts-nocheck
 'use client';
 
+import { useAccommodationsForTowns } from '@/firebase/firestore/use-accommodations';
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { User } from 'firebase/auth';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -197,6 +198,171 @@ const NationalRoadsGuide = ({ onSelectRoute }: { onSelectRoute: (slug: string) =
     );
 };
 
+function AccommodationCard({
+  selectedTrip,
+  firestore,
+  onSave,
+  onAccommodationsLoaded,
+  toast,
+}: {
+  selectedTrip: any;
+  firestore: any;
+  onSave: (ids: string[]) => void;
+  onAccommodationsLoaded: (accommodations: any[]) => void;
+  toast: any;
+}) {
+    const townSlugs = selectedTrip?.towns?.map((t: any) => t.slug) || [];
+    useEffect(() => {
+      onAccommodationsLoaded(accommodations);
+    }, [accommodations]);
+    const [selectedIds, setSelectedIds] = useState<string[]>(
+      selectedTrip?.accommodationIds || []
+    );
+    const [showAll, setShowAll] = useState(false);
+  
+    useEffect(() => {
+      setSelectedIds(selectedTrip?.accommodationIds || []);
+    }, [selectedTrip?.id]);
+  
+    const handleToggle = (id: string) => {
+      const newIds = selectedIds.includes(id)
+        ? selectedIds.filter(i => i !== id)
+        : [...selectedIds, id];
+      setSelectedIds(newIds);
+      onSave(newIds);
+      toast({
+        title: selectedIds.includes(id) ? "Accommodation Removed" : "Accommodation Added",
+        description: accommodations.find(a => a.id === id)?.name,
+      });
+    };
+  
+    const displayedAccommodations = showAll ? accommodations : accommodations.slice(0, 3);
+  
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <div className="flex items-center gap-2">
+            <Bed className="h-6 w-6 text-primary" />
+            <CardTitle className="text-xl font-headline">
+              <Translatable text="Accommodation" />
+            </CardTitle>
+          </div>
+          {accommodations.length > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {selectedIds.length} selected
+            </span>
+          )}
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {isLoading && (
+            <p className="text-sm text-muted-foreground">Loading accommodations...</p>
+          )}
+  
+          {!isLoading && townSlugs.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              <Translatable text="Add towns to your trip to see available accommodations." />
+            </p>
+          )}
+  
+          {!isLoading && townSlugs.length > 0 && accommodations.length === 0 && (
+            <div className="text-sm text-muted-foreground space-y-2">
+              <p><Translatable text="No approved accommodations found for your selected towns yet." /></p>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/add-your-listing" target="_blank">
+                  <PlusCircle className="mr-2 h-3 w-3" />
+                  Add a Listing
+                </Link>
+              </Button>
+            </div>
+          )}
+  
+          {!isLoading && accommodations.length > 0 && (
+            <div className="space-y-3">
+              {displayedAccommodations.map(accommodation => {
+                const isSelected = selectedIds.includes(accommodation.id);
+                const town = towns.find(t => t.slug === accommodation.townSlug);
+                return (
+                  <div
+                    key={accommodation.id}
+                    onClick={() => handleToggle(accommodation.id)}
+                    className={`rounded-lg border p-3 cursor-pointer transition-all ${
+                      isSelected
+                        ? 'border-primary bg-primary/5'
+                        : 'hover:border-primary/50 hover:bg-muted/50'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-sm truncate">{accommodation.name}</p>
+                          {isSelected && (
+                            <span className="shrink-0 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                              Selected
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 mt-1">
+                          {accommodation.category && (
+                            <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
+                              {accommodation.category}
+                            </span>
+                          )}
+                          {town && (
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <MapPin className="h-2.5 w-2.5" />
+                              {town.name}
+                            </span>
+                          )}
+                        </div>
+                        {accommodation.description && (
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                            {accommodation.description}
+                          </p>
+                        )}
+                        <div className="flex gap-2 mt-2">
+                        {accommodation.contactPhone && (
+  <a href={`tel:${accommodation.contactPhone}`} onClick={e => e.stopPropagation()} className="text-xs text-primary hover:underline">
+    {accommodation.contactPhone}
+  </a>
+)}
+{accommodation.websiteUrl && (
+  <a href={accommodation.websiteUrl} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-primary hover:underline flex items-center gap-1">
+    Website <ExternalLink className="h-2.5 w-2.5" />
+  </a>
+)}
+                        </div>
+                      </div>
+                      {accommodation.imageUrls && accommodation.imageUrls.length > 0 && (
+                        <div className="relative h-16 w-16 rounded-md overflow-hidden shrink-0">
+                          <img
+                            src={accommodation.imageUrls[0]}
+                            alt={accommodation.name}
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+  
+              {accommodations.length > 3 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll ? 'Show Less' : `Show ${accommodations.length - 3} More`}
+                </Button>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  }
+
 
 export function TripPlanner({ user }: { user: User }) {
   const firestore = useFirestore();
@@ -217,7 +383,7 @@ export function TripPlanner({ user }: { user: User }) {
   
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, type: null });
 
-  const [editingNotes, setEditingNotes] = useState<Record<string, string | undefined>>({});
+  const [tripAccommodations, setTripAccommodations] = useState<any[]>([]);
 
   const tripIdFromQuery = searchParams.get('tripId');
 
@@ -343,7 +509,6 @@ export function TripPlanner({ user }: { user: User }) {
         });
     });
   }
-
   const handleDownloadPdf = () => {
     if (!selectedTrip) {
         toast({
@@ -396,8 +561,7 @@ export function TripPlanner({ user }: { user: User }) {
 
             const province = provinces.find(p => p.slug === town.provinceSlug);
 
-            // Check for page break before adding new town
-            if (cursorY > pageHeight - 40) { // 40mm margin from bottom
+            if (cursorY > pageHeight - 40) {
                 doc.addPage();
                 cursorY = margin;
             }
@@ -412,9 +576,8 @@ export function TripPlanner({ user }: { user: User }) {
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'normal');
                 const notesLines = doc.splitTextToSize(tripTown.notes, pageWidth - margin * 2 - 5);
-                
                 notesLines.forEach((line: string) => {
-                    if (cursorY > pageHeight - 20) { // 20mm margin from bottom
+                    if (cursorY > pageHeight - 20) {
                         doc.addPage();
                         cursorY = margin;
                     }
@@ -422,14 +585,14 @@ export function TripPlanner({ user }: { user: User }) {
                     cursorY += 5;
                 });
             }
-             cursorY += 5; // Space after each town
+            cursorY += 5;
         });
     } else {
         doc.setFontSize(12);
         doc.setFont('helvetica', 'normal');
         doc.text("No towns have been added to this itinerary yet.", margin, cursorY);
     }
-    
+
     // Sights
     if (selectedTrip.sightIds && selectedTrip.sightIds.length > 0) {
         cursorY += 5;
@@ -441,7 +604,7 @@ export function TripPlanner({ user }: { user: User }) {
         doc.setFont('helvetica', 'bold');
         doc.text("Sights to See", margin, cursorY);
         cursorY += 10;
-        
+
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
         selectedTrip.sightIds.forEach(sightId => {
@@ -453,6 +616,43 @@ export function TripPlanner({ user }: { user: User }) {
                 }
                 doc.text(`- ${sight.name} (${sight.location})`, margin + 5, cursorY);
                 cursorY += 5;
+            }
+        });
+    }
+
+    // Accommodation
+    if (selectedTrip.accommodationIds && selectedTrip.accommodationIds.length > 0) {
+        cursorY += 5;
+        if (cursorY > pageHeight - 40) {
+            doc.addPage();
+            cursorY = margin;
+        }
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0);
+        doc.text("Accommodation", margin, cursorY);
+        cursorY += 10;
+
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+
+        selectedTrip.accommodationIds.forEach((accommodationId: string) => {
+            const accommodation = tripAccommodations.find(a => a.id === accommodationId);
+            if (accommodation) {
+                if (cursorY > pageHeight - 20) {
+                    doc.addPage();
+                    cursorY = margin;
+                }
+                doc.text(`- ${accommodation.name} (${accommodation.category || 'N/A'}) - ${accommodation.townSlug?.replace(/-/g, ' ')}`, margin + 5, cursorY);
+                cursorY += 5;
+                if (accommodation.contactPhone) {
+                    doc.text(`  Phone: ${accommodation.contactPhone}`, margin + 10, cursorY);
+                    cursorY += 5;
+                }
+                if (accommodation.websiteUrl) {
+                    doc.text(`  Website: ${accommodation.websiteUrl}`, margin + 10, cursorY);
+                    cursorY += 5;
+                }
             }
         });
     }
@@ -748,19 +948,12 @@ export function TripPlanner({ user }: { user: User }) {
 
                 {renderSightsList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
                 
-                 <Card>
-                    <CardHeader>
-                        <div className="flex items-center gap-2">
-                            <Bed className="h-6 w-6 text-primary"/>
-                            <CardTitle className="text-xl font-headline"><Translatable text="Accommodation"/></CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground">
-                            <Translatable text="Accommodation booking feature is coming soon."/>
-                        </p>
-                    </CardContent>
-                </Card>
+                <AccommodationCard
+  selectedTrip={selectedTrip}
+  firestore={firestore}
+  onSave={(ids) => handleItemsSave('accommodationIds', ids)}
+  toast={toast}
+/>
                 <Card>
                     <CardHeader>
                         <div className="flex items-center gap-2">

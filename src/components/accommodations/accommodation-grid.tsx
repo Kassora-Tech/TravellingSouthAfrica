@@ -1,0 +1,314 @@
+'use client';
+ 
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Building2,
+  Phone,
+  Mail,
+  Globe,
+  MapPin,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from 'lucide-react';
+ 
+interface Listing {
+  id: string;
+  name: string;
+  category?: string;
+  townSlug?: string;
+  description?: string;
+  imageUrls?: string[];
+  contactPhone?: string;
+  contactEmail?: string;
+  physicalAddress?: string;
+  websiteUrl?: string;
+  bookingSiteUrl?: string;
+}
+ 
+function formatTownName(slug: string) {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+}
+ 
+// ── Image Carousel (used inside card AND modal) ────────────────────────────
+function ImageCarousel({
+  images,
+  name,
+  height = 'h-52',
+}: {
+  images: string[];
+  name: string;
+  height?: string;
+}) {
+  const [idx, setIdx] = useState(0);
+ 
+  if (!images || images.length === 0) {
+    return (
+      <div className={`w-full ${height} bg-muted flex items-center justify-center`}>
+        <Building2 className="h-12 w-12 text-muted-foreground" />
+      </div>
+    );
+  }
+ 
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((i) => (i - 1 + images.length) % images.length);
+  };
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((i) => (i + 1) % images.length);
+  };
+ 
+  return (
+    <div className={`relative w-full ${height} overflow-hidden group`}>
+      <Image
+        src={images[idx]}
+        alt={`${name} – photo ${idx + 1}`}
+        fill
+        className="object-cover transition-opacity duration-300"
+        sizes="(max-width: 768px) 100vw, 50vw"
+      />
+ 
+      {images.length > 1 && (
+        <>
+          {/* Prev / Next buttons */}
+          <button
+            onClick={prev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+            aria-label="Next image"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+ 
+          {/* Dot indicators */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                className={`w-1.5 h-1.5 rounded-full transition-all ${
+                  i === idx ? 'bg-white scale-125' : 'bg-white/60'
+                }`}
+                aria-label={`Go to image ${i + 1}`}
+              />
+            ))}
+          </div>
+ 
+          {/* Counter */}
+          <span className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full z-10">
+            {idx + 1} / {images.length}
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
+ 
+// ── Detail Modal ────────────────────────────────────────────────────────────
+function AccommodationModal({
+  listing,
+  open,
+  onClose,
+}: {
+  listing: Listing | null;
+  open: boolean;
+  onClose: () => void;
+}) {
+  if (!listing) return null;
+ 
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+        {/* Image gallery */}
+        <ImageCarousel
+          images={listing.imageUrls || []}
+          name={listing.name}
+          height="h-72"
+        />
+ 
+        <div className="p-6 space-y-4">
+          <DialogHeader>
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <DialogTitle className="text-2xl font-bold text-primary">
+                  {listing.name}
+                </DialogTitle>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  {listing.category && (
+                    <Badge variant="secondary">{listing.category}</Badge>
+                  )}
+                  {listing.townSlug && (
+                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <MapPin className="h-3 w-3" />
+                      {formatTownName(listing.townSlug)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </DialogHeader>
+ 
+          {/* Description */}
+          {listing.description && (
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {listing.description}
+            </p>
+          )}
+ 
+          {/* Contact details */}
+          <div className="space-y-2 pt-2 border-t">
+            <h4 className="font-semibold text-sm">Contact</h4>
+            {listing.contactPhone && (
+              <div className="flex items-center gap-2 text-sm">
+                <Phone className="h-4 w-4 text-primary shrink-0" />
+                <a href={`tel:${listing.contactPhone}`} className="hover:underline">
+                  {listing.contactPhone}
+                </a>
+              </div>
+            )}
+            {listing.contactEmail && (
+              <div className="flex items-center gap-2 text-sm">
+                <Mail className="h-4 w-4 text-primary shrink-0" />
+                <a href={`mailto:${listing.contactEmail}`} className="hover:underline truncate">
+                  {listing.contactEmail}
+                </a>
+              </div>
+            )}
+            {listing.physicalAddress && (
+              <div className="flex items-start gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <span className="text-muted-foreground">{listing.physicalAddress}</span>
+              </div>
+            )}
+          </div>
+ 
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-3 pt-2">
+            {listing.websiteUrl && (
+              <Button asChild variant="outline" size="sm">
+                <a href={listing.websiteUrl} target="_blank" rel="noopener noreferrer">
+                  <Globe className="h-4 w-4 mr-2" />
+                  Visit Website
+                </a>
+              </Button>
+            )}
+            {listing.bookingSiteUrl && (
+              <Button asChild size="sm">
+                <a href={listing.bookingSiteUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Book Now
+                </a>
+              </Button>
+            )}
+            {listing.contactPhone && (
+              <Button asChild variant="outline" size="sm">
+                <a href={`tel:${listing.contactPhone}`}>
+                  <Phone className="h-4 w-4 mr-2" />
+                  Call
+                </a>
+              </Button>
+            )}
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+ 
+// ── Card ────────────────────────────────────────────────────────────────────
+function AccommodationCard({
+  listing,
+  onClick,
+}: {
+  listing: Listing;
+  onClick: () => void;
+}) {
+  return (
+    <Card
+      className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={onClick}
+    >
+      <ImageCarousel images={listing.imageUrls || []} name={listing.name} />
+ 
+      <CardContent className="p-4 flex flex-col flex-1 space-y-2">
+        <div>
+          <h3 className="text-lg font-bold text-primary leading-tight">{listing.name}</h3>
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
+            {listing.category && (
+              <span className="bg-secondary px-2 py-0.5 rounded-full text-xs">
+                {listing.category}
+              </span>
+            )}
+            {listing.townSlug && (
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPin className="h-3 w-3" />
+                {formatTownName(listing.townSlug)}
+              </span>
+            )}
+          </div>
+        </div>
+ 
+        {listing.description && (
+          <p className="text-sm text-muted-foreground line-clamp-2">{listing.description}</p>
+        )}
+ 
+        {listing.contactPhone && (
+          <div className="flex items-center gap-1 text-sm pt-1">
+            <Phone className="h-3 w-3 text-primary shrink-0" />
+            <span>{listing.contactPhone}</span>
+          </div>
+        )}
+ 
+        <div className="pt-2 mt-auto">
+          <span className="text-xs text-primary font-medium hover:underline">
+            View details →
+          </span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+ 
+// ── Grid (exported) ─────────────────────────────────────────────────────────
+export function AccommodationGrid({ listings }: { listings: Listing[] }) {
+  const [selected, setSelected] = useState<Listing | null>(null);
+ 
+  return (
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {listings.map((listing) => (
+          <AccommodationCard
+            key={listing.id}
+            listing={listing}
+            onClick={() => setSelected(listing)}
+          />
+        ))}
+      </div>
+ 
+      <AccommodationModal
+        listing={selected}
+        open={!!selected}
+        onClose={() => setSelected(null)}
+      />
+    </>
+  );
+}
+ 
