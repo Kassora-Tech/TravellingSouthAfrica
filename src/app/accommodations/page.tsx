@@ -39,7 +39,13 @@ async function getApprovedAccommodations(townSlug?: string) {
     }
  
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+    return snapshot.docs.map(doc => {
+        const data = doc.data();
+        // Firestore timestamps are not serializable. A simple way to serialize the whole object
+        // is to stringify and then parse it.
+        const plainObject = JSON.parse(JSON.stringify(data));
+        return { id: doc.id, ...plainObject };
+    }) as any[];
   } catch (error) {
     console.error('Error fetching accommodations:', error);
     return [];
