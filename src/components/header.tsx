@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
+  SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { LanguageSwitcher } from './language-switcher';
@@ -94,6 +95,7 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
                 <div className="p-4">
                     <div className="mb-8 flex justify-between items-center">
                         <Link href="/" onClick={() => setIsOpen(false)}>
