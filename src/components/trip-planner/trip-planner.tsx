@@ -211,62 +211,78 @@ function AccommodationCard({
   onAccommodationsLoaded: (accommodations: any[]) => void;
   toast: any;
 }) {
-    const townSlugs = selectedTrip?.towns?.map((t: any) => t.slug) || [];
-    useEffect(() => {
+  const townSlugs = selectedTrip?.towns?.map((t: any) => t.slug) || [];
+  const { accommodations, isLoading } = useAccommodationsForTowns(firestore, townSlugs);
+
+  useEffect(() => {
+    if (accommodations) {
       onAccommodationsLoaded(accommodations);
-    }, [accommodations]);
-    const [selectedIds, setSelectedIds] = useState<string[]>(
-      selectedTrip?.accommodationIds || []
-    );
-    const [showAll, setShowAll] = useState(false);
-  
-    useEffect(() => {
-      setSelectedIds(selectedTrip?.accommodationIds || []);
-    }, [selectedTrip?.id]);
-  
-    const handleToggle = (id: string) => {
-      const newIds = selectedIds.includes(id)
-        ? selectedIds.filter(i => i !== id)
-        : [...selectedIds, id];
-      setSelectedIds(newIds);
-      onSave(newIds);
-      toast({
-        title: selectedIds.includes(id) ? "Accommodation Removed" : "Accommodation Added",
-        description: accommodations.find(a => a.id === id)?.name,
-      });
-    };
-  
-    const displayedAccommodations = showAll ? accommodations : accommodations.slice(0, 3);
-  
-    return (
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <div className="flex items-center gap-2">
-            <Bed className="h-6 w-6 text-primary" />
-            <CardTitle className="text-xl font-headline">
-              <Translatable text="Accommodation" />
-            </CardTitle>
-          </div>
-          {accommodations.length > 0 && (
-            <span className="text-xs text-muted-foreground">
-              {selectedIds.length} selected
-            </span>
-          )}
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {isLoading && (
-            <p className="text-sm text-muted-foreground">Loading accommodations...</p>
-          )}
-  
-          {!isLoading && townSlugs.length === 0 && (
-            <p className="text-sm text-muted-foreground">
-              <Translatable text="Add towns to your trip to see available accommodations." />
-            </p>
-          )}
-  
-          {!isLoading && townSlugs.length > 0 && accommodations.length === 0 && (
+    }
+  }, [accommodations, onAccommodationsLoaded]);
+
+  const [selectedIds, setSelectedIds] = useState<string[]>(
+    selectedTrip?.accommodationIds || []
+  );
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    setSelectedIds(selectedTrip?.accommodationIds || []);
+  }, [selectedTrip?.id]);
+
+  const handleToggle = (id: string) => {
+    const newIds = selectedIds.includes(id)
+      ? selectedIds.filter((i) => i !== id)
+      : [...selectedIds, id];
+    setSelectedIds(newIds);
+    onSave(newIds);
+    toast({
+      title: selectedIds.includes(id)
+        ? "Accommodation Removed"
+        : "Accommodation Added",
+      description: accommodations.find((a) => a.id === id)?.name,
+    });
+  };
+
+  const displayedAccommodations = showAll
+    ? accommodations
+    : accommodations.slice(0, 3);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div className="flex items-center gap-2">
+          <Bed className="h-6 w-6 text-primary" />
+          <CardTitle className="text-xl font-headline">
+            <Translatable text="Accommodation" />
+          </CardTitle>
+        </div>
+        {accommodations && accommodations.length > 0 && (
+          <span className="text-xs text-muted-foreground">
+            {selectedIds.length} selected
+          </span>
+        )}
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {isLoading && (
+          <p className="text-sm text-muted-foreground">
+            Loading accommodations...
+          </p>
+        )}
+
+        {!isLoading && townSlugs.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            <Translatable text="Add towns to your trip to see available accommodations." />
+          </p>
+        )}
+
+        {!isLoading &&
+          townSlugs.length > 0 &&
+          accommodations &&
+          accommodations.length === 0 && (
             <div className="text-sm text-muted-foreground space-y-2">
-              <p><Translatable text="No approved accommodations found for your selected towns yet." /></p>
+              <p>
+                <Translatable text="No approved accommodations found for your selected towns yet." />
+              </p>
               <Button asChild variant="outline" size="sm">
                 <Link href="/add-your-listing" target="_blank">
                   <PlusCircle className="mr-2 h-3 w-3" />
@@ -275,64 +291,77 @@ function AccommodationCard({
               </Button>
             </div>
           )}
-  
-          {!isLoading && accommodations.length > 0 && (
-            <div className="space-y-3">
-              {displayedAccommodations.map(accommodation => {
-                const isSelected = selectedIds.includes(accommodation.id);
-                const town = towns.find(t => t.slug === accommodation.townSlug);
-                return (
-                  <div
-                    key={accommodation.id}
-                    onClick={() => handleToggle(accommodation.id)}
-                    className={`rounded-lg border p-3 cursor-pointer transition-all ${
-                      isSelected
-                        ? 'border-primary bg-primary/5'
-                        : 'hover:border-primary/50 hover:bg-muted/50'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium text-sm truncate">{accommodation.name}</p>
-                          {isSelected && (
-                            <span className="shrink-0 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-                              Selected
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          {accommodation.category && (
-                            <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
-                              {accommodation.category}
-                            </span>
-                          )}
-                          {town && (
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <MapPin className="h-2.5 w-2.5" />
-                              {town.name}
-                            </span>
-                          )}
-                        </div>
-                        {accommodation.description && (
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                            {accommodation.description}
-                          </p>
+
+        {!isLoading && accommodations && accommodations.length > 0 && (
+          <div className="space-y-3">
+            {displayedAccommodations.map((accommodation) => {
+              const isSelected = selectedIds.includes(accommodation.id);
+              const town = towns.find((t) => t.slug === accommodation.townSlug);
+              return (
+                <div
+                  key={accommodation.id}
+                  onClick={() => handleToggle(accommodation.id)}
+                  className={`rounded-lg border p-3 cursor-pointer transition-all ${
+                    isSelected
+                      ? "border-primary bg-primary/5"
+                      : "hover:border-primary/50 hover:bg-muted/50"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm truncate">
+                          {accommodation.name}
+                        </p>
+                        {isSelected && (
+                          <span className="shrink-0 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                            Selected
+                          </span>
                         )}
-                        <div className="flex gap-2 mt-2">
-                        {accommodation.contactPhone && (
-  <a href={`tel:${accommodation.contactPhone}`} onClick={e => e.stopPropagation()} className="text-xs text-primary hover:underline">
-    {accommodation.contactPhone}
-  </a>
-)}
-{accommodation.websiteUrl && (
-  <a href={accommodation.websiteUrl} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-primary hover:underline flex items-center gap-1">
-    Website <ExternalLink className="h-2.5 w-2.5" />
-  </a>
-)}
-                        </div>
                       </div>
-                      {accommodation.imageUrls && accommodation.imageUrls.length > 0 && (
+                      <div className="flex items-center gap-2 mt-1">
+                        {accommodation.category && (
+                          <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
+                            {accommodation.category}
+                          </span>
+                        )}
+                        {town && (
+                          <span className="text-xs text-muted-foreground flex items-center gap-1">
+                            <MapPin className="h-2.5 w-2.5" />
+                            {town.name}
+                          </span>
+                        )}
+                      </div>
+                      {accommodation.description && (
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                          {accommodation.description}
+                        </p>
+                      )}
+                      <div className="flex gap-2 mt-2">
+                        {accommodation.contactPhone && (
+                          <a
+                            href={`tel:${accommodation.contactPhone}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-xs text-primary hover:underline"
+                          >
+                            {accommodation.contactPhone}
+                          </a>
+                        )}
+                        {accommodation.websiteUrl && (
+                          <a
+                            href={accommodation.websiteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-xs text-primary hover:underline flex items-center gap-1"
+                          >
+                            Website <ExternalLink className="h-2.5 w-2.5" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    {accommodation.imageUrls &&
+                      accommodation.imageUrls.length > 0 && (
                         <div className="relative h-16 w-16 rounded-md overflow-hidden shrink-0">
                           <img
                             src={accommodation.imageUrls[0]}
@@ -341,27 +370,29 @@ function AccommodationCard({
                           />
                         </div>
                       )}
-                    </div>
                   </div>
-                );
-              })}
-  
-              {accommodations.length > 3 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full"
-                  onClick={() => setShowAll(!showAll)}
-                >
-                  {showAll ? 'Show Less' : `Show ${accommodations.length - 3} More`}
-                </Button>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    );
-  }
+                </div>
+              );
+            })}
+
+            {accommodations.length > 3 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full"
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll
+                  ? "Show Less"
+                  : `Show ${accommodations.length - 3} More`}
+              </Button>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 
 export function TripPlanner({ user }: { user: User }) {
@@ -384,6 +415,7 @@ export function TripPlanner({ user }: { user: User }) {
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, type: null });
 
   const [tripAccommodations, setTripAccommodations] = useState<any[]>([]);
+  const [editingNotes, setEditingNotes] = useState<Record<string, string>>({});
 
   const tripIdFromQuery = searchParams.get('tripId');
 
@@ -949,11 +981,12 @@ export function TripPlanner({ user }: { user: User }) {
                 {renderSightsList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
                 
                 <AccommodationCard
-  selectedTrip={selectedTrip}
-  firestore={firestore}
-  onSave={(ids) => handleItemsSave('accommodationIds', ids)}
-  toast={toast}
-/>
+                    selectedTrip={selectedTrip}
+                    firestore={firestore}
+                    onSave={(ids) => handleItemsSave('accommodationIds', ids)}
+                    onAccommodationsLoaded={setTripAccommodations}
+                    toast={toast}
+                />
                 <Card>
                     <CardHeader>
                         <div className="flex items-center gap-2">
