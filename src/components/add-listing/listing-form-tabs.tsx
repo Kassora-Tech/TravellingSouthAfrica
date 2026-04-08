@@ -105,7 +105,17 @@ type FormSchema = z.infer<typeof accommodationSchema> | z.infer<typeof restauran
 
 const accommodationCategories = ['Hotel', 'Guesthouse', 'Self-Catering', 'B&B', 'Lodge', 'Backpackers', 'Other'];
 const restaurantCuisines = ['South African', 'Italian', 'Seafood', 'Steakhouse', 'Fine Dining', 'Cafe', 'Other'];
-const serviceCategories = ['Car Hire', 'Tour Operator', 'Guide', 'Transport', 'Other'];
+const serviceCategories = [
+  'Car Hire',
+  'Tour Operator',
+  'Guide',
+  'Transport',
+  'Technology',
+  'Restaurant',
+  'Hotel',
+  'Travel Agent',
+  'General',
+];
 const attractionCategories = ['Nature', 'Culture', 'Adventure', 'Historical', 'Other'];
 
 export function ListingFormTabs({ user, isAdmin }: ListingFormTabsProps) {

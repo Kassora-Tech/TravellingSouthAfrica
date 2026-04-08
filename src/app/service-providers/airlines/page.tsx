@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { ServiceProviderListings } from '@/components/service-providers/service-provider-listings';
 
 export default function AirlinesPage() {
@@ -5,7 +6,7 @@ export default function AirlinesPage() {
     <ServiceProviderListings
       category="Transport"
       title="Airlines"
-      description="Find flights to and within South Africa from major carriers and travel services."
+      description="Find flights to and within South Africa from major carriers."
     />
   );
 }
