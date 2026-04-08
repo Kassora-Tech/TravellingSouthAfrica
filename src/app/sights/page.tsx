@@ -1,14 +1,37 @@
 import { Translatable } from '@/components/translatable';
-import { sights } from '@/lib/data/sights';
+import { sights as staticSights } from '@/lib/data/sights';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
-import { MapPin } from 'lucide-react';
+import { MapPin, Mountain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Metadata } from 'next';
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore, collection, query, where, getDocs, Timestamp } from "firebase/firestore";
+import { firebaseConfig } from "@/firebase/config";
+import { towns } from '@/lib/data/towns';
+
+export const dynamic = "force-dynamic";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
+
+interface Attraction {
+  id: string;
+  name: string;
+  townSlug: string;
+  category: string;
+  description: string;
+  physicalAddress?: string;
+  websiteUrl?: string;
+  contactEmail?: string;
+  imageUrls: string[];
+  approved: boolean;
+  ownerUid: string;
+  ownerEmail: string;
+  createdAt: Timestamp;
+}
+
 
 export const metadata: Metadata = {
   title: 'Top Sights in South Africa | Travel SA | TravellingSA',
@@ -41,7 +64,7 @@ const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'South African Sights and Attractions',
-  itemListElement: sights.map((sight, index) => ({
+  itemListElement: staticSights.map((sight, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     item: {
@@ -54,8 +77,21 @@ const itemListSchema = {
 };
 
 
-// TODO: Add filtering logic
-export default function SightsPage() {
+export default async function SightsPage() {
+    let approvedAttractions: Attraction[] = [];
+    try {
+        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+        const firestore = getFirestore(app);
+        const attractionsRef = collection(firestore, 'attractions');
+        const q = query(attractionsRef, where('approved', '==', true));
+        const snapshot = await getDocs(q);
+        approvedAttractions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Attraction));
+    } catch (error) {
+        console.error("Error fetching approved attractions:", error);
+    }
+    
+    const townNameMap = new Map(towns.map(t => [t.slug, t.name]));
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -75,7 +111,7 @@ export default function SightsPage() {
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {sights.map((sight) => {
+                {staticSights.map((sight) => {
                     const image = PlaceHolderImages.find(p => p.id === sight.imageId);
                     const altText = `${sight.name}, a top tourist attraction in ${sight.location}, South Africa`;
                     return (
@@ -106,6 +142,50 @@ export default function SightsPage() {
                     );
                 })}
             </div>
+
+            {approvedAttractions.length > 0 && (
+                <div className="mt-16">
+                    <h2 className="mb-12 text-center text-3xl font-bold font-headline md:text-4xl">
+                        <Translatable text="Featured Attractions" />
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        {approvedAttractions.map((attraction) => {
+                            const locationName = townNameMap.get(attraction.townSlug) || attraction.townSlug;
+                            const altText = `${attraction.name}, an attraction in ${locationName}, South Africa`;
+                            return (
+                                <Link href={`/towns/${attraction.townSlug}`} key={attraction.id}>
+                                    <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 h-full">
+                                        <div className="relative h-64 w-full">
+                                            {attraction.imageUrls && attraction.imageUrls.length > 0 ? (
+                                                <Image
+                                                    src={attraction.imageUrls[0]}
+                                                    alt={altText}
+                                                    fill
+                                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                                />
+                                            ) : (
+                                                <div className="flex h-full items-center justify-center bg-muted">
+                                                    <Mountain className="h-16 w-16 text-muted-foreground"/>
+                                                </div>
+                                            )}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                            <div className="absolute bottom-0 left-0 w-full p-4 text-white">
+                                                <Badge variant="secondary"><Translatable text={attraction.category} /></Badge>
+                                                <h2 className="font-headline text-xl font-bold mt-2"><Translatable text={attraction.name} /></h2>
+                                                <p className="flex items-center mt-1">
+                                                    <MapPin className="w-4 h-4 mr-1" />
+                                                    <Translatable text={locationName} />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
         </div>
       </section>
     </>
