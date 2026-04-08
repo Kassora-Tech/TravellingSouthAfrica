@@ -76,19 +76,28 @@ const itemListSchema = {
   })),
 };
 
+async function getApprovedAttractions() {
+  try {
+    const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    const firestore = getFirestore(app);
+    const attractionsRef = collection(firestore, 'attractions');
+    const q = query(attractionsRef, where('approved', '==', true));
+    const snapshot = await getDocs(q);
+    
+    return snapshot.docs.map(doc => {
+        const data = doc.data();
+        const plainObject = JSON.parse(JSON.stringify(data));
+        return { id: doc.id, ...plainObject };
+    }) as Attraction[];
+
+  } catch (error) {
+    console.error("Error fetching approved attractions:", error);
+    return [];
+  }
+}
 
 export default async function SightsPage() {
-    let approvedAttractions: Attraction[] = [];
-    try {
-        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-        const firestore = getFirestore(app);
-        const attractionsRef = collection(firestore, 'attractions');
-        const q = query(attractionsRef, where('approved', '==', true));
-        const snapshot = await getDocs(q);
-        approvedAttractions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Attraction));
-    } catch (error) {
-        console.error("Error fetching approved attractions:", error);
-    }
+    const approvedAttractions = await getApprovedAttractions();
     
     const townNameMap = new Map(towns.map(t => [t.slug, t.name]));
 

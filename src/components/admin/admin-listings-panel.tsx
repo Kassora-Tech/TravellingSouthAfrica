@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
+import { useFirestore } from '@/firebase';
+import { collection, query, getDocs, doc } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
 import { updateListingStatus, deleteListing } from '@/firebase/firestore/admin-actions';
@@ -205,22 +205,47 @@ function ListingCard({
 export function AdminListingsPanel({ collectionName }: { collectionName: string }) {
   const firestore = useFirestore();
   const { toast } = useToast();
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const listingsQuery = useMemoFirebase(() => collection(firestore, collectionName), [firestore, collectionName]);
-  const { data: listings, isLoading } = useCollection<Listing>(listingsQuery);
+  useEffect(() => {
+    const fetchListings = async () => {
+      setIsLoading(true);
+      try {
+        const q = query(collection(firestore, collectionName));
+        const snapshot = await getDocs(q);
+        const fetchedListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Listing));
+        setListings(fetchedListings);
+      } catch (error) {
+        console.error(`Error fetching ${collectionName}:`, error);
+        toast({
+          variant: "destructive",
+          title: "Error fetching listings",
+          description: "Could not fetch data from the database.",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchListings();
+  }, [collectionName, firestore, toast]);
 
-  const handleApprove = (id: string) => {
-    updateListingStatus(firestore, collectionName, id, true);
+  const handleApprove = async (id: string) => {
+    await updateListingStatus(firestore, collectionName, id, true);
+    setListings(prev => prev.map(l => l.id === id ? { ...l, approved: true } : l));
     toast({ title: "Listing Approved ✅" });
   };
 
-  const handleUnapprove = (id: string) => {
-    updateListingStatus(firestore, collectionName, id, false);
+  const handleUnapprove = async (id: string) => {
+    await updateListingStatus(firestore, collectionName, id, false);
+    setListings(prev => prev.map(l => l.id === id ? { ...l, approved: false } : l));
     toast({ title: "Listing Un-approved" });
   };
 
-  const handleDelete = (id: string) => {
-    deleteListing(firestore, collectionName, id);
+  const handleDelete = async (id: string) => {
+    await deleteListing(firestore, collectionName, id);
+    setListings(prev => prev.filter(l => l.id !== id));
     toast({ variant: "destructive", title: "Listing Deleted" });
   };
 

@@ -83,12 +83,8 @@ service cloud.firestore {
 
     match /attractions/{docId} {
       allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null &&
-        request.auth.token.email in [
-          'maryke@travellingsouthafrica.co.za',
-          'tristan@industrialgrowthhub.com'
-        ];
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
     }
 
     // ---- CONTACTS ----
