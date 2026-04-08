@@ -12,6 +12,13 @@ import { getFirestore, collection, query, where, getDocs, Timestamp } from "fire
 import { firebaseConfig } from "@/firebase/config";
 import { towns } from '@/lib/data/towns';
 
+function slugify(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export const dynamic = "force-dynamic";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
@@ -162,7 +169,7 @@ export default async function SightsPage() {
                             const locationName = townNameMap.get(attraction.townSlug) || attraction.townSlug;
                             const altText = `${attraction.name}, an attraction in ${locationName}, South Africa`;
                             return (
-                                <Link href={`/towns/${attraction.townSlug}`} key={attraction.id}>
+                              <Link href={`/sights/${slugify(attraction.name)}`} key={attraction.id}>
                                     <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 h-full">
                                         <div className="relative h-64 w-full">
                                             {attraction.imageUrls && attraction.imageUrls.length > 0 ? (

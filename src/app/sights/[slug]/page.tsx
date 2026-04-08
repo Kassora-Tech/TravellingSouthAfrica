@@ -139,6 +139,7 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
         mapEmbed: sight.mapEmbed,
         visitorInfo: sight.visitorInfo,
         provinceSlug: sight.provinceSlug,
+        websiteUrl: undefined,
       }
     : {
         name: firestoreAttraction.name,
@@ -153,6 +154,7 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
           openingHours: "See website",
         },
         provinceSlug: townForAttraction?.provinceSlug || "",
+        websiteUrl: firestoreAttraction.websiteUrl,
       };
 
   const province = provinces.find(p => p.slug === data.provinceSlug);
@@ -241,6 +243,14 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
                     <p><strong><Translatable text="Best time to visit:" /></strong> <Translatable text={data.visitorInfo.bestTime} /></p>
                     <p><strong><Translatable text="Entry Fee:" /></strong> <Translatable text={data.visitorInfo.entryFee} /></p>
                     <p><strong><Translatable text="Opening Hours:" /></strong> <Translatable text={data.visitorInfo.openingHours} /></p>
+                    {data.websiteUrl && (
+                      <p>
+                        <strong><Translatable text="Website:" /></strong>{' '}
+                        <a href={data.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                          <Translatable text="Visit Website" />
+                        </a>
+                      </p>
+                    )}
                 </div>
             </div>
         </div>
