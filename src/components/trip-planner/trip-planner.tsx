@@ -14,6 +14,7 @@ import { Translatable } from '../translatable';
 import { format } from 'date-fns';
 import { AddToTripDialog } from './add-to-trip-dialog';
 import Link from 'next/link';
+import { Phone, Mail, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { provinces } from '@/lib/data/provinces';
 import { towns } from '@/lib/data/towns';
@@ -198,6 +199,242 @@ const NationalRoadsGuide = ({ onSelectRoute }: { onSelectRoute: (slug: string) =
     );
 };
 
+// ── Mini image carousel for use inside the card list ────────────────────────
+function MiniCarousel({ images, name }: { images: string[]; name: string }) {
+  const [idx, setIdx] = React.useState(0);
+ 
+  if (!images || images.length === 0) {
+    return (
+      <div className="w-full h-44 bg-muted flex items-center justify-center rounded-t-lg">
+        <Bed className="h-10 w-10 text-muted-foreground" />
+      </div>
+    );
+  }
+ 
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((i) => (i - 1 + images.length) % images.length);
+  };
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((i) => (i + 1) % images.length);
+  };
+ 
+  return (
+    <div className="relative w-full h-44 overflow-hidden rounded-t-lg group">
+      <img
+        src={images[idx]}
+        alt={`${name} photo ${idx + 1}`}
+        className="w-full h-full object-cover transition-opacity duration-300"
+      />
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-1.5 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+          >
+            <ChevronLeft className="h-3 w-3" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+          >
+            <ChevronRight className="h-3 w-3" />
+          </button>
+          <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-white scale-125' : 'bg-white/50'}`}
+              />
+            ))}
+          </div>
+          <span className="absolute top-1.5 right-1.5 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded-full z-10">
+            {idx + 1}/{images.length}
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
+ 
+// ── Full detail modal ────────────────────────────────────────────────────────
+function AccommodationDetailModal({
+  accommodation,
+  isSelected,
+  onToggle,
+  onClose,
+}: {
+  accommodation: any;
+  isSelected: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+}) {
+  const [idx, setIdx] = React.useState(0);
+  const images = accommodation.imageUrls || [];
+ 
+  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i - 1 + images.length) % images.length); };
+  const next = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i + 1) % images.length); };
+ 
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+      onClick={onClose}
+    >
+      <div
+        className="bg-background rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Image gallery */}
+        <div className="relative w-full h-64 bg-muted overflow-hidden rounded-t-xl group">
+          {images.length > 0 ? (
+            <>
+              <img
+                src={images[idx]}
+                alt={`${accommodation.name} photo ${idx + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {images.length > 1 && (
+                <>
+                  <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                    {images.map((_: string, i: number) => (
+                      <button key={i} onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                        className={`w-2 h-2 rounded-full transition-all ${i === idx ? 'bg-white scale-125' : 'bg-white/50'}`}
+                      />
+                    ))}
+                  </div>
+                  <span className="absolute top-2 right-10 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full z-10">
+                    {idx + 1} / {images.length}
+                  </span>
+                </>
+              )}
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Bed className="h-16 w-16 text-muted-foreground" />
+            </div>
+          )}
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 z-20"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+ 
+        {/* Thumbnail strip */}
+        {images.length > 1 && (
+          <div className="flex gap-2 px-4 pt-3 overflow-x-auto">
+            {images.map((url: string, i: number) => (
+              <button
+                key={i}
+                onClick={() => setIdx(i)}
+                className={`shrink-0 w-14 h-14 rounded-md overflow-hidden border-2 transition-all ${i === idx ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}
+              >
+                <img src={url} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
+ 
+        {/* Content */}
+        <div className="p-5 space-y-4">
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-bold text-primary">{accommodation.name}</h2>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                {accommodation.category && (
+                  <span className="bg-secondary text-xs px-2 py-0.5 rounded-full">{accommodation.category}</span>
+                )}
+                {accommodation.townSlug && (
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPin className="h-3 w-3" />
+                    {accommodation.townSlug.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                  </span>
+                )}
+              </div>
+            </div>
+            <Button
+              onClick={onToggle}
+              variant={isSelected ? 'default' : 'outline'}
+              size="sm"
+              className="shrink-0"
+            >
+              {isSelected ? '✓ Selected' : '+ Add to Trip'}
+            </Button>
+          </div>
+ 
+          {/* Description */}
+          {accommodation.description && (
+            <p className="text-sm text-muted-foreground leading-relaxed">{accommodation.description}</p>
+          )}
+ 
+          {/* Contact details */}
+          <div className="space-y-2 pt-2 border-t">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Contact</p>
+            {accommodation.contactPhone && (
+              <div className="flex items-center gap-2 text-sm">
+                <Phone className="h-4 w-4 text-primary shrink-0" />
+                <a href={`tel:${accommodation.contactPhone}`} onClick={(e) => e.stopPropagation()} className="hover:underline">
+                  {accommodation.contactPhone}
+                </a>
+              </div>
+            )}
+            {accommodation.contactEmail && (
+              <div className="flex items-center gap-2 text-sm">
+                <Mail className="h-4 w-4 text-primary shrink-0" />
+                <a href={`mailto:${accommodation.contactEmail}`} onClick={(e) => e.stopPropagation()} className="hover:underline truncate">
+                  {accommodation.contactEmail}
+                </a>
+              </div>
+            )}
+            {accommodation.physicalAddress && (
+              <div className="flex items-start gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <span className="text-muted-foreground">{accommodation.physicalAddress}</span>
+              </div>
+            )}
+          </div>
+ 
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {accommodation.websiteUrl && (
+              <Button asChild variant="outline" size="sm">
+                <a href={accommodation.websiteUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                  <Globe className="h-3.5 w-3.5 mr-1.5" /> Website
+                </a>
+              </Button>
+            )}
+            {accommodation.bookingSiteUrl && (
+              <Button asChild size="sm">
+                <a href={accommodation.bookingSiteUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                  <ExternalLink className="h-3.5 w-3.5 mr-1.5" /> Book Now
+                </a>
+              </Button>
+            )}
+            {accommodation.contactPhone && (
+              <Button asChild variant="outline" size="sm">
+                <a href={`tel:${accommodation.contactPhone}`} onClick={(e) => e.stopPropagation()}>
+                  <Phone className="h-3.5 w-3.5 mr-1.5" /> Call
+                </a>
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
+// ── Main AccommodationCard component ────────────────────────────────────────
 function AccommodationCard({
   selectedTrip,
   firestore,
@@ -213,22 +450,23 @@ function AccommodationCard({
 }) {
   const townSlugs = selectedTrip?.towns?.map((t: any) => t.slug) || [];
   const { accommodations, isLoading } = useAccommodationsForTowns(firestore, townSlugs);
-
+ 
   useEffect(() => {
     if (accommodations) {
       onAccommodationsLoaded(accommodations);
     }
   }, [accommodations, onAccommodationsLoaded]);
-
-  const [selectedIds, setSelectedIds] = useState<string[]>(
+ 
+  const [selectedIds, setSelectedIds] = React.useState<string[]>(
     selectedTrip?.accommodationIds || []
   );
-  const [showAll, setShowAll] = useState(false);
-
+  const [showAll, setShowAll] = React.useState(false);
+  const [detailAccommodation, setDetailAccommodation] = React.useState<any | null>(null);
+ 
   useEffect(() => {
     setSelectedIds(selectedTrip?.accommodationIds || []);
   }, [selectedTrip?.id]);
-
+ 
   const handleToggle = (id: string) => {
     const newIds = selectedIds.includes(id)
       ? selectedIds.filter((i) => i !== id)
@@ -236,161 +474,161 @@ function AccommodationCard({
     setSelectedIds(newIds);
     onSave(newIds);
     toast({
-      title: selectedIds.includes(id)
-        ? "Accommodation Removed"
-        : "Accommodation Added",
-      description: accommodations.find((a) => a.id === id)?.name,
+      title: selectedIds.includes(id) ? 'Accommodation Removed' : 'Accommodation Added',
+      description: accommodations.find((a: any) => a.id === id)?.name,
     });
   };
-
-  const displayedAccommodations = showAll
-    ? accommodations
-    : accommodations.slice(0, 3);
-
+ 
+  const displayedAccommodations = showAll ? accommodations : accommodations.slice(0, 4);
+ 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center gap-2">
-          <Bed className="h-6 w-6 text-primary" />
-          <CardTitle className="text-xl font-headline">
-            <Translatable text="Accommodation" />
-          </CardTitle>
-        </div>
-        {accommodations && accommodations.length > 0 && (
-          <span className="text-xs text-muted-foreground">
-            {selectedIds.length} selected
-          </span>
-        )}
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {isLoading && (
-          <p className="text-sm text-muted-foreground">
-            Loading accommodations...
-          </p>
-        )}
-
-        {!isLoading && townSlugs.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            <Translatable text="Add towns to your trip to see available accommodations." />
-          </p>
-        )}
-
-        {!isLoading &&
-          townSlugs.length > 0 &&
-          accommodations &&
-          accommodations.length === 0 && (
+    <>
+      <Card className="col-span-1 lg:col-span-2">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <div className="flex items-center gap-2">
+            <Bed className="h-6 w-6 text-primary" />
+            <CardTitle className="text-xl font-headline">
+              <Translatable text="Accommodation" />
+            </CardTitle>
+          </div>
+          {accommodations && accommodations.length > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {selectedIds.length} selected
+            </span>
+          )}
+        </CardHeader>
+        <CardContent>
+          {isLoading && (
+            <p className="text-sm text-muted-foreground">Loading accommodations...</p>
+          )}
+ 
+          {!isLoading && townSlugs.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              <Translatable text="Add towns to your trip to see available accommodations." />
+            </p>
+          )}
+ 
+          {!isLoading && townSlugs.length > 0 && accommodations && accommodations.length === 0 && (
             <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <Translatable text="No approved accommodations found for your selected towns yet." />
-              </p>
+              <p><Translatable text="No approved accommodations found for your selected towns yet." /></p>
               <Button asChild variant="outline" size="sm">
                 <Link href="/add-your-listing" target="_blank">
-                  <PlusCircle className="mr-2 h-3 w-3" />
-                  Add a Listing
+                  <PlusCircle className="mr-2 h-3 w-3" /> Add a Listing
                 </Link>
               </Button>
             </div>
           )}
-
-        {!isLoading && accommodations && accommodations.length > 0 && (
-          <div className="space-y-3">
-            {displayedAccommodations.map((accommodation) => {
-              const isSelected = selectedIds.includes(accommodation.id);
-              const town = towns.find((t) => t.slug === accommodation.townSlug);
-              return (
-                <div
-                  key={accommodation.id}
-                  onClick={() => handleToggle(accommodation.id)}
-                  className={`rounded-lg border p-3 cursor-pointer transition-all ${
-                    isSelected
-                      ? "border-primary bg-primary/5"
-                      : "hover:border-primary/50 hover:bg-muted/50"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm truncate">
-                          {accommodation.name}
-                        </p>
-                        {isSelected && (
-                          <span className="shrink-0 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-                            Selected
-                          </span>
-                        )}
+ 
+          {!isLoading && accommodations && accommodations.length > 0 && (
+            <>
+              {/* Card grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {displayedAccommodations.map((accommodation: any) => {
+                  const isSelected = selectedIds.includes(accommodation.id);
+                  return (
+                    <div
+                      key={accommodation.id}
+                      className={`rounded-xl border overflow-hidden cursor-pointer transition-all hover:shadow-md ${
+                        isSelected ? 'border-primary ring-2 ring-primary/30' : 'hover:border-primary/40'
+                      }`}
+                    >
+                      {/* Image carousel — click opens detail */}
+                      <div onClick={() => setDetailAccommodation(accommodation)}>
+                        <MiniCarousel images={accommodation.imageUrls || []} name={accommodation.name} />
                       </div>
-                      <div className="flex items-center gap-2 mt-1">
-                        {accommodation.category && (
-                          <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
-                            {accommodation.category}
-                          </span>
+ 
+                      {/* Info */}
+                      <div className="p-3 space-y-1.5">
+                        <div className="flex items-start justify-between gap-1">
+                          <div className="min-w-0">
+                            <p className="font-semibold text-sm truncate">{accommodation.name}</p>
+                            <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+                              {accommodation.category && (
+                                <span className="text-xs bg-secondary px-1.5 py-0.5 rounded-full">
+                                  {accommodation.category}
+                                </span>
+                              )}
+                              {accommodation.townSlug && (
+                                <span className="text-xs text-muted-foreground flex items-center gap-0.5">
+                                  <MapPin className="h-2.5 w-2.5" />
+                                  {accommodation.townSlug.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          {isSelected && (
+                            <span className="shrink-0 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+                              ✓
+                            </span>
+                          )}
+                        </div>
+ 
+                        {accommodation.description && (
+                          <p className="text-xs text-muted-foreground line-clamp-2">
+                            {accommodation.description}
+                          </p>
                         )}
-                        {town && (
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <MapPin className="h-2.5 w-2.5" />
-                            {town.name}
-                          </span>
-                        )}
-                      </div>
-                      {accommodation.description && (
-                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                          {accommodation.description}
-                        </p>
-                      )}
-                      <div className="flex gap-2 mt-2">
+ 
                         {accommodation.contactPhone && (
                           <a
                             href={`tel:${accommodation.contactPhone}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="text-xs text-primary hover:underline"
+                            className="flex items-center gap-1 text-xs text-primary hover:underline"
                           >
-                            {accommodation.contactPhone}
+                            <Phone className="h-2.5 w-2.5" /> {accommodation.contactPhone}
                           </a>
                         )}
-                        {accommodation.websiteUrl && (
-                          <a
-                            href={accommodation.websiteUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-xs text-primary hover:underline flex items-center gap-1"
+ 
+                        {/* Action row */}
+                        <div className="flex gap-2 pt-1">
+                          <Button
+                            size="sm"
+                            variant={isSelected ? 'default' : 'outline'}
+                            className="flex-1 h-7 text-xs"
+                            onClick={() => handleToggle(accommodation.id)}
                           >
-                            Website <ExternalLink className="h-2.5 w-2.5" />
-                          </a>
-                        )}
+                            {isSelected ? 'Remove' : '+ Select'}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-7 text-xs px-2"
+                            onClick={() => setDetailAccommodation(accommodation)}
+                          >
+                            Details
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                    {accommodation.imageUrls &&
-                      accommodation.imageUrls.length > 0 && (
-                        <div className="relative h-16 w-16 rounded-md overflow-hidden shrink-0">
-                          <img
-                            src={accommodation.imageUrls[0]}
-                            alt={accommodation.name}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                      )}
-                  </div>
-                </div>
-              );
-            })}
-
-            {accommodations.length > 3 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full"
-                onClick={() => setShowAll(!showAll)}
-              >
-                {showAll
-                  ? "Show Less"
-                  : `Show ${accommodations.length - 3} More`}
-              </Button>
-            )}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+                  );
+                })}
+              </div>
+ 
+              {accommodations.length > 4 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full mt-4"
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll ? 'Show Less' : `Show ${accommodations.length - 4} More`}
+                </Button>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
+ 
+      {/* Detail modal */}
+      {detailAccommodation && (
+        <AccommodationDetailModal
+          accommodation={detailAccommodation}
+          isSelected={selectedIds.includes(detailAccommodation.id)}
+          onToggle={() => handleToggle(detailAccommodation.id)}
+          onClose={() => setDetailAccommodation(null)}
+        />
+      )}
+    </>
   );
 }
 

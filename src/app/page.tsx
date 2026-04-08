@@ -1,17 +1,23 @@
 import { Hero } from '@/components/home/hero';
-import { CallToActions } from '@/components/home/call-to-actions';
+import { QuickNav } from '@/components/home/quick-nav';
 import { FeaturedProvinces } from '@/components/home/featured-provinces';
+import { FeaturedDestinations } from '@/components/home/featured-destinations';
+import { CallToActions } from '@/components/home/call-to-actions';
 import { AnimatedStats } from '@/components/home/animated-stats';
 import { PromotionalBanner } from '@/components/home/promotional-banner';
+import { AccommodationSearch } from '@/components/home/accommodation-search';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <PromotionalBanner />
       <Hero />
-      <AnimatedStats />
-      <CallToActions />
+      <AccommodationSearch />
+      <QuickNav />
       <FeaturedProvinces />
+      <AnimatedStats />
+      <FeaturedDestinations />
+      <CallToActions />
     </>
   );
 }

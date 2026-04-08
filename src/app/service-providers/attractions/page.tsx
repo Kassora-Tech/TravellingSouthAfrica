@@ -1,14 +1,11 @@
-import { Translatable } from '@/components/translatable';
+import { ServiceProviderListings } from '@/components/service-providers/service-provider-listings';
 
 export default function AttractionsPage() {
   return (
-    <div className="container mx-auto px-4 py-16 text-center">
-      <h1 className="text-4xl font-bold font-headline text-primary">
-        <Translatable text="Attractions" />
-      </h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        <Translatable text="Coming Soon – Featured Attraction Providers" />
-      </p>
-    </div>
+    <ServiceProviderListings
+      category="Guide"
+      title="Attractions & Guides"
+      description="Discover top attractions and book unique experiences across South Africa."
+    />
   );
 }

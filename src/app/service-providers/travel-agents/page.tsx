@@ -1,14 +1,11 @@
-import { Translatable } from '@/components/translatable';
+import { ServiceProviderListings } from '@/components/service-providers/service-provider-listings';
 
 export default function TravelAgentsPage() {
   return (
-    <div className="container mx-auto px-4 py-16 text-center">
-      <h1 className="text-4xl font-bold font-headline text-primary">
-        <Translatable text="Travel Agents" />
-      </h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        <Translatable text="Coming Soon – Featured Travel Agent Providers" />
-      </p>
-    </div>
+    <ServiceProviderListings
+      category="Tour Operator"
+      title="Travel Agents & Tour Operators"
+      description="Connect with expert travel agents and tour operators to plan your perfect South African trip."
+    />
   );
 }

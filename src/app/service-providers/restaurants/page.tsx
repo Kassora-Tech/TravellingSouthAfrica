@@ -1,14 +1,11 @@
-import { Translatable } from '@/components/translatable';
+import { ServiceProviderListings } from '@/components/service-providers/service-provider-listings';
 
-export default function RestaurantsPage() {
+export default function RestaurantsServicePage() {
   return (
-    <div className="container mx-auto px-4 py-16 text-center">
-      <h1 className="text-4xl font-bold font-headline text-primary">
-        <Translatable text="Restaurants" />
-      </h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        <Translatable text="Coming Soon – Featured Restaurant Providers" />
-      </p>
-    </div>
+    <ServiceProviderListings
+      category="Other"
+      title="Restaurants & Dining"
+      description="Explore dining options across South Africa, from fine dining to local eateries."
+    />
   );
 }

@@ -1,14 +1,11 @@
-import { Translatable } from '@/components/translatable';
+import { ServiceProviderListings } from '@/components/service-providers/service-provider-listings';
 
 export default function TechnologyPage() {
   return (
-    <div className="container mx-auto px-4 py-16 text-center">
-      <h1 className="text-4xl font-bold font-headline text-primary">
-        <Translatable text="Technology" />
-      </h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        <Translatable text="Coming Soon – Featured Technology Service Providers" />
-      </p>
-    </div>
+    <ServiceProviderListings
+      category="Other"
+      title="Technology Services"
+      description="Services for staying connected during your South African trip, like SIM cards and Wi-Fi."
+    />
   );
 }
