@@ -2,7 +2,7 @@ import { Translatable } from '@/components/translatable';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Plane, Camera, Car, Settings, PartyPopper, Utensils, ShoppingBag, Users } from 'lucide-react';
+import { Plane, Camera, Car, Waves, PartyPopper, Utensils, ShoppingBag, Users } from 'lucide-react';
 
 const serviceCategories = [
     {
@@ -27,7 +27,7 @@ const serviceCategories = [
         buttonText: 'Find a Vehicle',
     },
     {
-        icon: Settings,
+        icon: Waves,
         title: 'Spa & Wellness',
         description: 'Discover spa, wellness and relaxation services.',
         href: '/service-providers/general',
