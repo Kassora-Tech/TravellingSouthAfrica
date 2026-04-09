@@ -43,6 +43,8 @@ export async function addListing(
 
   } catch (serverError: any) {
     console.error("Firestore addListing error:", serverError);
+    // In a real app, you might want to emit a more specific error
+    // For now, we are providing a generic one to the user
     return { success: false, error: "Submission failed - please try again." };
   }
 }
