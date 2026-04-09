@@ -1,12 +1,12 @@
 export const dynamic = 'force-dynamic';
 import { ServiceProviderListings } from '@/components/service-providers/service-provider-listings';
 
-export default function TechnologyPage() {
+export default function ShopsPage() {
   return (
     <ServiceProviderListings
-      category="Entertainment"
-      title="Entertainment"
-      description="Discover entertainment services and experiences across South Africa."
+      category="Shop"
+      title="Shops"
+      description="Browse a variety of shops for souvenirs, gifts, and local goods."
     />
   );
 }

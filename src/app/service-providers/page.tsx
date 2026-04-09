@@ -2,7 +2,7 @@ import { Translatable } from '@/components/translatable';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Plane, Camera, Car, Settings, PartyPopper, Utensils, Laptop, Users } from 'lucide-react';
+import { Plane, Camera, Car, Settings, PartyPopper, Utensils, ShoppingBag, Users } from 'lucide-react';
 
 const serviceCategories = [
     {
@@ -48,11 +48,11 @@ const serviceCategories = [
         buttonText: 'Find Restaurants',
     },
     {
-        icon: Laptop,
-        title: 'Entertainment',
-        description: 'Discover entertainment services and experiences.',
+        icon: ShoppingBag,
+        title: 'Shops',
+        description: 'Browse a variety of shops for souvenirs, gifts, and local goods.',
         href: '/service-providers/technology',
-        buttonText: 'Get Connected',
+        buttonText: 'Browse Shops',
     },
     {
         icon: Users,

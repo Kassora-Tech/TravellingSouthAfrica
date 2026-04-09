@@ -111,7 +111,7 @@ const serviceCategories = [
   'Guide',
   'Spa & Wellness',
   'Night Life',
-  'Entertainment',
+  'Shop',
   'Restaurant',
   'Travel Agent',
 ];
