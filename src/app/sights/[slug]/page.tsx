@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin } from 'lucide-react';
 import type { Metadata } from 'next';
 import { towns } from "@/lib/data/towns";
+import { getGoogleMapsEmbedUrl } from '@/lib/maps';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -136,7 +137,7 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
         location: sight.location,
         imageUrl:
           PlaceHolderImages.find(p => p.id === sight.imageId)?.imageUrl,
-        mapEmbed: sight.mapEmbed,
+        mapLocation: sight.mapLocation,
         visitorInfo: sight.visitorInfo,
         provinceSlug: sight.provinceSlug,
         websiteUrl: undefined,
@@ -147,7 +148,7 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
         category: firestoreAttraction.category,
         location: townForAttraction?.name || firestoreAttraction.townSlug,
         imageUrl: firestoreAttraction.imageUrls?.[0] || '',
-        mapEmbed: firestoreAttraction.physicalAddress ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}&q=${encodeURIComponent(firestoreAttraction.physicalAddress)}` : "",
+        mapLocation: firestoreAttraction.physicalAddress || `${firestoreAttraction.name}, ${townForAttraction?.name || firestoreAttraction.townSlug}, South Africa`,
         visitorInfo: {
           bestTime: "Contact venue",
           entryFee: "Varies",
@@ -256,13 +257,13 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
         </div>
       </section>
 
-      {data.mapEmbed && (
+      {data.mapLocation && (
         <section className="container mx-auto px-4 pb-16">
           <div className="max-w-4xl mx-auto">
               <h2 className="font-headline text-3xl font-bold mb-4"><Translatable text="Location" /></h2>
               <div className="aspect-video overflow-hidden rounded-lg">
                   <iframe 
-                      src={data.mapEmbed}
+                      src={getGoogleMapsEmbedUrl(data.mapLocation)}
                       width="100%" 
                       height="100%" 
                       style={{border:0}} 

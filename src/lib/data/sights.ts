@@ -12,7 +12,7 @@ export const sights = [
       entryFee: 'Varies (Cableway tickets)',
       openingHours: 'Varies by season'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3309.255859131233!2d18.4069356151978!3d-33.96102698063167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcc5d862f790959%3A0x8a99a4103310a0a9!2sTable%20Mountain!5e0!3m2!1sen!2sza!4v1678886350123!5m2!1sen!2sza'
+    mapLocation: 'Table Mountain, Cape Town, South Africa'
   },
   {
     slug: 'kruger-national-park',
@@ -27,7 +27,7 @@ export const sights = [
       entryFee: 'Daily conservation fees apply',
       openingHours: 'Varies by gate and season'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3748.865329891823!2d31.59231801489066!3d-24.981831984034872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec37a6b0c2a412d%3A0x6b3310815c00325!2sKruger%20National%20Park!5e0!3m2!1sen!2sza!4v1678886400123!5m2!1sen!2sza'
+    mapLocation: 'Kruger National Park, South Africa'
   },
   {
     slug: 'robben-island',
@@ -42,7 +42,7 @@ export const sights = [
       entryFee: 'Ferry and tour ticket required',
       openingHours: 'Tours run at specific times daily'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d424103.2291090332!2d17.91529279313964!3d-33.82221008696871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcc634b8c6cfd8d%3A0x33e38d2e8b65c8a0!2sRobben%20Island!5e0!3m2!1sen!2sza!4v1678886450123!5m2!1sen!2sza'
+    mapLocation: 'Robben Island, Cape Town, South Africa'
   },
   {
     slug: 'blyde-river-canyon',
@@ -57,7 +57,7 @@ export const sights = [
       entryFee: 'Small fees for certain viewpoints',
       openingHours: 'Generally daylight hours'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116964.08889417088!2d30.70624029202881!3d-24.58284589926487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec2215c5a8a499d%3A0x10d182b8823f9983!2sBlyde%20River%20Canyon%20Nature%20Reserve!5e0!3m2!1sen!2sza!4v1678886500123!5m2!1sen!2sza'
+    mapLocation: 'Blyde River Canyon Nature Reserve, Mpumalanga, South Africa'
   },
   {
     slug: 'cape-winelands',
@@ -72,7 +72,7 @@ export const sights = [
       entryFee: 'Tasting fees vary by estate',
       openingHours: 'Most estates open 10am-5pm'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d211833.023221295!2d18.82823659453125!3d-33.829156700000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcdca5df4988e99%3A0x736d4f4a5a220267!2sCape%20Winelands%20District%20Municipality!5e0!3m2!1sen!2sza!4v1678886550123!5m2!1sen!2sza'
+    mapLocation: 'Cape Winelands, Western Cape, South Africa'
   },
   {
     slug: 'drakensberg-mountains',
@@ -87,7 +87,7 @@ export const sights = [
       entryFee: 'Conservation fees for parks',
       openingHours: 'Always open'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d175651.9781372553!2d29.23192029375!3d-29.077218500000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ef24ced55762a4d%3A0x5a31a5563965566!2sDrakensberg!5e0!3m2!1sen!2sza!4v1678886600123!5m2!1sen!2sza'
+    mapLocation: 'Drakensberg Mountains, KwaZulu-Natal, South Africa'
   },
   {
     slug: 'soweto',
@@ -102,7 +102,7 @@ export const sights = [
       entryFee: 'Varies by attraction',
       openingHours: 'Daylight hours recommended'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114510.02446736858!2d27.794212590747067!3d-26.26835150821612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a092147a7e03%3A0xf6a557a544b67949!2sSoweto!5e0!3m2!1sen!2sza!4v1678886650123!5m2!1sen!2sza'
+    mapLocation: 'Soweto, Johannesburg, South Africa'
   },
   {
     slug: 'durban-beaches',
@@ -117,7 +117,7 @@ export const sights = [
       entryFee: 'Free',
       openingHours: '24/7 (swimming restricted)'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55239.58284566718!2d31.00976529321289!3d-29.851944800000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ef7a424e9374c43%3A0x2863e6ac2f42a11a!2sDurban%20Beach!5e0!3m2!1sen!2sza!4v1678886700123!5m2!1sen!2sza'
+    mapLocation: 'Golden Mile, Durban, South Africa'
   },
   {
     slug: 'cradle-of-humankind',
@@ -132,7 +132,7 @@ export const sights = [
       entryFee: 'Tickets for Maropeng and Sterkfontein Caves',
       openingHours: '9am - 5pm daily'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115000.5186981882!2d27.568393593359374!3d-25.968050400000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95759556885335%3A0x96f21c3b20245a4!2sCradle%20of%20Humankind!5e0!3m2!1sen!2sza!4v1678886750123!5m2!1sen!2sza'
+    mapLocation: 'Cradle of Humankind, Gauteng, South Africa'
   },
   {
     slug: 'addo-elephant-park',
@@ -147,7 +147,7 @@ export const sights = [
       entryFee: 'Daily conservation fees apply',
       openingHours: '7am - 7pm'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d170295.53982463283!2d25.602521990429685!3d-33.483321500000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e84a29a4358055d%3A0x67958563d3c88086!2sAddo%20Elephant%20National%20Park!5e0!3m2!1sen!2sza!4v1678886800123!5m2!1sen!2sza'
+    mapLocation: 'Addo Elephant National Park, Eastern Cape, South Africa'
   },
   {
     slug: 'namaqualand-flowers',
@@ -162,7 +162,7 @@ export const sights = [
       entryFee: 'Varies by reserve',
       openingHours: 'Daylight hours'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1646271.748530058!2d17.202316896875!3d-30.560611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1c3b1e3b6e3b8b1b%3A0x3e1d6a6c4b9b9b1b!2sNamaqua%20National%20Park!5e0!3m2!1sen!2sza!4v1678886850123!5m2!1sen!2sza'
+    mapLocation: 'Namaqua National Park, Northern Cape, South Africa'
   },
   {
     slug: 'sun-city',
@@ -177,7 +177,7 @@ export const sights = [
       entryFee: 'Day visitor fees apply',
       openingHours: 'Varies by activity'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.892194916891!2d27.09849501500418!3d-25.34114798398555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e957de0a575a03d%3A0x7d6a5a9c3ab32258!2sSun%20City!5e0!3m2!1sen!2sza!4v1678886900123!5m2!1sen!2sza'
+    mapLocation: 'Sun City Resort, North West, South Africa'
   },
   {
     slug: 'kimberley-big-hole',
@@ -192,7 +192,7 @@ export const sights = [
       entryFee: 'Museum entrance fee',
       openingHours: '8am - 5pm daily'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3460.70617937905!2d24.75708891509935!3d-28.7410059824045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9b1a5e1d4b5b7b%3A0x6b8d9b1d3b7b3b7b!2sThe%20Big%20Hole!5e0!3m2!1sen!2sza!4v1678886950123!5m2!1sen!2sza'
+    mapLocation: 'The Big Hole, Kimberley, South Africa'
   },
   {
     slug: 'gods-window',
@@ -207,7 +207,7 @@ export const sights = [
       entryFee: 'Small entrance fee per vehicle',
       openingHours: 'Daylight hours'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.081198530364!2d30.887640015000003!3d-24.89518098411999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec2215c5a8a499d%3A0x8e8e8e8e8e8e8e8e!2sGod\'s%20Window!5e0!3m2!1sen!2sza!4v1678887000123!5m2!1sen!2sza'
+    mapLocation: 'God\'s Window, Mpumalanga, South Africa'
   },
   {
     slug: 'tsitsikamma-national-park',
@@ -222,6 +222,6 @@ export const sights = [
       entryFee: 'Daily conservation fees apply',
       openingHours: 'Varies by gate'
     },
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d170362.3332467554!2d23.7745239920166!3d-33.975429!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e78c5a5b5f5f5f5%3A0x5a5a5a5a5a5a5a5a!2sTsitsikamma%20National%20Park!5e0!3m2!1sen!2sza!4v1678887050123!5m2!1sen!2sza'
+    mapLocation: 'Tsitsikamma National Park, Garden Route, South Africa'
   }
 ];
