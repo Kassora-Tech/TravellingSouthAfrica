@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +20,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Translatable } from '@/components/translatable';
 import { useToast } from '@/hooks/use-toast';
-import { addListing } from '@/firebase/firestore/listings';
 import { towns } from '@/lib/data/towns';
 import { Camera, CheckCircle, ChevronsUpDown, Check } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
@@ -241,33 +242,60 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
   })).sort((a, b) => a.name.localeCompare(b.name)), [provinceMap]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
-    const result = await addListing(firestore, collectionName, {
-      ...values,
-      ownerUid: user.uid,
-      ownerEmail: user.email,
-    }, imageFiles, storage);
-
-    if (result.success) {
-      if (isAdmin) {
-        // Here you would call a cloud function to auto-approve
-        toast({ title: 'Listing Submitted & Auto-Approved!' });
-      } else {
-        toast({ title: 'Listing Submitted for Review!' });
-      }
-      setSuccess(true);
-      form.reset();
-      setImagePreviews([]);
-      setImageFiles([]);
-      setTimeout(() => setSuccess(false), 6000);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Submission Failed',
-        description: result.error || 'An unexpected error occurred.',
-      });
+    if (!user) {
+        toast({
+            variant: "destructive",
+            title: "Authentication Error",
+            description: "You must be logged in to submit a listing.",
+        });
+        return;
     }
-    setIsSubmitting(false);
+    
+    setIsSubmitting(true);
+
+    try {
+        const submissionCollectionName = `${collectionName}_submissions`;
+        
+        let imageUrls: string[] = [];
+        if (imageFiles.length > 0) {
+            const uploadPromises = imageFiles.map(async (file) => {
+                const storageRef = ref(storage, `listings/${user.uid}/${Date.now()}_${file.name}`);
+                await uploadBytes(storageRef, file);
+                return getDownloadURL(storageRef);
+            });
+            imageUrls = await Promise.all(uploadPromises);
+        }
+        
+        const docData = {
+            ...values,
+            ownerUid: user.uid,
+            ownerEmail: user.email,
+            imageUrls,
+            createdAt: serverTimestamp(),
+            status: 'pending',
+        };
+        delete (docData as any).terms;
+        delete (docData as any).termsAndConditions;
+        
+        await addDoc(collection(firestore, submissionCollectionName), docData);
+
+        toast({ title: 'Listing Submitted for Review!' });
+        setSuccess(true);
+        form.reset();
+        setImagePreviews([]);
+        setImageFiles([]);
+        setTimeout(() => setSuccess(false), 6000);
+
+    } catch (error: any) {
+        console.error("Submission error:", error);
+        toast({
+            variant: "destructive",
+            title: "Submission Failed",
+            description: error.message || 'An unexpected error occurred.',
+        });
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
