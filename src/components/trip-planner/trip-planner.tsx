@@ -1,3 +1,4 @@
+
 // @ts-nocheck
 'use client';
 
@@ -5,7 +6,7 @@ import { useAccommodationsForTowns } from '@/firebase/firestore/use-accommodatio
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { User } from 'firebase/auth';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, doc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, getDocs, query, where } from 'firebase/firestore';
 import { WithId } from '@/firebase/firestore/use-collection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,6 +21,7 @@ import { provinces } from '@/lib/data/provinces';
 import { towns } from '@/lib/data/towns';
 import { routes } from '@/lib/data/routes';
 import { sights } from '@/lib/data/sights';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 
 import { createTrip, updateTripItems, type TripTown, updateTripTowns } from '@/firebase/firestore/trips';
@@ -65,7 +67,7 @@ interface Trip {
 
 type DialogState = {
   isOpen: boolean;
-  type: 'town' | 'sight' | null;
+  type: 'town' | null;
 }
 
 const findTownSlug = (name: string, allTowns: { slug: string, name: string }[]) => {
@@ -633,6 +635,168 @@ function AccommodationCard({
 }
 
 
+// SIGHTS CARD
+function AvailableSights({
+  selectedTrip,
+  firestore,
+  onSave,
+  toast,
+}: {
+  selectedTrip: any;
+  firestore: any;
+  onSave: (ids: string[]) => void;
+  toast: any;
+}) {
+  const townSlugs = useMemo(() => selectedTrip?.towns?.map((t: any) => t.slug) || [], [selectedTrip]);
+  const [availableSights, setAvailableSights] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!townSlugs || townSlugs.length === 0) {
+      setAvailableSights([]);
+      return;
+    }
+
+    const fetchSights = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch from Firestore 'attractions'
+        const attractionsRef = collection(firestore, 'attractions');
+        const q = query(
+          attractionsRef,
+          where('approved', '==', true),
+          where('townSlug', 'in', townSlugs.slice(0, 10))
+        );
+        const snapshot = await getDocs(q);
+        const firestoreSights = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            slug: doc.id,
+            name: data.name,
+            category: data.category,
+            townSlug: data.townSlug,
+            imageUrls: data.imageUrls || [],
+            description: data.description,
+          };
+        });
+
+        // Filter static sights
+        const townMap = new Map(towns.map(t => [t.slug, t.name]));
+        const selectedTownNames = new Set(townSlugs.map((slug: string) => townMap.get(slug)).filter(Boolean));
+        const staticSightsResults = sights
+          .filter(s => selectedTownNames.has(s.location))
+          .map(s => {
+            const image = PlaceHolderImages.find(p => p.id === s.imageId);
+            return {
+              id: s.slug,
+              slug: s.slug,
+              name: s.name,
+              category: s.category,
+              townSlug: towns.find(t => t.name === s.location)?.slug || '',
+              imageUrls: image ? [image.imageUrl] : [],
+              description: s.description,
+            };
+          });
+
+        const combinedSights = [...firestoreSights, ...staticSightsResults];
+        const uniqueSights = Array.from(new Map(combinedSights.map(s => [s.name.toLowerCase(), s])).values());
+        setAvailableSights(uniqueSights);
+      } catch (error) {
+        console.error("Error fetching sights:", error);
+        toast({
+          variant: "destructive",
+          title: "Error fetching sights",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSights();
+  }, [firestore, townSlugs.join(','), toast]);
+
+  const [selectedIds, setSelectedIds] = useState<string[]>(selectedTrip?.sightIds || []);
+
+  useEffect(() => {
+    setSelectedIds(selectedTrip?.sightIds || []);
+  }, [selectedTrip?.id]);
+
+  const handleToggle = (id: string) => {
+    const newIds = selectedIds.includes(id)
+      ? selectedIds.filter((i) => i !== id)
+      : [...selectedIds, id];
+    setSelectedIds(newIds);
+    onSave(newIds);
+    toast({
+      title: selectedIds.includes(id) ? 'Sight Removed' : 'Sight Added',
+      description: availableSights.find(s => s.id === id)?.name,
+    });
+  };
+  
+  const townNameMap = useMemo(() => new Map(towns.map(t => [t.slug, t.name])), []);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div className="flex items-center gap-2">
+          <Mountain className="h-6 w-6 text-primary" />
+          <CardTitle className="text-xl font-headline">
+            <Translatable text="Sights" />
+          </CardTitle>
+        </div>
+         {availableSights.length > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {selectedIds.length} selected
+            </span>
+          )}
+      </CardHeader>
+      <CardContent>
+        {isLoading && <p className="text-sm text-muted-foreground">Loading sights...</p>}
+        {!isLoading && townSlugs.length === 0 && (
+          <p className="text-sm text-muted-foreground">Add towns to see available sights.</p>
+        )}
+        {!isLoading && townSlugs.length > 0 && availableSights.length === 0 && (
+          <p className="text-sm text-muted-foreground">No sights found for your selected towns.</p>
+        )}
+        {!isLoading && availableSights.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {availableSights.map((sight) => {
+              const isSelected = selectedIds.includes(sight.id);
+              return (
+                <div
+                  key={sight.id}
+                  className={`rounded-lg border overflow-hidden cursor-pointer transition-all hover:shadow-sm ${
+                    isSelected ? 'ring-2 ring-primary' : 'hover:border-primary/40'
+                  }`}
+                  onClick={() => handleToggle(sight.id)}
+                >
+                  <div className="relative h-32 bg-muted">
+                    {sight.imageUrls && sight.imageUrls.length > 0 ? (
+                      <img src={sight.imageUrls[0]} alt={sight.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Mountain className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="font-semibold text-sm truncate">{sight.name}</p>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {sight.category} &bull; {townNameMap.get(sight.townSlug) || sight.townSlug}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+
 export function TripPlanner({ user }: { user: User }) {
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -1033,80 +1197,11 @@ export function TripPlanner({ user }: { user: User }) {
       window.open(url, '_blank');
   };
 
-  const townNameMap = useMemo(() => new Map(towns.map(t => [t.slug, t.name])), []);
-
-  const sightsForDialog = useMemo(() => {
-    if (!selectedTrip || !selectedTrip.towns || selectedTrip.towns.length === 0) {
-      return sights;
-    }
-
-    const selectedTownNames = new Set(
-      selectedTrip.towns.map(t => townNameMap.get(t.slug)).filter(Boolean)
-    );
-
-    return sights.filter(sight => selectedTownNames.has(sight.location));
-  }, [selectedTrip, townNameMap]);
-
   const dataMap = useMemo(() => ({
     town: { title: "Add Towns", items: towns, provinces: provinces },
-    sight: { title: "Add Sights", items: sightsForDialog, key: 'sightIds' as const, provinces: provinces },
-  }), [sightsForDialog]);
+  }), []);
 
   const currentDialogData = dialogState.type ? dataMap[dialogState.type] : null;
-
-  const handleRemoveSight = (sightSlug: string) => {
-    if (!selectedTrip || !selectedTrip.sightIds) return;
-    const newSightIds = selectedTrip.sightIds.filter(id => id !== sightSlug);
-    const sightName = sights.find(s => s.slug === sightSlug)?.name || 'Sight';
-    updateTripItems(firestore, user.uid, selectedTrip.id, 'sightIds', newSightIds);
-    toast({
-        title: "Sight Removed",
-        description: `"${sightName}" has been removed from your trip.`
-    });
-  };
-
-  const renderSightsList = (
-    title: string,
-    icon: React.ReactNode,
-    itemIds: string[] | undefined,
-    allItems: any[],
-    type: 'sight'
-  ) => {
-      const items = itemIds?.map(id => allItems.find(p => p.slug === id)).filter(Boolean);
-  
-      return (
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <div className="flex items-center gap-2">
-                    {icon}
-                    <CardTitle className="text-xl font-headline"><Translatable text={title}/></CardTitle>
-                </div>
-                <Button variant="ghost" size="sm" onClick={() => setDialogState({ isOpen: true, type: type })}>
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add
-                </Button>
-            </CardHeader>
-            <CardContent>
-                {items && items.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
-                    {items.map(item => (
-                        <Badge key={item.slug} variant="secondary" className="flex items-center gap-2 pr-1">
-                            <Link href={`/sights/${item.slug}`} target="_blank" className="hover:underline">
-                                <Translatable text={item.name}/>
-                            </Link>
-                            <button onClick={() => handleRemoveSight(item.slug)} className="rounded-full hover:bg-muted-foreground/20 p-0.5">
-                               <X className="h-3 w-3" />
-                               <span className="sr-only">Remove {item.name}</span>
-                            </button>
-                        </Badge>
-                    ))}
-                  </div>
-                ) : (
-                    <p className="text-sm text-muted-foreground"><Translatable text={`No ${title.toLowerCase()} added yet.`} /></p>
-                )}
-            </CardContent>
-        </Card>
-      );
-  }
 
   if (isMobile === undefined) {
     return null; // or a loading spinner
@@ -1216,7 +1311,12 @@ export function TripPlanner({ user }: { user: User }) {
                     </CardContent>
                 </Card>
 
-                {renderSightsList("Sights", <Mountain className="h-6 w-6 text-primary"/>, selectedTrip.sightIds, sights, 'sight')}
+                <AvailableSights
+                    selectedTrip={selectedTrip}
+                    firestore={firestore}
+                    onSave={(ids) => handleItemsSave('sightIds', ids)}
+                    toast={toast}
+                />
                 
                 <AccommodationCard
                     selectedTrip={selectedTrip}
@@ -1366,17 +1466,6 @@ export function TripPlanner({ user }: { user: User }) {
                 provinces={currentDialogData.provinces}
                 selectedItems={(selectedTrip?.towns?.map(t => t.slug)) || []}
                 onSave={(selectedSlugs) => handleTownsSave(selectedSlugs)}
-            />
-      )}
-      {currentDialogData && (dialogState.type === 'sight') && (
-            <AddToTripDialog 
-                isOpen={dialogState.isOpen}
-                onOpenChange={(isOpen) => setDialogState({ isOpen, type: null })}
-                title={currentDialogData.title}
-                items={currentDialogData.items}
-                provinces={currentDialogData.provinces}
-                selectedItems={(selectedTrip?.[currentDialogData.key] as string[]) || []}
-                onSave={(selectedSlugs) => handleItemsSave(currentDialogData.key, selectedSlugs)}
             />
       )}
     </>
