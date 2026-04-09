@@ -107,7 +107,7 @@ const accommodationCategories = ['Hotel', 'Guesthouse', 'Self-Catering', 'B&B', 
 const restaurantCuisines = ['South African', 'Italian', 'Seafood', 'Steakhouse', 'Fine Dining', 'Cafe', 'Other'];
 const serviceCategories = [
   'Car Hire & Transport',
-  'Tour Operator',
+  'Airlines',
   'Guide',
   'Spa & Wellness',
   'Night Life',
