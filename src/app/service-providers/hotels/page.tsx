@@ -4,9 +4,9 @@ import { ServiceProviderListings } from '@/components/service-providers/service-
 export default function HotelsPage() {
   return (
     <ServiceProviderListings
-      category="Hotel"
-      title="Hotels & Accommodation"
-      description="Find and book hotels, guesthouses, and lodges across South Africa."
+      category="Night Life"
+      title="Night Life"
+      description="Discover the best nightlife, bars, clubs and entertainment venues across South Africa."
     />
   );
 }

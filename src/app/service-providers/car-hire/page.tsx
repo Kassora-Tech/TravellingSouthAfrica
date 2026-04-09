@@ -4,9 +4,9 @@ import { ServiceProviderListings } from '@/components/service-providers/service-
 export default function CarHirePage() {
   return (
     <ServiceProviderListings
-      category="Car Hire"
-      title="Car Hire"
-      description="Rent a car for your South African road trip adventure."
+      category="Car Hire & Transport"
+      title="Car Hire & Transport"
+      description="Find car hire, transport and vehicle rental services across South Africa."
     />
   );
 }

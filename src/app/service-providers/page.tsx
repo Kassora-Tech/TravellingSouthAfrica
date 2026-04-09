@@ -21,22 +21,22 @@ const serviceCategories = [
     },
     {
         icon: Car,
-        title: 'Car Hire',
-        description: 'Rent a car for your South African road trip adventure.',
+        title: 'Car Hire & Transport',
+        description: 'Find car hire, transport and vehicle rentals.',
         href: '/service-providers/car-hire',
         buttonText: 'Find a Vehicle',
     },
     {
         icon: Settings,
-        title: 'General',
-        description: 'General services to assist with your travel planning.',
+        title: 'Spa & Wellness',
+        description: 'Discover spa, wellness and relaxation services.',
         href: '/service-providers/general',
         buttonText: 'View Services',
     },
     {
         icon: Bed,
-        title: 'Hotels',
-        description: 'Find and book hotels, guesthouses, and lodges.',
+        title: 'Night Life',
+        description: 'Discover the best nightlife venues and entertainment.',
         href: '/service-providers/hotels',
         buttonText: 'Book a Stay',
     },
@@ -49,8 +49,8 @@ const serviceCategories = [
     },
     {
         icon: Laptop,
-        title: 'Technology',
-        description: 'Services for staying connected, like SIM cards and Wi-Fi.',
+        title: 'Entertainment',
+        description: 'Discover entertainment services and experiences.',
         href: '/service-providers/technology',
         buttonText: 'Get Connected',
     },
@@ -60,13 +60,6 @@ const serviceCategories = [
         description: 'Connect with expert travel agents to plan your perfect trip.',
         href: '/service-providers/travel-agents',
         buttonText: 'Find an Agent',
-    },
-    {
-        icon: Truck,
-        title: 'Vehicles',
-        description: 'Specialty vehicle rentals like campers and 4x4s.',
-        href: '/service-providers/vehicles',
-        buttonText: 'Browse Vehicles',
     },
 ];
 

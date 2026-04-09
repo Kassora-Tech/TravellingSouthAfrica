@@ -4,9 +4,9 @@ import { ServiceProviderListings } from '@/components/service-providers/service-
 export default function TechnologyPage() {
   return (
     <ServiceProviderListings
-      category="Technology"
-      title="Technology Services"
-      description="Services for staying connected during your South African trip."
+      category="Entertainment"
+      title="Entertainment"
+      description="Discover entertainment services and experiences across South Africa."
     />
   );
 }

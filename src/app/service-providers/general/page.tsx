@@ -4,9 +4,9 @@ import { ServiceProviderListings } from '@/components/service-providers/service-
 export default function GeneralPage() {
   return (
     <ServiceProviderListings
-      category="General"
-      title="General Services"
-      description="General services to assist with your travel planning in South Africa."
+      category="Spa & Wellness"
+      title="Spa & Wellness"
+      description="Discover spa, wellness and relaxation services across South Africa."
     />
   );
 }

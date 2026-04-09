@@ -4,9 +4,9 @@ import { ServiceProviderListings } from '@/components/service-providers/service-
 export default function VehiclesPage() {
   return (
     <ServiceProviderListings
-      category="Transport"
-      title="Vehicles & Transport"
-      description="Specialty vehicle rentals like campers, 4x4s and transport services."
+      category="Car Hire & Transport"
+      title="Car Hire & Transport"
+      description="Find car hire, transport and vehicle rental services across South Africa."
     />
   );
 }
