@@ -2,7 +2,7 @@ import { Translatable } from '@/components/translatable';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Plane, Camera, Car, Settings, Bed, Utensils, Laptop, Users, Truck } from 'lucide-react';
+import { Plane, Camera, Car, Settings, PartyPopper, Utensils, Laptop, Users } from 'lucide-react';
 
 const serviceCategories = [
     {
@@ -34,11 +34,11 @@ const serviceCategories = [
         buttonText: 'View Services',
     },
     {
-        icon: Bed,
+        icon: PartyPopper,
         title: 'Night Life',
         description: 'Discover the best nightlife venues and entertainment.',
         href: '/service-providers/hotels',
-        buttonText: 'Book a Stay',
+        buttonText: 'Explore Venues',
     },
     {
         icon: Utensils,
