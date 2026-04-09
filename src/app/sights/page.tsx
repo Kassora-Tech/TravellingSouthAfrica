@@ -8,11 +8,12 @@ import { MapPin, Mountain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Metadata } from 'next';
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, collection, query, where, getDocs, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, query, getDocs, Timestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import { towns } from '@/lib/data/towns';
 
 function slugify(name: string) {
+  if (!name) return '';
   return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -83,12 +84,12 @@ const itemListSchema = {
   })),
 };
 
-async function getApprovedAttractions() {
+async function getAttractions() {
   try {
     const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
     const firestore = getFirestore(app);
     const attractionsRef = collection(firestore, 'attractions');
-    const q = query(attractionsRef, where('approved', '==', true));
+    const q = query(attractionsRef);
     const snapshot = await getDocs(q);
     
     return snapshot.docs.map(doc => {
@@ -104,7 +105,7 @@ async function getApprovedAttractions() {
 }
 
 export default async function SightsPage() {
-    const approvedAttractions = await getApprovedAttractions();
+    const approvedAttractions = await getAttractions();
     
     const townNameMap = new Map(towns.map(t => [t.slug, t.name]));
 

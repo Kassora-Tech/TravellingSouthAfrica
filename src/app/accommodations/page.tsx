@@ -21,7 +21,7 @@ function getFirebaseApp() {
   }
 }
  
-async function getApprovedAccommodations(townSlug?: string) {
+async function getAccommodations(townSlug?: string) {
   try {
     const app = getFirebaseApp();
     const firestore = getFirestore(app);
@@ -29,13 +29,9 @@ async function getApprovedAccommodations(townSlug?: string) {
  
     let q;
     if (townSlug) {
-      q = query(
-        accommodationsRef,
-        where('approved', '==', true),
-        where('townSlug', '==', townSlug)
-      );
+      q = query(accommodationsRef, where('townSlug', '==', townSlug));
     } else {
-      q = query(accommodationsRef, where('approved', '==', true));
+      q = query(accommodationsRef);
     }
  
     const snapshot = await getDocs(q);
@@ -55,7 +51,7 @@ async function getApprovedAccommodations(townSlug?: string) {
 export default async function AccommodationsPage({ searchParams }: { searchParams?: { town?: string } }) {
   const townSlug = searchParams?.town;
   const town = townSlug ? towns.find(t => t.slug === townSlug) : null;
-  const listings = await getApprovedAccommodations(townSlug);
+  const listings = await getAccommodations(townSlug);
  
   return (
     <>
@@ -76,7 +72,6 @@ export default async function AccommodationsPage({ searchParams }: { searchParam
           )}
         </div>
  
-        {/* Show listings */}
         {listings.length > 0 && (
           <div className="mt-8">
             <h3 className="text-xl font-semibold mb-4">
@@ -93,7 +88,6 @@ export default async function AccommodationsPage({ searchParams }: { searchParam
           </div>
         )}
  
-        {/* No listings found */}
         {town && listings.length === 0 && (
           <div className="mt-12 max-w-2xl mx-auto">
             <Card>

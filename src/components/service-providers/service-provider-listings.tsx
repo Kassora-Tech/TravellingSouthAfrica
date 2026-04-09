@@ -54,12 +54,12 @@ const categoryIcons: { [key: string]: React.ElementType } = {
   'General': Wrench,
 };
 
-async function getApprovedServiceProviders(firestore: Firestore, category?: string) {
+async function getServiceProviders(firestore: Firestore, category?: string) {
   try {
     const ref = collection(firestore, 'service_providers');
     const q = category
-      ? query(ref, where('approved', '==', true), where('category', '==', category))
-      : query(ref, where('approved', '==', true));
+      ? query(ref, where('category', '==', category))
+      : query(ref);
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
   } catch (error) {
@@ -234,7 +234,7 @@ export function ServiceProviderListings({
     if (!firestore) return;
 
     setIsLoading(true);
-    getApprovedServiceProviders(firestore, category).then(data => {
+    getServiceProviders(firestore, category).then(data => {
       setListings(data);
       setIsLoading(false);
     });

@@ -1,10 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useFirestore } from '@/firebase';
-import { collection, query, getDocs, doc } from 'firebase/firestore';
+import { useFirestore, useFunctions } from '@/firebase';
+import { collection, query, getDocs } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
-import { updateListingStatus, deleteListing } from '@/firebase/firestore/admin-actions';
+import { approveListing, unapproveListing, deleteListingSubmission } from '@/firebase/firestore/admin-actions';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '../ui/badge';
 import { format } from 'date-fns';
@@ -14,7 +14,7 @@ import { ChevronDown, ChevronUp, Mail, Phone, Globe, MapPin, Tag, User, External
 interface Listing {
   id: string;
   name: string;
-  approved: boolean;
+  status: 'pending' | 'approved';
   createdAt?: { seconds: number };
   ownerUid: string;
   ownerEmail?: string;
@@ -78,15 +78,16 @@ function ListingCard({
   onApprove,
   onUnapprove,
   onDelete,
-  showApprove = true,
+  collectionName
 }: {
   listing: Listing;
-  onApprove?: (id: string) => void;
-  onUnapprove?: (id: string) => void;
-  onDelete: (id: string) => void;
-  showApprove?: boolean;
+  onApprove: (collectionName: string, id: string) => void;
+  onUnapprove: (collectionName: string, id: string) => void;
+  onDelete: (collectionName: string, id: string) => void;
+  collectionName: string;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const isPending = !listing.status || listing.status === 'pending';
 
   return (
     <Card className="flex flex-col">
@@ -95,12 +96,12 @@ function ListingCard({
           <div>
             <CardTitle>{listing.name}</CardTitle>
             <CardDescription>
-              Submitted by: {listing.contactEmail} on {listing.createdAt ? format(new Date(listing.createdAt.seconds * 1000), 'd MMM yyyy') : 'N/A'}
+              Submitted by: {listing.ownerEmail} on {listing.createdAt ? format(new Date(listing.createdAt.seconds * 1000), 'd MMM yyyy') : 'N/A'}
             </CardDescription>
           </div>
-          {!showApprove && (
-            <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">Approved</Badge>
-          )}
+          <Badge variant={isPending ? "default" : "secondary"} className={isPending ? '' : 'bg-green-100 text-green-800 border-green-200'}>
+            {listing.status || 'pending'}
+          </Badge>
         </div>
       </CardHeader>
 
@@ -189,13 +190,12 @@ function ListingCard({
 
       <CardFooter>
         <div className="flex gap-2 w-full">
-          {showApprove && onApprove && (
-            <Button className="flex-1" onClick={() => onApprove(listing.id)}>Approve</Button>
+          {isPending ? (
+            <Button className="flex-1" onClick={() => onApprove(collectionName, listing.id)}>Approve</Button>
+          ) : (
+            <Button variant="outline" size="sm" onClick={() => onUnapprove(collectionName, listing.id)}>Un-approve</Button>
           )}
-          {!showApprove && onUnapprove && (
-            <Button variant="outline" size="sm" onClick={() => onUnapprove(listing.id)}>Un-approve</Button>
-          )}
-          <Button variant="destructive" size="sm" onClick={() => onDelete(listing.id)}>Delete</Button>
+          <Button variant="destructive" size="sm" onClick={() => onDelete(collectionName, listing.id)}>Delete</Button>
         </div>
       </CardFooter>
     </Card>
@@ -204,53 +204,54 @@ function ListingCard({
 
 export function AdminListingsPanel({ collectionName }: { collectionName: string }) {
   const firestore = useFirestore();
+  const functions = useFunctions();
   const { toast } = useToast();
   const [listings, setListings] = useState<Listing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchListings = async () => {
-      setIsLoading(true);
-      try {
-        const q = query(collection(firestore, collectionName));
-        const snapshot = await getDocs(q);
-        const fetchedListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Listing));
-        setListings(fetchedListings);
-      } catch (error) {
-        console.error(`Error fetching ${collectionName}:`, error);
-        toast({
-          variant: "destructive",
-          title: "Error fetching listings",
-          description: "Could not fetch data from the database.",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchListings();
-  }, [collectionName, firestore, toast]);
+  const fetchListings = async () => {
+    setIsLoading(true);
+    try {
+      const q = query(collection(firestore, `${collectionName}_submissions`));
+      const snapshot = await getDocs(q);
+      const fetchedListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Listing));
+      setListings(fetchedListings);
+    } catch (error) {
+      console.error(`Error fetching ${collectionName}_submissions:`, error);
+      toast({
+        variant: "destructive",
+        title: "Error fetching listings",
+        description: "Could not fetch data from the database.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  const handleApprove = async (id: string) => {
-    await updateListingStatus(firestore, collectionName, id, true);
-    setListings(prev => prev.map(l => l.id === id ? { ...l, approved: true } : l));
+  useEffect(() => {
+    fetchListings();
+  }, [collectionName, firestore]);
+
+  const handleApprove = async (collection: string, id: string) => {
+    await approveListing(functions, collection, id);
+    await fetchListings(); // Refetch to update UI
     toast({ title: "Listing Approved ✅" });
   };
 
-  const handleUnapprove = async (id: string) => {
-    await updateListingStatus(firestore, collectionName, id, false);
-    setListings(prev => prev.map(l => l.id === id ? { ...l, approved: false } : l));
+  const handleUnapprove = async (collection: string, id: string) => {
+    await unapproveListing(functions, collection, id);
+    await fetchListings();
     toast({ title: "Listing Un-approved" });
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteListing(firestore, collectionName, id);
-    setListings(prev => prev.filter(l => l.id !== id));
+  const handleDelete = async (collection: string, id: string) => {
+    await deleteListingSubmission(functions, collection, id);
+    await fetchListings();
     toast({ variant: "destructive", title: "Listing Deleted" });
   };
 
-  const pendingListings = listings?.filter(l => !l.approved).sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0)) || [];
-  const approvedListings = listings?.filter(l => l.approved).sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0)) || [];
+  const pendingListings = listings?.filter(l => !l.status || l.status === 'pending').sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0)) || [];
+  const approvedListings = listings?.filter(l => l.status === 'approved').sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0)) || [];
 
   if (isLoading) return <p>Loading listings...</p>;
 
@@ -261,7 +262,7 @@ export function AdminListingsPanel({ collectionName }: { collectionName: string 
         {pendingListings.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {pendingListings.map(listing => (
-              <ListingCard key={listing.id} listing={listing} onApprove={handleApprove} onDelete={handleDelete} showApprove={true} />
+              <ListingCard key={listing.id} listing={listing} onApprove={handleApprove} onUnapprove={handleUnapprove} onDelete={handleDelete} collectionName={collectionName} />
             ))}
           </div>
         ) : <p className="text-muted-foreground">No pending listings.</p>}
@@ -271,7 +272,7 @@ export function AdminListingsPanel({ collectionName }: { collectionName: string 
         {approvedListings.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {approvedListings.map(listing => (
-              <ListingCard key={listing.id} listing={listing} onUnapprove={handleUnapprove} onDelete={handleDelete} showApprove={false} />
+              <ListingCard key={listing.id} listing={listing} onApprove={handleApprove} onUnapprove={handleUnapprove} onDelete={handleDelete} collectionName={collectionName} />
             ))}
           </div>
         ) : <p className="text-muted-foreground">No approved listings.</p>}

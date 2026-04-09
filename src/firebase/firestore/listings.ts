@@ -30,21 +30,20 @@ export async function addListing(
       imageUrls = await Promise.all(uploadPromises);
     }
 
-    // Step 2: Save listing data + image URLs to Firestore
-    const listingCollection = collection(firestore, collectionName);
+    // Step 2: Save listing data + image URLs to submission collection
+    const submissionCollection = collection(firestore, `${collectionName}_submissions`);
     const dataWithTimestamp = {
       ...data,
       imageUrls,
       createdAt: serverTimestamp(),
+      status: 'pending',
     };
 
-    const docRef = await addDoc(listingCollection, dataWithTimestamp);
+    const docRef = await addDoc(submissionCollection, dataWithTimestamp);
     return { success: true, id: docRef.id };
 
   } catch (serverError: any) {
     console.error("Firestore addListing error:", serverError);
-    // In a real app, you might want to emit a more specific error
-    // For now, we are providing a generic one to the user
     return { success: false, error: "Submission failed - please try again." };
   }
 }

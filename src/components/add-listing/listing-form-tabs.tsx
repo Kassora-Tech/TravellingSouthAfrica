@@ -106,8 +106,9 @@ type FormSchema = z.infer<typeof accommodationSchema> | z.infer<typeof restauran
 const accommodationCategories = ['Hotel', 'Guesthouse', 'Self-Catering', 'B&B', 'Lodge', 'Backpackers', 'Other'];
 const restaurantCuisines = ['South African', 'Italian', 'Seafood', 'Steakhouse', 'Fine Dining', 'Cafe', 'Other'];
 const serviceCategories = [
-  'Car Hire & Transport',
   'Airlines',
+  'Car Hire & Transport',
+  'Tour Operator',
   'Guide',
   'Spa & Wellness',
   'Night Life',
@@ -245,10 +246,15 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
       ...values,
       ownerUid: user.uid,
       ownerEmail: user.email,
-      approved: isAdmin,
     }, imageFiles, storage);
 
     if (result.success) {
+      if (isAdmin) {
+        // Here you would call a cloud function to auto-approve
+        toast({ title: 'Listing Submitted & Auto-Approved!' });
+      } else {
+        toast({ title: 'Listing Submitted for Review!' });
+      }
       setSuccess(true);
       form.reset();
       setImagePreviews([]);
@@ -283,7 +289,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         <CardContent className="p-8 text-center">
           <CheckCircle className="h-16 w-16 mx-auto text-green-500" />
           <h2 className="mt-4 text-2xl font-bold font-headline"><Translatable text="Listing Submitted!" /></h2>
-          <p className="mt-2 text-muted-foreground"><Translatable text={`Thank you. Your listing has been submitted for review. We will review it shortly.${isAdmin ? ' It has been automatically approved.' : ''}`} /></p>
+          <p className="mt-2 text-muted-foreground"><Translatable text="Thank you. Your listing has been submitted for review. We will review it shortly." /></p>
         </CardContent>
       </Card>
     );

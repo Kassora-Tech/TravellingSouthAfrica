@@ -1,28 +1,17 @@
 'use client';
+import { getFunctions, httpsCallable, Functions } from 'firebase/functions';
 
-import { doc, updateDoc, deleteDoc, Firestore } from 'firebase/firestore';
-import { FirestorePermissionError, errorEmitter } from '@/firebase';
-
-export function updateListingStatus(firestore: Firestore, collectionName: string, docId: string, status: boolean) {
-  const docRef = doc(firestore, collectionName, docId);
-  const payload = { approved: status };
-  updateDoc(docRef, payload)
-    .catch(error => {
-      errorEmitter.emit('permission-error', new FirestorePermissionError({
-        path: docRef.path,
-        operation: 'update',
-        requestResourceData: payload,
-      }));
-    });
+export async function approveListing(functions: Functions, collectionName: string, submissionId: string) {
+  const approveFunction = httpsCallable(functions, 'approveListing');
+  return await approveFunction({ collectionName, submissionId });
 }
 
-export function deleteListing(firestore: Firestore, collectionName: string, docId: string) {
-  const docRef = doc(firestore, collectionName, docId);
-  deleteDoc(docRef)
-    .catch(error => {
-      errorEmitter.emit('permission-error', new FirestorePermissionError({
-        path: docRef.path,
-        operation: 'delete'
-      }));
-    });
+export async function unapproveListing(functions: Functions, collectionName: string, docId: string) {
+    const unapproveFunction = httpsCallable(functions, 'unapproveListing');
+    return await unapproveFunction({ collectionName, docId });
+}
+
+export async function deleteListingSubmission(functions: Functions, collectionName: string, docId: string) {
+    const deleteFunction = httpsCallable(functions, 'deleteListingSubmission');
+    return await deleteFunction({ collectionName, docId });
 }
