@@ -127,7 +127,7 @@ const defineListingNotification = (collectionName: string) => {
       }
 
       const listingType = collectionName.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
-      const townName = listing.townSlug || "N/A";
+      
 
       const msg = {
         to: ADMIN_EMAILS,
