@@ -55,6 +55,7 @@ import { Textarea } from '../ui/textarea';
 import { PlanTripHero } from './page-hero';
 import { TripCreatorBar } from './trip-creator-bar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { AvailableServiceProviders } from './available-service-providers';
 
 
 interface Trip {
@@ -62,6 +63,7 @@ interface Trip {
   towns?: TripTown[];
   sightIds?: string[];
   accommodationIds?: string[];
+  serviceProviderIds?: string[];
   createdAt?: { seconds: number; nanoseconds: number };
 }
 
@@ -904,7 +906,7 @@ export function TripPlanner({ user }: { user: User }) {
   };
 
 
-  const handleItemsSave = (itemType: 'sightIds' | 'accommodationIds', selectedSlugs: string[]) => {
+  const handleItemsSave = (itemType: 'sightIds' | 'accommodationIds' | 'serviceProviderIds', selectedSlugs: string[]) => {
     if (!selectedTrip) return;
 
     updateTripItems(firestore, user.uid, selectedTrip.id, itemType, selectedSlugs);
@@ -943,7 +945,7 @@ export function TripPlanner({ user }: { user: User }) {
         });
     });
   }
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     if (!selectedTrip) {
         toast({
             variant: "destructive",
@@ -951,6 +953,14 @@ export function TripPlanner({ user }: { user: User }) {
             description: "No trip selected.",
         });
         return;
+    }
+
+    let serviceProvidersData: any[] = [];
+    if (selectedTrip.serviceProviderIds && selectedTrip.serviceProviderIds.length > 0) {
+        const providersRef = collection(firestore, 'service_providers');
+        const q = query(providersRef, where('__name__', 'in', selectedTrip.serviceProviderIds.slice(0, 10)));
+        const snapshot = await getDocs(q);
+        serviceProvidersData = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
     }
 
     const doc = new jsPDF();
@@ -1088,6 +1098,53 @@ export function TripPlanner({ user }: { user: User }) {
                     cursorY += 5;
                 }
             }
+        });
+    }
+
+    // Service Providers
+    if (serviceProvidersData.length > 0) {
+        cursorY += 5;
+        if (cursorY > pageHeight - 40) { doc.addPage(); cursorY = margin; }
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Service Providers", margin, cursorY);
+        cursorY += 10;
+
+        const groupedProviders = serviceProvidersData.reduce((acc, provider) => {
+            const category = provider.category || 'Uncategorized';
+            if (!acc[category]) acc[category] = [];
+            acc[category].push(provider);
+            return acc;
+        }, {});
+
+        Object.entries(groupedProviders).forEach(([category, providers]) => {
+            if (cursorY > pageHeight - 20) { doc.addPage(); cursorY = margin; }
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text(category, margin, cursorY);
+            cursorY += 7;
+
+            (providers as any[]).forEach(provider => {
+                if (cursorY > pageHeight - 30) { doc.addPage(); cursorY = margin; }
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`- ${provider.name}`, margin + 5, cursorY);
+                cursorY += 5;
+                
+                doc.setFont('helvetica', 'normal');
+                if (provider.description) {
+                    const descLines = doc.splitTextToSize(provider.description, pageWidth - margin * 2 - 10);
+                    descLines.forEach((line: string) => {
+                        if (cursorY > pageHeight - 20) { doc.addPage(); cursorY = margin; }
+                        doc.text(line, margin + 10, cursorY);
+                        cursorY += 5;
+                    });
+                }
+                if (provider.contactPhone) { doc.text(`  Phone: ${provider.contactPhone}`, margin + 10, cursorY); cursorY += 5; }
+                if (provider.contactEmail) { doc.text(`  Email: ${provider.contactEmail}`, margin + 10, cursorY); cursorY += 5; }
+                if (provider.websiteUrl) { doc.text(`  Website: ${provider.websiteUrl}`, margin + 10, cursorY); cursorY += 5; }
+                cursorY += 3;
+            });
         });
     }
 
@@ -1325,19 +1382,11 @@ export function TripPlanner({ user }: { user: User }) {
                     onAccommodationsLoaded={setTripAccommodations}
                     toast={toast}
                 />
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center gap-2">
-                            <Sparkles className="h-6 w-6 text-primary"/>
-                            <CardTitle className="text-xl font-headline"><Translatable text="Extras"/></CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground">
-                            <Translatable text="This feature is coming soon."/>
-                        </p>
-                    </CardContent>
-                </Card>
+                <AvailableServiceProviders
+                  selectedTrip={selectedTrip}
+                  firestore={firestore}
+                  onSave={(ids) => handleItemsSave('serviceProviderIds', ids)}
+                />
             </div>
             </>
         ) : (

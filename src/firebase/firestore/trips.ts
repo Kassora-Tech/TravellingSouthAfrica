@@ -85,5 +85,3 @@ export function updateTripItems(
     errorEmitter.emit('permission-error', permissionError);
   });
 }
-
-    
