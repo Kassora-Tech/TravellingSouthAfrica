@@ -29,6 +29,12 @@ const isAdminByEmail = (email?: string) => {
   return ADMIN_EMAILS.includes(email);
 };
 
+const sanitiseData = (obj: Record<string, any>): Record<string, any> => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== undefined)
+  );
+};
+
 // Generic Cloud Function to approve any type of listing
 export const approveListing = onCall(async (request) => {
   const { submissionId, collectionName } = request.data;
@@ -53,19 +59,10 @@ export const approveListing = onCall(async (request) => {
     throw new HttpsError("internal", "Submission data is empty.");
   }
 
-  // Sanitize the data to remove any fields that have `undefined` values.
-  // Firestore does not allow `undefined` in document writes.
-  const sanitizedData: { [key: string]: any } = {};
-  for (const key in data) {
-    if (Object.prototype.hasOwnProperty.call(data, key) && data[key] !== undefined) {
-      sanitizedData[key] = data[key];
-    }
-  }
-
-  // Create a new document in the public collection
+  const cleanData = sanitiseData(data);
   await adminDb.collection(publicCollection).doc(submissionId).set({
-    ...sanitizedData,
-    approved: true, // Legacy compatibility if needed, but not primary mechanism
+    ...cleanData,
+    approved: true,
     approvedAt: FieldValue.serverTimestamp(),
     approvedBy: userEmail,
   });
