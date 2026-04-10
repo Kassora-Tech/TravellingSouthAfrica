@@ -21,6 +21,7 @@ export interface TripData {
   towns?: TripTown[];
   sightIds?: string[];
   accommodationIds?: string[];
+  serviceProviderIds?: string[];
   createdAt?: any;
 }
 
@@ -30,6 +31,7 @@ export function createTrip(firestore: Firestore, tripData: Omit<TripData, 'creat
     towns: [],
     sightIds: [],
     accommodationIds: [],
+    serviceProviderIds: [],
     ...tripData,
     createdAt: serverTimestamp(),
   };
@@ -68,7 +70,7 @@ export function updateTripItems(
   firestore: Firestore,
   userId: string,
   tripId: string,
-  itemType: 'sightIds' | 'accommodationIds',
+  itemType: 'sightIds' | 'accommodationIds' | 'serviceProviderIds',
   itemIds: string[]
 ) {
   const tripDocRef = doc(firestore, `users/${userId}/trips`, tripId);
@@ -83,3 +85,5 @@ export function updateTripItems(
     errorEmitter.emit('permission-error', permissionError);
   });
 }
+
+    
