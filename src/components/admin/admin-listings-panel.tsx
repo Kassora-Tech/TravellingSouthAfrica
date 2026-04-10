@@ -244,15 +244,24 @@ export function AdminListingsPanel({ collectionName }: { collectionName: string 
   }, [collectionName, firestore, toast]);
 
   const handleApprove = async (collection: string, id: string) => {
+    if (!id) {
+        console.error("ERROR: docId is undefined or null");
+        toast({
+            variant: "destructive",
+            title: "Approval Failed",
+            description: "No document ID provided.",
+        });
+        return;
+    }
     try {
       await approveListing(functions, collection, id);
-      toast({ title: "Listing Approved ✅" });
+      toast({ title: "Listing approved successfully" });
     } catch (error: any) {
-      console.error("Approval failed:", error);
+      console.error("FULL ERROR:", error);
       toast({
         variant: "destructive",
         title: "Approval Failed",
-        description: error.message || "An unknown error occurred.",
+        description: error.message || "An unexpected internal error occurred.",
       });
     }
   };
