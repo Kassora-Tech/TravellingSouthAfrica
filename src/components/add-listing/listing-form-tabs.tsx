@@ -28,6 +28,7 @@ import { provinces } from '@/lib/data/provinces';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
+import { serviceCategories } from '@/lib/service-categories';
 
 interface ListingFormTabsProps {
   user: User;
@@ -106,17 +107,6 @@ type FormSchema = z.infer<typeof accommodationSchema> | z.infer<typeof restauran
 
 const accommodationCategories = ['Hotel', 'Guesthouse', 'Self-Catering', 'B&B', 'Lodge', 'Backpackers', 'Other'];
 const restaurantCuisines = ['South African', 'Italian', 'Seafood', 'Steakhouse', 'Fine Dining', 'Cafe', 'Other'];
-const serviceCategories = [
-  'Airlines',
-  'Car Hire & Transport',
-  'Tour Operator',
-  'Guide',
-  'Spa & Wellness',
-  'Night Life',
-  'Shop',
-  'Restaurant',
-  'Travel Agent',
-];
 const attractionCategories = ['Nature', 'Culture', 'Adventure', 'Historical', 'Other'];
 
 export function ListingFormTabs({ user, isAdmin }: ListingFormTabsProps) {
@@ -163,7 +153,7 @@ export function ListingFormTabs({ user, isAdmin }: ListingFormTabsProps) {
             { name: 'name', label: 'Service Name', type: 'text' },
             { name: 'townSlug', label: 'Town', type: 'combobox' },
             { name: 'physicalAddress', label: 'Physical Address (optional)', type: 'textarea', optional: true, placeholder: "Enter the full physical address" },
-            { name: 'category', label: 'Category', type: 'select', options: serviceCategories.map(c => ({ value: c, label: c })) },
+            { name: 'category', label: 'Category', type: 'select', options: Object.keys(serviceCategories).map(c => ({ value: c, label: c })) },
             { name: 'websiteUrl', label: 'Website URL', type: 'url', optional: true },
             { name: 'contactEmail', label: 'Contact Email', type: 'email' },
             { name: 'contactPhone', label: 'Contact Phone', type: 'tel' },
@@ -463,3 +453,5 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
     </Card>
   );
 }
+
+    

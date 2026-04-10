@@ -1,8 +1,4 @@
 import { Translatable } from '@/components/translatable';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Plane, Camera, Car, Waves, PartyPopper, Utensils, ShoppingBag, Users } from 'lucide-react';
 import { ServiceProviderDirectory } from '@/components/service-providers/service-provider-directory';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { initializeApp, getApps, getApp } from 'firebase/app';
@@ -16,7 +12,7 @@ async function getApprovedServiceProviders() {
       const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
       const firestore = getFirestore(app);
       const providersRef = collection(firestore, 'service_providers');
-      const q = query(providersRef, where('approved', '==', true));
+      const q = query(providersRef);
       const snapshot = await getDocs(q);
       
       return snapshot.docs.map(doc => {

@@ -1,0 +1,110 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- HELPER FUNCTIONS ----
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+    }
+
+    // ---- USERS ----
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isOwner(userId);
+
+      match /trips/{tripId} {
+        allow get, list, create, update, delete: if isOwner(userId);
+      }
+
+      match /bookings/{bookingId} {
+        allow get, list, create, update, delete: if isOwner(userId);
+      }
+    }
+
+    // ---- PUBLIC CONTENT ----
+    match /provinces/{docId} {
+      allow read: if true;
+      allow write: if false; // Admin write via Cloud Function
+    }
+
+    match /towns/{docId} {
+      allow read: if true;
+      allow write: if false; // Admin write via Cloud Function
+    }
+
+    match /sights/{docId} {
+      allow read: if true;
+      allow write: if false; // Admin write via Cloud Function
+    }
+
+    match /routes/{docId} {
+      allow read: if true;
+      allow write: if false; // Admin write via Cloud Function
+    }
+
+    match /routeHighlightLinks/{docId} {
+      allow read: if true;
+      allow write: if false; // Admin write via Cloud Function
+    }
+
+    // ---- LISTINGS (PUBLIC - READ ONLY) ----
+    match /accommodations/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /restaurants/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /service_providers/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /attractions/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ---- SUBMISSIONS (PRIVATE - CREATE ONLY for users) ----
+    match /accommodations_submissions/{docId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow write: if false; // All updates/deletes via Cloud Function
+    }
+    match /restaurants_submissions/{docId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow write: if false;
+    }
+    match /service_providers_submissions/{docId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow write: if false;
+    }
+    match /attractions_submissions/{docId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow write: if false;
+    }
+    
+    // ---- CONTACTS ----
+    match /contactMessages/{messageId} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+  }
+}
+
+    
