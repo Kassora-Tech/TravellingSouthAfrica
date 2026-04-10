@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useFirestore, useFunctions } from '@/firebase';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
 import { approveListing, unapproveListing, deleteListingSubmission } from '@/firebase/firestore/admin-actions';
@@ -206,52 +206,84 @@ export function AdminListingsPanel({ collectionName }: { collectionName: string 
   const firestore = useFirestore();
   const functions = useFunctions();
   const { toast } = useToast();
-  const [listings, setListings] = useState<Listing[]>([]);
+  const [pendingListings, setPendingListings] = useState<Listing[]>([]);
+  const [approvedListings, setApprovedListings] = useState<Listing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchListings = async () => {
+  useEffect(() => {
     setIsLoading(true);
+    const submissionsCollection = collection(firestore, `${collectionName}_submissions`);
+
+    const pendingQuery = query(submissionsCollection, where("status", "==", "pending"));
+    const approvedQuery = query(submissionsCollection, where("status", "==", "approved"));
+
+    const unsubscribePending = onSnapshot(pendingQuery, snapshot => {
+      const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Listing))
+        .sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
+      setPendingListings(fetched);
+      setIsLoading(false);
+    }, error => {
+      console.error(`Error fetching pending ${collectionName}:`, error);
+      toast({ variant: "destructive", title: "Error fetching pending listings." });
+      setIsLoading(false);
+    });
+
+    const unsubscribeApproved = onSnapshot(approvedQuery, snapshot => {
+      const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Listing))
+        .sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
+      setApprovedListings(fetched);
+    }, error => {
+      console.error(`Error fetching approved ${collectionName}:`, error);
+      toast({ variant: "destructive", title: "Error fetching approved listings." });
+    });
+
+    return () => {
+      unsubscribePending();
+      unsubscribeApproved();
+    };
+  }, [collectionName, firestore, toast]);
+
+  const handleApprove = async (collection: string, id: string) => {
     try {
-      const q = query(collection(firestore, `${collectionName}_submissions`));
-      const snapshot = await getDocs(q);
-      const fetchedListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Listing));
-      setListings(fetchedListings);
-    } catch (error) {
-      console.error(`Error fetching ${collectionName}_submissions:`, error);
+      await approveListing(functions, collection, id);
+      toast({ title: "Listing Approved ✅" });
+    } catch (error: any) {
+      console.error("Approval failed:", error);
       toast({
         variant: "destructive",
-        title: "Error fetching listings",
-        description: "Could not fetch data from the database.",
+        title: "Approval Failed",
+        description: error.message || "An unknown error occurred.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchListings();
-  }, [collectionName, firestore]);
-
-  const handleApprove = async (collection: string, id: string) => {
-    await approveListing(functions, collection, id);
-    await fetchListings(); // Refetch to update UI
-    toast({ title: "Listing Approved ✅" });
-  };
-
   const handleUnapprove = async (collection: string, id: string) => {
-    await unapproveListing(functions, collection, id);
-    await fetchListings();
-    toast({ title: "Listing Un-approved" });
+    try {
+      await unapproveListing(functions, collection, id);
+      toast({ title: "Listing Un-approved" });
+    } catch (error: any) {
+      console.error("Un-approval failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Un-approval Failed",
+        description: error.message || "An unknown error occurred.",
+      });
+    }
   };
 
   const handleDelete = async (collection: string, id: string) => {
-    await deleteListingSubmission(functions, collection, id);
-    await fetchListings();
-    toast({ variant: "destructive", title: "Listing Deleted" });
+    try {
+      await deleteListingSubmission(functions, collection, id);
+      toast({ variant: "destructive", title: "Listing Deleted" });
+    } catch (error: any) {
+      console.error("Deletion failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Deletion Failed",
+        description: error.message || "An unknown error occurred.",
+      });
+    }
   };
-
-  const pendingListings = listings?.filter(l => !l.status || l.status === 'pending').sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0)) || [];
-  const approvedListings = listings?.filter(l => l.status === 'approved').sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0)) || [];
 
   if (isLoading) return <p>Loading listings...</p>;
 
