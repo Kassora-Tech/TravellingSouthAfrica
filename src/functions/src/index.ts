@@ -41,13 +41,19 @@ export const approveListing = onCall(async (request) => {
   const userEmail = request.auth?.token.email;
 
   if (!isAdminByEmail(userEmail)) {
-    throw new HttpsError("permission-denied", "You must be an admin to approve listings.");
+    throw new HttpsError(
+      "permission-denied", 
+      "You must be an admin to approve listings."
+    );
   }
 
   const submissionCollection = `${collectionName}_submissions`;
   const publicCollection = collectionName;
-  
-  const submissionRef = adminDb.collection(submissionCollection).doc(submissionId);
+
+  const submissionRef = adminDb
+    .collection(submissionCollection)
+    .doc(submissionId);
+    
   const submissionDoc = await submissionRef.get();
 
   if (!submissionDoc.exists) {
@@ -59,7 +65,21 @@ export const approveListing = onCall(async (request) => {
     throw new HttpsError("internal", "Submission data is empty.");
   }
 
+  // Strip undefined values AND Firestore Timestamps 
+  // (Timestamps cause internal errors when re-written)
+  const sanitiseData = (obj: Record<string, any>): Record<string, any> => {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([_, v]) => 
+        v !== undefined && 
+        v !== null &&
+        !(v && typeof v === 'object' && v.constructor?.name === 'Timestamp')
+      )
+    );
+  };
+
   const cleanData = sanitiseData(data);
+
+  // Write clean data to public collection
   await adminDb.collection(publicCollection).doc(submissionId).set({
     ...cleanData,
     approved: true,
@@ -67,7 +87,7 @@ export const approveListing = onCall(async (request) => {
     approvedBy: userEmail,
   });
 
-  // Update the status of the original submission
+  // Update submission status
   await submissionRef.update({
     status: "approved",
   });
