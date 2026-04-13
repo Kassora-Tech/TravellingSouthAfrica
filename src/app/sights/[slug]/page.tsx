@@ -210,6 +210,7 @@ export default async function SightDetailPage({ params }: { params: { slug: stri
             src={data.imageUrl}
             alt={`Hero image of ${data.name}, a popular attraction in ${data.location}`}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />

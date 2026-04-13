@@ -165,7 +165,7 @@ export function AvailableServiceProviders({
                           >
                             <div className="relative h-12 w-12 shrink-0 rounded-md overflow-hidden bg-muted flex items-center justify-center">
                               {provider.imageUrls && provider.imageUrls[0] ? (
-                                <Image src={provider.imageUrls[0]} alt={provider.name} fill className="object-cover" />
+                                <Image src={provider.imageUrls[0]} alt={provider.name} fill sizes="48px" className="object-cover" />
                               ) : (
                                 <Briefcase className="h-6 w-6 text-muted-foreground" />
                               )}

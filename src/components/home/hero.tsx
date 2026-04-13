@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -37,7 +37,6 @@ const slidesData = [
   },
 ];
 
-
 const sentence = {
   hidden: { opacity: 1 },
   visible: {
@@ -48,11 +47,21 @@ const sentence = {
     },
   },
 };
+
 const letter = {
   hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: 'easeOut' },
   },
 };
 
@@ -73,7 +82,7 @@ function OriginalHeroText() {
 
   return (
     <motion.p
-      className="mt-4 text-2xl font-light tracking-wide md:text-4xl"
+      className="mt-4 text-xl font-light tracking-wider md:text-3xl text-white/90 max-w-3xl"
       variants={sentence}
       initial="hidden"
       animate="visible"
@@ -112,7 +121,7 @@ export function Hero() {
         <div className="embla__container h-full">
           {slidesData.map((slide, index) => {
             const image = PlaceHolderImages.find((p) => p.id === slide.id);
-            const altText = slide.isOriginal 
+            const altText = slide.isOriginal
               ? "A stunning landscape of the Drakensberg mountains in South Africa"
               : `${slide.headline} - ${slide.subheadline}`;
             return (
@@ -122,33 +131,68 @@ export function Hero() {
                     src={image.imageUrl}
                     alt={altText}
                     fill
+                    sizes="100vw"
                     className="object-cover"
                     priority={index === 0}
                     data-ai-hint={image.imageHint}
                   />
                 )}
-                <div className="absolute inset-0 bg-black/50" />
-                <div className="relative z-10 flex flex-col items-center px-4 -translate-y-10">
-                   <Logo className="w-72 md:w-96" />
+                {/* Stronger gradient for better text readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
+
+                <div className="relative z-10 flex flex-col items-center px-4 -translate-y-8">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <Logo className="w-64 md:w-80 drop-shadow-2xl" priority />
+                  </motion.div>
+
                   {slide.isOriginal ? (
                     <OriginalHeroText />
                   ) : (
-                    <div className="mt-4">
-                      <h1 className="text-4xl md:text-6xl font-bold font-headline">
-                         <Translatable text={slide.headline!} />
+                    <motion.div
+                      className="mt-6"
+                      variants={fadeUp}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <h1 className="text-4xl md:text-6xl font-bold font-headline drop-shadow-lg leading-tight">
+                        <Translatable text={slide.headline!} />
                       </h1>
-                      <p className="mt-4 text-lg md:text-2xl max-w-3xl">
-                         <Translatable text={slide.subheadline!} />
+                      <p className="mt-4 text-lg md:text-2xl max-w-3xl text-white/85 font-light">
+                        <Translatable text={slide.subheadline!} />
                       </p>
-                    </div>
+                    </motion.div>
                   )}
-                  <div className="mt-8">
-                    <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-300 bg-transparent backdrop-blur-sm">
-                        <Link href="/plan-your-trip">
-                            <Translatable text="Plan Your Trip" />
-                        </Link>
+
+                  <motion.div
+                    className="mt-10 flex gap-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1, duration: 0.6 }}
+                  >
+                    <Button
+                      asChild
+                      size="lg"
+                      className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 font-semibold"
+                    >
+                      <Link href="/plan-your-trip">
+                        <Translatable text="Plan Your Trip" />
+                      </Link>
                     </Button>
-                  </div>
+                    <Button
+                      asChild
+                      size="lg"
+                      variant="outline"
+                      className="rounded-full px-8 border-white/70 text-white hover:bg-white/20 bg-transparent backdrop-blur-sm transition-all duration-300"
+                    >
+                      <Link href="/provinces">
+                        <Translatable text="Explore Provinces" />
+                      </Link>
+                    </Button>
+                  </motion.div>
                 </div>
               </div>
             );
@@ -156,36 +200,56 @@ export function Hero() {
         </div>
       </div>
 
+      {/* Navigation Arrows */}
       <Button
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/30 border-white/50 border"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/40 border-white/50 border backdrop-blur-sm transition-all duration-300"
         variant="ghost"
         size="icon"
         onClick={scrollPrev}
       >
-        <ArrowLeft className="h-6 w-6 text-white" />
+        <ArrowLeft className="h-5 w-5 text-white" />
       </Button>
       <Button
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/30 border-white/50 border"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/40 border-white/50 border backdrop-blur-sm transition-all duration-300"
         variant="ghost"
         size="icon"
         onClick={scrollNext}
       >
-        <ArrowRight className="h-6 w-6 text-white" />
+        <ArrowRight className="h-5 w-5 text-white" />
       </Button>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      {/* Slide Indicators */}
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex gap-3">
         {slidesData.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollTo(index)}
             className={cn(
-              'h-3 w-3 rounded-full transition-all',
-              selectedIndex === index ? 'bg-white scale-110' : 'bg-white/50'
+              'rounded-full transition-all duration-300',
+              selectedIndex === index
+                ? 'bg-white w-8 h-2.5'
+                : 'bg-white/50 w-2.5 h-2.5 hover:bg-white/75'
             )}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
+
+      {/* Scroll Down Indicator */}
+      <motion.div
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/60"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+      >
+        <span className="text-xs tracking-widest uppercase">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+        >
+          <ChevronDown className="h-4 w-4" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

@@ -121,6 +121,7 @@ export default function TownDetailPage() {
             src={heroImage.imageUrl}
             alt={`A scenic view of ${staticTown.name}, ${province?.name || 'South Africa'}`}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
             data-ai-hint={heroImage.imageHint}
@@ -168,7 +169,7 @@ export default function TownDetailPage() {
                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 not-prose">
                     {[townData.photo1, townData.photo2, townData.photo3, townData.photo4, townData.photo5, townData.photo6].map((photo, index) => photo && (
                         <div key={index} className="relative aspect-video">
-                            <Image src={photo} alt={`${staticTown.name} photo ${index + 1}`} fill className="object-cover rounded-lg"/>
+                            <Image src={photo} alt={`${staticTown.name} photo ${index + 1}`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover rounded-lg"/>
                         </div>
                     ))}
                  </div>

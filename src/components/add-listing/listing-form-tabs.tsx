@@ -401,7 +401,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-4">
                   {imagePreviews.map((src, index) => (
                     <div key={index} className="relative aspect-square">
-                      <Image src={src} alt={`Preview ${index + 1}`} fill className="object-cover rounded-md" />
+                      <Image src={src} alt={`Preview ${index + 1}`} fill sizes="10vw" className="object-cover rounded-md" />
                     </div>
                   ))}
                 </div>
@@ -453,5 +453,4 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
     </Card>
   );
 }
-
     

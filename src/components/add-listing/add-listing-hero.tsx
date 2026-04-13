@@ -15,6 +15,7 @@ export function AddListingHero() {
           src={heroImage.imageUrl}
           alt={heroImage.description}
           fill
+          sizes="100vw"
           className="object-cover"
           priority
           data-ai-hint={heroImage.imageHint}

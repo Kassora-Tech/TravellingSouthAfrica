@@ -72,7 +72,7 @@ export default function LoginPage() {
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <Card className="mx-auto max-w-sm">
           <CardHeader className="text-center">
-            <Link href="/"><Logo className="mx-auto w-40" /></Link>
+            <Link href="/"><Logo className="mx-auto w-40" priority /></Link>
             <CardTitle className="text-2xl"><Translatable text="Login" /></CardTitle>
             <CardDescription>
               <Translatable text="Enter your email below to login to your account" />

@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import {
   Building2,
@@ -61,23 +62,14 @@ function ImageCarousel({
     );
   }
  
-  const prev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIdx((i) => (i - 1 + images.length) % images.length);
-  };
-  const next = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIdx((i) => (i + 1) % images.length);
-  };
- 
   return (
     <div className={`relative w-full ${height} overflow-hidden group`}>
       <Image
         src={images[idx]}
         alt={`${name} – photo ${idx + 1}`}
         fill
-        className="object-cover transition-opacity duration-300"
         sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover transition-opacity duration-300"
       />
  
       {images.length > 1 && (
@@ -151,6 +143,9 @@ function AccommodationModal({
                 <DialogTitle className="text-2xl font-bold text-primary">
                   {listing.name}
                 </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Detailed information for {listing.name}
+                </DialogDescription>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   {listing.category && (
                     <Badge variant="secondary">{listing.category}</Badge>

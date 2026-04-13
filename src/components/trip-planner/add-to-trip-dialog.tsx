@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -106,6 +107,9 @@ export function AddToTripDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle><Translatable text={title} /></DialogTitle>
+          <DialogDescription className="sr-only">
+            Select items to add to your trip. Use the search and filter options to narrow down the list.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
            <Input 

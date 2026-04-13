@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-const Logo = ({ className }: { className?: string }) => {
+const Logo = ({ className, priority }: { className?: string, priority?: boolean }) => {
   return (
     <Image
       src="https://i.ibb.co/0prkKCw3/2026-Logo-1-Photoroom.png"
@@ -9,6 +9,7 @@ const Logo = ({ className }: { className?: string }) => {
       width={300}
       height={150}
       className={cn('h-auto w-64', className)}
+      priority={priority}
     />
   );
 };

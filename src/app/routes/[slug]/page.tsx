@@ -96,6 +96,7 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
             data-ai-hint={heroImage.imageHint}
@@ -155,6 +156,7 @@ export default function RouteDetailPage({ params }: { params: { slug: string } }
                                             src={image.imageUrl}
                                             alt={image.description}
                                             fill
+                                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                                             className="object-cover"
                                             data-ai-hint={image.imageHint}
                                         />

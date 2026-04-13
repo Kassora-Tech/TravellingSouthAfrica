@@ -44,7 +44,7 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-            <Logo className="h-16 w-auto" />
+            <Logo className="h-16 w-auto" priority />
           </Link>
 
           <nav className="hidden items-center space-x-1 lg:space-x-2 md:flex">
@@ -99,7 +99,7 @@ export function Header() {
                 <div className="p-4">
                     <div className="mb-8 flex justify-between items-center">
                         <Link href="/" onClick={() => setIsOpen(false)}>
-                            <Logo className="h-16 w-auto" />
+                            <Logo className="h-16 w-auto" priority />
                         </Link>
                         <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
                             <X />

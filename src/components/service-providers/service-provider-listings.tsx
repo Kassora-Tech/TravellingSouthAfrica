@@ -95,6 +95,7 @@ function ServiceProviderCard({ listing }: { listing: any }) {
                 src={images[currentIndex]}
                 alt={`${listing.name} - image ${currentIndex + 1}`}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
               />
               {images.length > 1 && (
@@ -132,7 +133,7 @@ function ServiceProviderCard({ listing }: { listing: any }) {
           <div className="flex gap-2 p-2 bg-gray-100 overflow-x-auto">
             {images.map((img: string, idx: number) => (
               <button key={idx} onClick={() => setCurrentIndex(idx)} className={`relative shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${idx === currentIndex ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'}`}>
-                <Image src={img} alt={`Thumbnail ${idx + 1}`} fill className="object-cover" />
+                <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="5vw" className="object-cover" />
               </button>
             ))}
           </div>

@@ -45,7 +45,7 @@ function ImageGallery({ images }: { images: string[] }) {
   return (
     <div className="space-y-2">
       <div className="relative w-full h-48 rounded-lg overflow-hidden">
-        <Image src={images[currentIndex]} alt={`Listing image ${currentIndex + 1}`} fill className="object-cover" />
+        <Image src={images[currentIndex]} alt={`Listing image ${currentIndex + 1}`} fill sizes="33vw" className="object-cover" />
         {images.length > 1 && (
           <>
             <button onClick={() => setCurrentIndex(prev => (prev - 1 + images.length) % images.length)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70">
@@ -64,7 +64,7 @@ function ImageGallery({ images }: { images: string[] }) {
         <div className="grid grid-cols-6 gap-1">
           {images.map((img, idx) => (
             <div key={idx} onClick={() => setCurrentIndex(idx)} className={`relative aspect-square rounded cursor-pointer overflow-hidden border-2 ${idx === currentIndex ? 'border-primary' : 'border-transparent'}`}>
-              <Image src={img} alt={`Thumbnail ${idx + 1}`} fill className="object-cover" />
+              <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="5vw" className="object-cover" />
             </div>
           ))}
         </div>

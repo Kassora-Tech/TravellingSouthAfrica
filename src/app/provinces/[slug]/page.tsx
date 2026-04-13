@@ -119,6 +119,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
             src={heroImage.imageUrl}
             alt={`Hero image for ${province.name}, South Africa`}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
             data-ai-hint={heroImage.imageHint}
@@ -182,6 +183,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
                                     src={image.imageUrl}
                                     alt={altText}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                                     data-ai-hint={image.imageHint}
                                   />
@@ -232,6 +234,7 @@ export default function ProvinceDetailPage({ params }: { params: { slug: string 
                                             alt={altText}
                                             fill
                                             className="object-cover"
+                                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                             data-ai-hint={image.imageHint}
                                         />
                                     </div>
