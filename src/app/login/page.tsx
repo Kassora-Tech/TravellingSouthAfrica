@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -8,7 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogClose } from "@/components/ui/dialog";
+import { AccessibleDialogContent } from "@/components/ui/AccessibleDialogContent";
+import { DialogFooter } from "@/components/ui/dialog";
 import { Translatable } from "@/components/translatable";
 import { useToast } from "@/hooks/use-toast";
 import Logo from "@/components/logo";
@@ -144,13 +147,11 @@ export default function LoginPage() {
       </div>
 
       <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle><Translatable text="Reset Password" /></DialogTitle>
-            <DialogDescription>
-              <Translatable text="Enter your email to reset your password." />
-            </DialogDescription>
-          </DialogHeader>
+        <AccessibleDialogContent
+          title="Reset Password"
+          description="Enter your email to reset your password."
+          className="sm:max-w-md"
+        >
           <form onSubmit={handlePasswordReset}>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
@@ -176,7 +177,7 @@ export default function LoginPage() {
               <Button type="submit"><Translatable text="Send Reset Link" /></Button>
             </DialogFooter>
           </form>
-        </DialogContent>
+        </AccessibleDialogContent>
       </Dialog>
     </>
   );

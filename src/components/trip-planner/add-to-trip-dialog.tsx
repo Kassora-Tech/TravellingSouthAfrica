@@ -1,15 +1,13 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
+import { AccessibleDialogContent } from "@/components/ui/AccessibleDialogContent";
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -104,13 +102,11 @@ export function AddToTripDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle><Translatable text={title} /></DialogTitle>
-          <DialogDescription className="sr-only">
-            Select items to add to your trip. Use the search and filter options to narrow down the list.
-          </DialogDescription>
-        </DialogHeader>
+      <AccessibleDialogContent
+        title={title}
+        description="Select items to add to your trip. Use the search and filter options to narrow down the list."
+        className="sm:max-w-md"
+      >
         <div className="space-y-4">
            <Input 
             placeholder={`Search ${title.replace('Add ', '').toLowerCase()}...`}
@@ -164,7 +160,7 @@ export function AddToTripDialog({
             </div>
           </ScrollArea>
         </div>
-        <DialogFooter>
+        <DialogFooter className="mt-4">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               <Translatable text="Cancel" />
@@ -174,7 +170,7 @@ export function AddToTripDialog({
             <Translatable text="Save" />
           </Button>
         </DialogFooter>
-      </DialogContent>
+      </AccessibleDialogContent>
     </Dialog>
   );
 }

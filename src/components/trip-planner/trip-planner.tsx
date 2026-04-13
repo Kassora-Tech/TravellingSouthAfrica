@@ -25,7 +25,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 
 import { createTrip, updateTripItems, type TripTown, updateTripTowns } from '@/firebase/firestore/trips';
-
+import { AccessibleDialogContent } from "@/components/ui/AccessibleDialogContent";
+import { Dialog, DialogHeader } from '@/components/ui/dialog';
 import {
   Accordion,
   AccordionContent,
@@ -282,16 +283,15 @@ function AccommodationDetailModal({
   const next = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i + 1) % images.length); };
  
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
-      onClick={onClose}
-    >
-      <div
-        className="bg-background rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+    <Dialog open={true} onOpenChange={onClose}>
+      <AccessibleDialogContent
+        title={accommodation.name}
+        description={`Details for ${accommodation.name}`}
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Image gallery */}
-        <div className="relative w-full h-64 bg-muted overflow-hidden rounded-t-xl group">
+        <div className="relative w-full h-64 bg-muted overflow-hidden rounded-lg group -mt-2">
           {images.length > 0 ? (
             <>
               <img
@@ -314,7 +314,7 @@ function AccommodationDetailModal({
                       />
                     ))}
                   </div>
-                  <span className="absolute top-2 right-10 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full z-10">
+                  <span className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full z-10">
                     {idx + 1} / {images.length}
                   </span>
                 </>
@@ -325,17 +325,11 @@ function AccommodationDetailModal({
               <Bed className="h-16 w-16 text-muted-foreground" />
             </div>
           )}
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 z-20"
-          >
-            <X className="h-4 w-4" />
-          </button>
         </div>
  
         {/* Thumbnail strip */}
         {images.length > 1 && (
-          <div className="flex gap-2 px-4 pt-3 overflow-x-auto">
+          <div className="flex gap-2 pt-3 overflow-x-auto">
             {images.map((url: string, i: number) => (
               <button
                 key={i}
@@ -349,32 +343,18 @@ function AccommodationDetailModal({
         )}
  
         {/* Content */}
-        <div className="p-5 space-y-4">
-          {/* Header */}
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-xl font-bold text-primary">{accommodation.name}</h2>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                {accommodation.category && (
-                  <span className="bg-secondary text-xs px-2 py-0.5 rounded-full">{accommodation.category}</span>
-                )}
-                {accommodation.townSlug && (
-                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <MapPin className="h-3 w-3" />
-                    {accommodation.townSlug.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
-                  </span>
-                )}
-              </div>
+        <div className="space-y-4 pt-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              {accommodation.category && (
+                <span className="bg-secondary text-xs px-2 py-0.5 rounded-full">{accommodation.category}</span>
+              )}
+              {accommodation.townSlug && (
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <MapPin className="h-3 w-3" />
+                  {accommodation.townSlug.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                </span>
+              )}
             </div>
-            <Button
-              onClick={onToggle}
-              variant={isSelected ? 'default' : 'outline'}
-              size="sm"
-              className="shrink-0"
-            >
-              {isSelected ? '✓ Selected' : '+ Add to Trip'}
-            </Button>
-          </div>
  
           {/* Description */}
           {accommodation.description && (
@@ -409,32 +389,33 @@ function AccommodationDetailModal({
           </div>
  
           {/* Action buttons */}
-          <div className="flex flex-wrap gap-2 pt-1">
+          <div className="flex flex-wrap gap-2 pt-2 border-t">
+            <Button
+              onClick={onToggle}
+              variant={isSelected ? 'default' : 'outline'}
+              size="sm"
+              className="flex-1"
+            >
+              {isSelected ? '✓ Selected' : '+ Add to Trip'}
+            </Button>
             {accommodation.websiteUrl && (
-              <Button asChild variant="outline" size="sm">
+              <Button asChild variant="outline" size="sm" className="flex-1">
                 <a href={accommodation.websiteUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                   <Globe className="h-3.5 w-3.5 mr-1.5" /> Website
                 </a>
               </Button>
             )}
             {accommodation.bookingSiteUrl && (
-              <Button asChild size="sm">
+              <Button asChild size="sm" className="flex-1">
                 <a href={accommodation.bookingSiteUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                   <ExternalLink className="h-3.5 w-3.5 mr-1.5" /> Book Now
                 </a>
               </Button>
             )}
-            {accommodation.contactPhone && (
-              <Button asChild variant="outline" size="sm">
-                <a href={`tel:${accommodation.contactPhone}`} onClick={(e) => e.stopPropagation()}>
-                  <Phone className="h-3.5 w-3.5 mr-1.5" /> Call
-                </a>
-              </Button>
-            )}
           </div>
         </div>
-      </div>
-    </div>
+      </AccessibleDialogContent>
+    </Dialog>
   );
 }
  
@@ -469,7 +450,7 @@ function AccommodationCard({
  
   useEffect(() => {
     setSelectedIds(selectedTrip?.accommodationIds || []);
-  }, [selectedTrip?.id]);
+  }, [selectedTrip?.id, selectedTrip?.accommodationIds]);
  
   const handleToggle = (id: string) => {
     const newIds = selectedIds.includes(id)
@@ -722,7 +703,7 @@ function AvailableSights({
 
   useEffect(() => {
     setSelectedIds(selectedTrip?.sightIds || []);
-  }, [selectedTrip?.id]);
+  }, [selectedTrip?.id, selectedTrip?.sightIds]);
 
   const handleToggle = (id: string) => {
     const newIds = selectedIds.includes(id)

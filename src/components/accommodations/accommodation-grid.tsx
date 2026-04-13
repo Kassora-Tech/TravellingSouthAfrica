@@ -1,3 +1,4 @@
+
 'use client';
  
 import React, { useState } from 'react';
@@ -5,13 +6,8 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
+import { Dialog, DialogHeader } from '@/components/ui/dialog';
+import { AccessibleDialogContent } from "@/components/ui/AccessibleDialogContent";
 import {
   Building2,
   Phone,
@@ -128,102 +124,91 @@ function AccommodationModal({
  
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
-        {/* Image gallery */}
+      <AccessibleDialogContent
+        title={listing.name}
+        description={`Detailed information for ${listing.name}`}
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
         <ImageCarousel
           images={listing.imageUrls || []}
           name={listing.name}
           height="h-72"
         />
- 
-        <div className="p-6 space-y-4">
-          <DialogHeader>
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <DialogTitle className="text-2xl font-bold text-primary">
-                  {listing.name}
-                </DialogTitle>
-                <DialogDescription className="sr-only">
-                  Detailed information for {listing.name}
-                </DialogDescription>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  {listing.category && (
-                    <Badge variant="secondary">{listing.category}</Badge>
-                  )}
-                  {listing.townSlug && (
-                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <MapPin className="h-3 w-3" />
-                      {formatTownName(listing.townSlug)}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </DialogHeader>
- 
-          {/* Description */}
-          {listing.description && (
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {listing.description}
-            </p>
+
+        <div className="flex items-center gap-2 mt-4 flex-wrap">
+          {listing.category && (
+            <Badge variant="secondary">{listing.category}</Badge>
           )}
- 
-          {/* Contact details */}
-          <div className="space-y-2 pt-2 border-t">
-            <h4 className="font-semibold text-sm">Contact</h4>
-            {listing.contactPhone && (
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="h-4 w-4 text-primary shrink-0" />
-                <a href={`tel:${listing.contactPhone}`} className="hover:underline">
-                  {listing.contactPhone}
-                </a>
-              </div>
-            )}
-            {listing.contactEmail && (
-              <div className="flex items-center gap-2 text-sm">
-                <Mail className="h-4 w-4 text-primary shrink-0" />
-                <a href={`mailto:${listing.contactEmail}`} className="hover:underline truncate">
-                  {listing.contactEmail}
-                </a>
-              </div>
-            )}
-            {listing.physicalAddress && (
-              <div className="flex items-start gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">{listing.physicalAddress}</span>
-              </div>
-            )}
-          </div>
- 
-          {/* Action buttons */}
-          <div className="flex flex-wrap gap-3 pt-2">
-            {listing.websiteUrl && (
-              <Button asChild variant="outline" size="sm">
-                <a href={listing.websiteUrl} target="_blank" rel="noopener noreferrer">
-                  <Globe className="h-4 w-4 mr-2" />
-                  Visit Website
-                </a>
-              </Button>
-            )}
-            {listing.bookingSiteUrl && (
-              <Button asChild size="sm">
-                <a href={listing.bookingSiteUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Book Now
-                </a>
-              </Button>
-            )}
-            {listing.contactPhone && (
-              <Button asChild variant="outline" size="sm">
-                <a href={`tel:${listing.contactPhone}`}>
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call
-                </a>
-              </Button>
-            )}
-          </div>
+          {listing.townSlug && (
+            <span className="flex items-center gap-1 text-sm text-muted-foreground">
+              <MapPin className="h-3 w-3" />
+              {formatTownName(listing.townSlug)}
+            </span>
+          )}
         </div>
-      </DialogContent>
+ 
+        {/* Description */}
+        {listing.description && (
+          <p className="text-sm text-muted-foreground leading-relaxed mt-4">
+            {listing.description}
+          </p>
+        )}
+
+        {/* Contact details */}
+        <div className="space-y-2 pt-4 mt-4 border-t">
+          <h4 className="font-semibold text-sm">Contact</h4>
+          {listing.contactPhone && (
+            <div className="flex items-center gap-2 text-sm">
+              <Phone className="h-4 w-4 text-primary shrink-0" />
+              <a href={`tel:${listing.contactPhone}`} className="hover:underline">
+                {listing.contactPhone}
+              </a>
+            </div>
+          )}
+          {listing.contactEmail && (
+            <div className="flex items-center gap-2 text-sm">
+              <Mail className="h-4 w-4 text-primary shrink-0" />
+              <a href={`mailto:${listing.contactEmail}`} className="hover:underline truncate">
+                {listing.contactEmail}
+              </a>
+            </div>
+          )}
+          {listing.physicalAddress && (
+            <div className="flex items-start gap-2 text-sm">
+              <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <span className="text-muted-foreground">{listing.physicalAddress}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex flex-wrap gap-3 pt-4 mt-4 border-t">
+          {listing.websiteUrl && (
+            <Button asChild variant="outline" size="sm">
+              <a href={listing.websiteUrl} target="_blank" rel="noopener noreferrer">
+                <Globe className="h-4 w-4 mr-2" />
+                Visit Website
+              </a>
+            </Button>
+          )}
+          {listing.bookingSiteUrl && (
+            <Button asChild size="sm">
+              <a href={listing.bookingSiteUrl} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Book Now
+              </a>
+            </Button>
+          )}
+          {listing.contactPhone && (
+            <Button asChild variant="outline" size="sm">
+              <a href={`tel:${listing.contactPhone}`}>
+                <Phone className="h-4 w-4 mr-2" />
+                Call
+              </a>
+            </Button>
+          )}
+        </div>
+      </AccessibleDialogContent>
     </Dialog>
   );
 }
