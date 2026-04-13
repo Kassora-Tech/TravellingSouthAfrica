@@ -1,4 +1,5 @@
 import { Translatable } from '@/components/translatable';
+import Script from 'next/script';
 import {
   Accordion,
   AccordionContent,
@@ -137,8 +138,8 @@ const breadcrumbSchema = {
 export default function SlangPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script id="slang-faq-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Script id="slang-breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <section className="relative bg-cover bg-center py-16 text-white" style={{ backgroundImage: "url('https://i.ibb.co/ccNkGKgF/South-African-English-word-cloud-featured.jpg')" }}>
         <div className="absolute inset-0 bg-black/50" />
         <div className="container relative mx-auto px-4 text-center">

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-const Logo = ({ className, priority }: { className?: string, priority?: boolean }) => {
+const Logo = ({ className, priority = false }: { className?: string, priority?: boolean }) => {
   return (
     <Image
       src="https://i.ibb.co/0prkKCw3/2026-Logo-1-Photoroom.png"

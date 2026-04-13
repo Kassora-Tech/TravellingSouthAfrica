@@ -15,6 +15,7 @@ import { isAdmin } from '@/lib/admin';
 import { doc } from 'firebase/firestore';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import Script from 'next/script';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -42,7 +43,7 @@ export default function TownDetailPage() {
       let meta = document.querySelector('meta[name="description"]');
       if (!meta) {
         meta = document.createElement('meta');
-        meta.name = 'description';
+        meta.setAttribute('name', 'description');
         document.getElementsByTagName('head')[0].appendChild(meta);
       }
       meta.setAttribute('content', newDescription);
@@ -113,8 +114,8 @@ export default function TownDetailPage() {
 
   return (
     <div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(citySchema) }} />
+        <Script id="town-breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        <Script id="town-city-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(citySchema) }} />
       <section className="relative h-[50vh] text-white">
         {heroImage && (
           <Image

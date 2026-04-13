@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogHeader } from '@/components/ui/dialog';
+import { Dialog, DialogHeader, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { AccessibleDialogContent } from "@/components/ui/AccessibleDialogContent";
 import {
   Building2,
@@ -43,10 +43,12 @@ function ImageCarousel({
   images,
   name,
   height = 'h-52',
+  sizes,
 }: {
   images: string[];
   name: string;
   height?: string;
+  sizes: string;
 }) {
   const [idx, setIdx] = useState(0);
  
@@ -64,7 +66,7 @@ function ImageCarousel({
         src={images[idx]}
         alt={`${name} – photo ${idx + 1}`}
         fill
-        sizes="(max-width: 768px) 100vw, 50vw"
+        sizes={sizes}
         className="object-cover transition-opacity duration-300"
       />
  
@@ -133,6 +135,7 @@ function AccommodationModal({
           images={listing.imageUrls || []}
           name={listing.name}
           height="h-72"
+          sizes="(max-width: 640px) 100vw, 640px"
         />
 
         <div className="flex items-center gap-2 mt-4 flex-wrap">
@@ -226,7 +229,11 @@ function AccommodationCard({
       className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
       onClick={onClick}
     >
-      <ImageCarousel images={listing.imageUrls || []} name={listing.name} />
+      <ImageCarousel 
+        images={listing.imageUrls || []} 
+        name={listing.name} 
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      />
  
       <CardContent className="p-4 flex flex-col flex-1 space-y-2">
         <div>
@@ -291,4 +298,3 @@ export function AccommodationGrid({ listings }: { listings: Listing[] }) {
     </>
   );
 }
- 
