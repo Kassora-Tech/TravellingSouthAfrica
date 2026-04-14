@@ -20,6 +20,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { errorEmitter, FirestorePermissionError } from '@/firebase';
 import { provinces } from '@/lib/data/provinces';
+import { ImageUpload } from '@/components/admin/image-upload';
 
 // Zod schema for the form
 const townFormSchema = z.object({
@@ -183,13 +184,19 @@ function TownEditorForm({ townSlug }: { townSlug: string }) {
             
             <div className="space-y-4">
                 <h3 className="text-lg font-medium">Photos</h3>
-                <p className="text-sm text-muted-foreground">Enter up to 6 image URLs.</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[1, 2, 3, 4, 5, 6].map(i => (
-                    <div key={i}>
-                      <Label htmlFor={`photo${i}`}>Photo URL {i}</Label>
-                      <Input id={`photo${i}`} {...form.register(`photo${i}` as `photo${1 | 2 | 3 | 4 | 5 | 6}`)} placeholder="https://..."/>
-                    </div>
+                <p className="text-sm text-muted-foreground">Upload up to 6 photos for this town.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {([1, 2, 3, 4, 5, 6] as const).map(i => (
+                    <ImageUpload
+                      key={i}
+                      label={`Photo ${i}`}
+                      value={form.watch(`photo${i}` as `photo${1 | 2 | 3 | 4 | 5 | 6}`) ?? ''}
+                      onChange={(url) => form.setValue(
+                        `photo${i}` as `photo${1 | 2 | 3 | 4 | 5 | 6}`,
+                        url,
+                        { shouldDirty: true }
+                      )}
+                    />
                   ))}
                 </div>
             </div>
