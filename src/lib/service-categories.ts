@@ -4,12 +4,11 @@ export const serviceCategories = [
     'Airlines',
     'Car Hire & Transport',
     'Tour Operator',
-    'Guide',
     'Spa & Wellness',
     'Night Life',
     'Shops',
     'Restaurant',
-    'Travel Agent',
+    
   ];
   
 export const serviceCategoriesMap: { [key: string]: { icon: React.ElementType, description: string, buttonText: string, href: string } } = {
@@ -19,12 +18,7 @@ export const serviceCategoriesMap: { [key: string]: { icon: React.ElementType, d
         buttonText: 'Browse Airlines',
         href: '/service-providers/airlines',
     },
-    'Attractions': {
-        icon: Compass,
-        description: 'Discover top attractions and book unique experiences.',
-        buttonText: 'Explore Attractions',
-        href: '/service-providers/attractions',
-    },
+    
     'Car Hire & Transport': {
         icon: Car,
         description: 'Find car hire, transport and vehicle rentals.',

@@ -7480,6 +7480,36 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'kenton-on-sea',
+    name: 'Kenton-on-Sea',
+    provinceSlug: 'eastern-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'blouberg',
+    name: 'Blouberg',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'philadelphia',
+    name: 'Philadelphia',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'umzumbe',
     name: 'Umzumbe',
     provinceSlug: 'kwazulu-natal',

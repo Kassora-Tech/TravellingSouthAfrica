@@ -51,6 +51,16 @@ function ImageCarousel({
   sizes: string;
 }) {
   const [idx, setIdx] = useState(0);
+
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((current) => (current === 0 ? images.length - 1 : current - 1));
+  };
+
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((current) => (current === images.length - 1 ? 0 : current + 1));
+  };
  
   if (!images || images.length === 0) {
     return (
