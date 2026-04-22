@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { SearchInput } from '@/components/SearchInput';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState, useMemo } from 'react';
 import Script from 'next/script';
@@ -79,12 +79,13 @@ export default function TownsClient() {
 
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
-            <div className="mb-12 p-4 border rounded-lg bg-card grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Input 
-                    placeholder="Search for a town..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+        <div className="mb-12 p-4 border rounded-lg bg-card grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible relative z-10">
+            <SearchInput
+               placeholder="Search for a town..."
+               value={searchTerm}
+               onChange={setSearchTerm}
+               provinceFilter={selectedProvince === 'all' ? undefined : selectedProvince}
+            />
                 <Select value={selectedProvince} onValueChange={setSelectedProvince}>
                     <SelectTrigger>
                         <SelectValue placeholder="Filter by province" />

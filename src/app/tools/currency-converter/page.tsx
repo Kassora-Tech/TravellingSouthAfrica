@@ -1,20 +1,18 @@
 "use client";
 
 import { Translatable } from '@/components/translatable';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowRightLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const supportedCurrencies = ['ZAR', 'USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'CNY'];
+const fromCurrencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'CNY'];
+const TO_CURRENCY = 'ZAR';
 
 export default function CurrencyConverterPage() {
   const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('ZAR');
   const [rates, setRates] = useState<any>({});
   const [result, setResult] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +22,7 @@ export default function CurrencyConverterPage() {
       if (!fromCurrency) return;
       setIsLoading(true);
       try {
-        const response = await fetch(`https://api.frankfurter.app/latest?from=${fromCurrency}`);
+        const response = await fetch(`https://api.frankfurter.app/latest?from=${fromCurrency}&to=${TO_CURRENCY}`);
         const data = await response.json();
         setRates(data.rates);
       } catch (error) {
@@ -37,16 +35,11 @@ export default function CurrencyConverterPage() {
   }, [fromCurrency]);
 
   useEffect(() => {
-    if (rates && rates[toCurrency]) {
-      const rate = rates[toCurrency];
+    if (rates && rates[TO_CURRENCY]) {
+      const rate = rates[TO_CURRENCY];
       setResult(amount * rate);
     }
-  }, [amount, fromCurrency, toCurrency, rates]);
-  
-  const handleSwap = () => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
-  }
+  }, [amount, fromCurrency, rates]);
 
   return (
     <section 
@@ -59,18 +52,18 @@ export default function CurrencyConverterPage() {
                 <Translatable text="Currency Converter" />
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-200">
-                <Translatable text="Get up-to-date exchange rates for your travel planning." />
+                <Translatable text="Convert any major currency to South African Rand (ZAR)." />
             </p>
-            <div className="max-w-2xl mx-auto mt-8">
+            <div className="max-w-xl mx-auto mt-8">
                 <Card className="text-foreground">
                     <CardHeader>
-                        <CardTitle className="text-left"><Translatable text="Conversion Tool" /></CardTitle>
+                        <CardTitle className="text-left"><Translatable text="Convert to ZAR" /></CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
                             <div className="space-y-2 text-left">
                                 <Label htmlFor="amount"><Translatable text="Amount" /></Label>
-                                <Input id="amount" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
+                                <Input id="amount" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} min="0" />
                             </div>
                             <div className="space-y-2 text-left">
                                 <Label><Translatable text="From" /></Label>
@@ -79,39 +72,22 @@ export default function CurrencyConverterPage() {
                                         <SelectValue placeholder="From currency" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {supportedCurrencies.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                             <div className="space-y-2 text-left">
-                                <Label><Translatable text="To" /></Label>
-                                <Select value={toCurrency} onValueChange={setToCurrency}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="To currency" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {supportedCurrencies.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                        {fromCurrencies.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
 
-                        <div className="flex justify-center my-4">
-                            <Button variant="ghost" size="icon" onClick={handleSwap}>
-                                <ArrowRightLeft />
-                            </Button>
-                        </div>
-
-                        {isLoading && <p className="text-center text-muted-foreground"><Translatable text="Loading rates..." /></p>}
+                        {isLoading && <p className="text-center text-muted-foreground mt-8"><Translatable text="Loading rates..." /></p>}
                         
                         {!isLoading && result !== null && (
-                            <div className="text-center p-6 bg-secondary rounded-lg">
+                            <div className="text-center p-6 bg-secondary rounded-lg mt-8">
                                 <p className="text-muted-foreground"><Translatable text="Result" /></p>
-                                <p className="text-3xl font-bold text-primary">
-                                    {result.toFixed(2)} {toCurrency}
+                                <p className="text-4xl font-bold text-primary">
+                                    {result.toFixed(2)} {TO_CURRENCY}
                                 </p>
                                 <p className="text-sm text-muted-foreground mt-2">
-                                   1 {fromCurrency} = {rates[toCurrency]?.toFixed(4)} {toCurrency}
+                                   1 {fromCurrency} = {rates[TO_CURRENCY]?.toFixed(4)} {TO_CURRENCY}
                                 </p>
                             </div>
                         )}
