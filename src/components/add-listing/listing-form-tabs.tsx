@@ -258,11 +258,12 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         
         const docData = {
             ...values,
-            ownerUid: user.uid,
-            ownerEmail: user.email,
-            imageUrls,
-            createdAt: serverTimestamp(),
-            status: 'pending',
+            submittedBy: user.uid,
+           ownerUid: user.uid,
+           ownerEmail: user.email,
+           imageUrls,
+           createdAt: serverTimestamp(),
+           status: 'pending',
         };
         delete (docData as any).terms;
         delete (docData as any).termsAndConditions;
