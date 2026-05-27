@@ -1,8 +1,9 @@
+// Replace with this (NO fallbacks):
 export const firebaseConfig = {
-  projectId: "studio-5183877465-bdb40",
-  appId: "1:928817660251:web:6b888b362f50c5a3d61a7e",
-  apiKey: "AIzaSyAtOtDsP2fgCQ3GdDWuYn721FDrKbjVF1Q",
-  authDomain: "studio-5183877465-bdb40.firebaseapp.com",
-  messagingSenderId: "928817660251",
-  storageBucket: "studio-5183877465-bdb40.appspot.com"
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
 };
