@@ -412,7 +412,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
             {!isAdmin && (
               <div className="space-y-4 rounded-lg border bg-secondary p-4">
                 <p className="text-sm italic text-muted-foreground">
-                  <Translatable text="By submitting this listing, you agree to a non-refundable annual fee of R200 per year. This fee covers your listing on Travelling South Africa and is payable upon approval. You will be invoiced after review and acceptance of your submission." />
+                  <Translatable text="By submitting this listing, you agree to a non-refundable annual fee of R350 per year. This fee covers your listing on Travelling South Africa and is payable upon approval. You will be invoiced after review and acceptance of your submission." />
                 </p>
                 <FormField control={form.control} name="terms" render={({ field }) => (
                   <FormItem className="flex flex-row items-center space-x-3 pt-2">
@@ -420,7 +420,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel><Translatable text="I understand and agree to the R200 annual listing fee upon approval" /></FormLabel>
+                      <FormLabel><Translatable text="I understand and agree to the R350 annual listing fee upon approval" /></FormLabel>
                       <FormMessage />
                     </div>
                   </FormItem>

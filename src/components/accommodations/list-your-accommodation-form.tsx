@@ -101,7 +101,7 @@ export function ListYourAccommodationForm() {
                             <Translatable text="List Your Accommodation" />
                         </CardTitle>
                         <CardDescription className="text-lg text-muted-foreground max-w-3xl mx-auto mt-2">
-                            <Translatable text="Own a hotel, guesthouse, or B&B? Get featured to tourists booking private tours. The annual listing fee is R200, payable only after approval." />
+                            <Translatable text="Own a hotel, guesthouse, or B&B? Get featured to tourists booking private tours. The annual listing fee is R350, payable only after approval." />
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="p-8 pt-0">
@@ -198,7 +198,7 @@ export function ListYourAccommodationForm() {
                                         <Translatable text="I agree to the terms and conditions." />
                                     </Label>
                                     <p className="text-sm text-muted-foreground">
-                                        <Translatable text="I confirm the information is accurate and agree to the R200 annual listing fee, payable upon approval." />
+                                        <Translatable text="I confirm the information is accurate and agree to the R350 annual listing fee, payable upon approval." />
                                     </p>
                                 </div>
                             </div>
