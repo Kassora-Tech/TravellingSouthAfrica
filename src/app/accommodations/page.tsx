@@ -48,7 +48,8 @@ async function getAccommodations(townSlug?: string) {
   }
 }
  
-export default async function AccommodationsPage({ searchParams }: { searchParams?: { town?: string } }) {
+export default async function AccommodationsPage(props: { searchParams?: Promise<{ town?: string }> }) {
+  const searchParams = await props.searchParams;
   const townSlug = searchParams?.town;
   const town = townSlug ? towns.find(t => t.slug === townSlug) : null;
   const listings = await getAccommodations(townSlug);

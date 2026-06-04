@@ -33,7 +33,7 @@ export async function signup(name: string, email: string, password: string) {
 
     return { user };
   } catch (error) {
-    return { error };
+    return { error: error as any };
   }
 }
 
@@ -42,7 +42,7 @@ export async function login(email: string, password: string) {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return { user: userCredential.user };
   } catch (error) {
-    return { error };
+    return { error: error as any };
   }
 }
 
@@ -69,7 +69,7 @@ export async function signInWithGoogle() {
     
     return { user };
   } catch (error) {
-    return { error };
+    return { error: error as any };
   }
 }
 
@@ -82,6 +82,6 @@ export async function sendPasswordReset(email: string) {
     await sendPasswordResetEmail(auth, email);
     return { success: true };
   } catch (error) {
-    return { error };
+    return { error: error as any };
   }
 }

@@ -12,97 +12,129 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn() && request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+      return isSignedIn() && (
+        request.auth.token.email in [
+          'maryke@travellingsouthafrica.co.za', 
+          'tristan@industrialgrowthhub.com',
+          'kassoratechnology@gmail.com'
+        ]
+      );
     }
 
-    // ---- USERS ----
+    // 1. Provinces - public read, admin write
+    match /provinces/{provinceId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 2. Towns - public read, admin write
+    match /towns/{townId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 3. Sights - public read, admin write
+    match /sights/{sightId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 4. Routes - public read, admin write
+    match /routes/{routeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 5. Listings - approved listings are public read, logged-in users can create (status auto-sets to pending), admin can approve/reject.
+    // Fields: category (accommodation/restaurant/attraction/service_provider), name, description, town, province, address, phone, website, images array, coverImage, status, submittedBy, submittedAt, approvedBy, approvedAt, expiresAt
+    match /listings/{listingId} {
+      // Approved listings are public read, admins can read all, owners can read their own submissions
+      allow read: if isAdmin() 
+        || (resource.data.status == 'approved')
+        || (isSignedIn() && resource.data.submittedBy == request.auth.uid);
+
+      // Logged-in users can create. Status must be pending, submittedBy must be themselves, category must be valid.
+      allow create: if isSignedIn()
+        && request.resource.data.status == 'pending'
+        && request.resource.data.submittedBy == request.auth.uid
+        && request.resource.data.category in ['accommodation', 'restaurant', 'attraction', 'service_provider'];
+
+      // Admin can update/delete (approve/reject). 
+      // Also allow owner to update their own listing if it's still pending and they don't change crucial fields like status or submittedBy
+      allow update: if isAdmin() 
+        || (
+          isSignedIn() 
+          && resource.data.submittedBy == request.auth.uid
+          && request.resource.data.submittedBy == resource.data.submittedBy
+          && request.resource.data.status == 'pending'
+        );
+
+      allow delete: if isAdmin()
+        || (isSignedIn() && resource.data.submittedBy == request.auth.uid);
+    }
+
+    // 6. Users - user can read/write own document only
     match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isOwner(userId);
-
-      match /trips/{tripId} {
-        allow get, list, create, update, delete: if isOwner(userId);
-      }
-
-      match /bookings/{bookingId} {
-        allow get, list, create, update, delete: if isOwner(userId);
-      }
+      allow read, write: if isOwner(userId);
     }
 
-    // ---- PUBLIC CONTENT ----
-    match /provinces/{docId} {
-      allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
+    // 7. Trips - logged-in owner only can read/write
+    match /trips/{tripId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid && request.resource.data.userId == resource.data.userId;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
 
-    match /towns/{docId} {
-      allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
-    }
-
-    match /sights/{docId} {
-      allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
-    }
-
-    match /routes/{docId} {
-      allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
-    }
-
-    match /routeHighlightLinks/{docId} {
-      allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
-    }
-
-    // ---- LISTINGS (PUBLIC - READ ONLY) ----
-    match /accommodations/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    match /restaurants/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    match /service_providers/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    match /attractions/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-
-    // ---- SUBMISSIONS (PRIVATE - CREATE ONLY for users) ----
-    match /accommodations_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false; // All updates/deletes via Cloud Function
-    }
-    match /restaurants_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false;
-    }
-    match /service_providers_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false;
-    }
-    match /attractions_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false;
-    }
-    
-    // ---- CONTACTS ----
+    // 8. Contact Messages - anyone can create, admin read only
     match /contactMessages/{messageId} {
       allow read: if isAdmin();
       allow create: if true;
       allow update, delete: if isAdmin();
+    }
+
+    // 9. Payments - admin read, owner can read own
+    match /payments/{paymentId} {
+      // Admin read, owner can read own (checking userId or submittedBy)
+      allow read: if isAdmin() 
+        || (isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.submittedBy == request.auth.uid));
+      
+      // Allow creation by the owner if they match the userId field, or by admin
+      allow create: if isAdmin() 
+        || (isSignedIn() && request.resource.data.userId == request.auth.uid);
+      
+      allow update, delete: if isAdmin();
+    }
+
+    // ---- LEGACY COLLECTIONS (For backward compatibility, public read / admin write) ----
+    match /accommodations/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /restaurants/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /service_providers/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /attractions/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /accommodations_submissions/{docId} {
+      allow read, write: if isAdmin() || (isSignedIn() && (resource.data.submittedBy == request.auth.uid || request.resource.data.submittedBy == request.auth.uid));
+    }
+    match /restaurants_submissions/{docId} {
+      allow read, write: if isAdmin() || (isSignedIn() && (resource.data.submittedBy == request.auth.uid || request.resource.data.submittedBy == request.auth.uid));
+    }
+    match /service_providers_submissions/{docId} {
+      allow read, write: if isAdmin() || (isSignedIn() && (resource.data.submittedBy == request.auth.uid || request.resource.data.submittedBy == request.auth.uid));
+    }
+    match /attractions_submissions/{docId} {
+      allow read, write: if isAdmin() || (isSignedIn() && (resource.data.submittedBy == request.auth.uid || request.resource.data.submittedBy == request.auth.uid));
     }
   }
 }

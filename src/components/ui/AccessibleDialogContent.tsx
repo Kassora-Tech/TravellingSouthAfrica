@@ -9,13 +9,22 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
+import { ReactNode } from "react";
+
+interface AccessibleDialogContentProps extends Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
+  title?: ReactNode;
+  description?: string;
+  children: ReactNode;
+  className?: string;
+}
+
 export function AccessibleDialogContent({
   title,
   description,
   children,
   className = "",
   ...props
-}) {
+}: AccessibleDialogContentProps) {
   return (
     <DialogContent
       className={cn("max-w-lg w-full rounded-2xl p-6 sm:p-8", className)}

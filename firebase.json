@@ -2,6 +2,16 @@
   "firestore": {
     "rules": "firestore.rules"
   },
+  "auth": {
+    "providers": {
+      "anonymous": true,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Travelling South Africa Reborn",
+        "supportEmail": "kassiechirag10@gmail.com"
+      }
+    }
+  },
   "functions": [
     {
       "source": "functions",

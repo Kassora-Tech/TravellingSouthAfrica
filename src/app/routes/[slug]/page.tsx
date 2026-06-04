@@ -12,7 +12,8 @@ import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const params = await props.params;
     const route = routes.find((p) => p.slug === params.slug);
     if (!route) {
       return {
@@ -52,7 +53,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function RouteDetailPage({ params }: { params: { slug: string } }) {
+export default async function RouteDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const route = routes.find((p) => p.slug === params.slug);
 
   if (!route) {

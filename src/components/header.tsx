@@ -67,6 +67,9 @@ export function Header() {
                 <Link href="/service-providers"><Translatable text="Service Providers" /></Link>
             </Button>
             <Button variant="ghost" asChild>
+                <Link href="/instagram"><Translatable text="Instagram" /></Link>
+            </Button>
+            <Button variant="ghost" asChild>
                 <Link href="/contact"><Translatable text="Contact" /></Link>
             </Button>
           </nav>
@@ -126,6 +129,13 @@ export function Header() {
                         <Translatable text="Admin" />
                       </Link>
                     )}
+                     <Link
+                        href="/instagram"
+                        onClick={() => setIsOpen(false)}
+                        className="text-lg font-medium"
+                      >
+                        <Translatable text="Instagram" />
+                      </Link>
                      <Link
                         href="/contact"
                         onClick={() => setIsOpen(false)}
