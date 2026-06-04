@@ -43,7 +43,7 @@ export function Header() {
     >
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
-          <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+          <Link href="/" className="flex items-center flex-shrink-0" onClick={() => setIsOpen(false)}>
             <Logo className="h-16 w-auto" priority />
           </Link>
 
