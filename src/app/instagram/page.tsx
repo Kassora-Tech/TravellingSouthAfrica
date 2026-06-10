@@ -97,10 +97,10 @@ function normalizeTikTok(post: TikTokPost): UnifiedPost {
   return {
     id: post.id,
     platform: 'TikTok',
-    imageUrl: post.cover_image_url,
-    caption: post.title,
-    timestamp: post.create_time ? new Date(post.create_time * 1000).toISOString() : undefined,
-    permalink: post.share_url,
+    imageUrl: undefined,
+    caption: undefined,
+    timestamp: undefined,
+    permalink: post.videoUrl,
     mediaType: 'video',
   };
 }
@@ -132,6 +132,37 @@ function PostSkeleton() {
         <div className="h-5 bg-muted rounded w-full" />
         <div className="h-5 bg-muted rounded w-2/3" />
         <div className="h-4 bg-muted rounded w-1/4 mt-4" />
+      </div>
+    </Card>
+  );
+}
+
+// ── TikTok embed card ─────────────────────────────────────────────────────────
+
+function TikTokEmbedCard({ post }: { post: UnifiedPost }) {
+  return (
+    <Card className="overflow-hidden flex flex-col">
+      {/* Native TikTok player — portrait 9:16 */}
+      <div className="relative w-full" style={{ paddingBottom: '177.77%' }}>
+        <iframe
+          src={`https://www.tiktok.com/embed/v2/${post.id}`}
+          className="absolute inset-0 h-full w-full border-0"
+          title={`TikTok video ${post.id}`}
+          allowFullScreen
+          allow="encrypted-media"
+          loading="lazy"
+        />
+      </div>
+      <div className="p-4">
+        <Link
+          href={post.permalink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          View on TikTok
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
     </Card>
   );
@@ -357,11 +388,20 @@ function PlatformFeed({ platform }: { platform: Platform }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} onPreview={setSelected} />
-        ))}
-      </div>
+      {platform === 'TikTok' ? (
+        // Portrait embeds — 2-col grid so they're not too narrow
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <TikTokEmbedCard key={post.id} post={post} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} onPreview={setSelected} />
+          ))}
+        </div>
+      )}
 
       {selected && (
         <Dialog open onOpenChange={(open) => !open && setSelected(null)}>
