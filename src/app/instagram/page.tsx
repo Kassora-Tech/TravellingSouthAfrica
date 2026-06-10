@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ExternalLink, Instagram, ImageIcon, Film, Calendar, ArrowRight } from 'lucide-react';
+import { ExternalLink, Instagram, ImageIcon, Film, Calendar, ArrowRight, Music2, Facebook } from 'lucide-react';
 import { Translatable } from '@/components/translatable';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,6 +16,96 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import type { InstagramPost } from '@/app/api/instagram/route';
+import type { FacebookPost } from '@/app/api/facebook/route';
+import type { TikTokPost } from '@/app/api/tiktok/route';
+
+// ── Platform types ────────────────────────────────────────────────────────────
+
+type Platform = 'Instagram' | 'TikTok' | 'Facebook';
+
+const platforms: Platform[] = ['Instagram', 'TikTok', 'Facebook'];
+
+const platformMeta: Record<
+  Platform,
+  { icon: React.ElementType; label: string; handle: string; profileUrl: string }
+> = {
+  Instagram: {
+    icon: Instagram,
+    label: 'Instagram',
+    handle: '@travellingsouthafrica.co.za',
+    profileUrl: 'https://instagram.com/travellingsouthafrica.co.za',
+  },
+  TikTok: {
+    icon: Music2,
+    label: 'TikTok',
+    handle: '@travellingsouthaf',
+    profileUrl: 'https://www.tiktok.com/@travellingsouthaf',
+  },
+  Facebook: {
+    icon: Facebook,
+    label: 'Facebook',
+    handle: 'travellingsouthafrica.co.za',
+    profileUrl: 'https://www.facebook.com/travellingsouthafrica.co.za',
+  },
+};
+
+// ── Unified post shape ────────────────────────────────────────────────────────
+
+interface UnifiedPost {
+  id: string;
+  platform: Platform;
+  imageUrl?: string;
+  caption?: string;
+  timestamp?: string;
+  permalink: string;
+  mediaType: 'photo' | 'video' | 'carousel';
+}
+
+function normalizeInstagram(post: InstagramPost): UnifiedPost {
+  return {
+    id: post.id,
+    platform: 'Instagram',
+    imageUrl: post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url,
+    caption: post.caption,
+    timestamp: post.timestamp,
+    permalink: post.permalink,
+    mediaType:
+      post.media_type === 'VIDEO'
+        ? 'video'
+        : post.media_type === 'CAROUSEL_ALBUM'
+        ? 'carousel'
+        : 'photo',
+  };
+}
+
+function normalizeFacebook(post: FacebookPost): UnifiedPost {
+  const imageUrl =
+    post.full_picture ||
+    post.attachments?.data?.[0]?.media?.image?.src;
+  return {
+    id: post.id,
+    platform: 'Facebook',
+    imageUrl,
+    caption: post.message || post.story,
+    timestamp: post.created_time,
+    permalink: post.permalink_url,
+    mediaType: post.attachments?.data?.[0]?.type === 'video_inline' ? 'video' : 'photo',
+  };
+}
+
+function normalizeTikTok(post: TikTokPost): UnifiedPost {
+  return {
+    id: post.id,
+    platform: 'TikTok',
+    imageUrl: post.cover_image_url,
+    caption: post.title,
+    timestamp: post.create_time ? new Date(post.create_time * 1000).toISOString() : undefined,
+    permalink: post.share_url,
+    mediaType: 'video',
+  };
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function formatDate(timestamp: string) {
   return new Date(timestamp).toLocaleDateString('en-ZA', {
@@ -31,6 +121,8 @@ function truncateCaption(caption: string | undefined, maxLength = 120) {
   return caption.slice(0, maxLength).trimEnd() + '…';
 }
 
+// ── Skeleton ──────────────────────────────────────────────────────────────────
+
 function PostSkeleton() {
   return (
     <Card className="overflow-hidden animate-pulse">
@@ -45,16 +137,26 @@ function PostSkeleton() {
   );
 }
 
-function PostCard({ post, onPreview }: { post: InstagramPost; onPreview: (post: InstagramPost) => void }) {
-  const imageUrl = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+// ── Post card ─────────────────────────────────────────────────────────────────
+
+function PostCard({
+  post,
+  onPreview,
+}: {
+  post: UnifiedPost;
+  onPreview: (post: UnifiedPost) => void;
+}) {
   const caption = truncateCaption(post.caption);
 
   const mediaLabel =
-    post.media_type === 'VIDEO'
-      ? 'Video'
-      : post.media_type === 'CAROUSEL_ALBUM'
-      ? 'Gallery'
-      : 'Photo';
+    post.mediaType === 'video' ? 'Video' : post.mediaType === 'carousel' ? 'Gallery' : 'Photo';
+
+  const viewLabel =
+    post.platform === 'Instagram'
+      ? 'View on Instagram'
+      : post.platform === 'TikTok'
+      ? 'View on TikTok'
+      : 'View on Facebook';
 
   return (
     <Card
@@ -63,10 +165,10 @@ function PostCard({ post, onPreview }: { post: InstagramPost; onPreview: (post: 
     >
       {/* Image */}
       <div className="relative block h-56 w-full overflow-hidden bg-muted flex-shrink-0">
-        {imageUrl ? (
+        {post.imageUrl ? (
           <Image
-            src={imageUrl}
-            alt={post.caption ?? 'Instagram post'}
+            src={post.imageUrl}
+            alt={post.caption ?? `${post.platform} post`}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -79,7 +181,7 @@ function PostCard({ post, onPreview }: { post: InstagramPost; onPreview: (post: 
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="absolute top-3 left-3">
           <Badge variant="secondary" className="flex items-center gap-1 text-xs">
-            {post.media_type === 'VIDEO' ? (
+            {post.mediaType === 'video' ? (
               <Film className="h-3 w-3" />
             ) : (
               <ImageIcon className="h-3 w-3" />
@@ -111,8 +213,8 @@ function PostCard({ post, onPreview }: { post: InstagramPost; onPreview: (post: 
             variant="secondary"
             size="sm"
             type="button"
-            onClick={(event) => {
-              event.stopPropagation();
+            onClick={(e) => {
+              e.stopPropagation();
               onPreview(post);
             }}
           >
@@ -123,10 +225,10 @@ function PostCard({ post, onPreview }: { post: InstagramPost; onPreview: (post: 
             href={post.permalink}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(event) => event.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
           >
-            View on Instagram
+            {viewLabel}
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -135,33 +237,201 @@ function PostCard({ post, onPreview }: { post: InstagramPost; onPreview: (post: 
   );
 }
 
-export default function InstagramBlogPage() {
-  const [posts, setPosts] = useState<InstagramPost[]>([]);
-  const [selectedPost, setSelectedPost] = useState<InstagramPost | null>(null);
+// ── Platform tab button ───────────────────────────────────────────────────────
+
+function PlatformTab({
+  platform,
+  active,
+  onClick,
+}: {
+  platform: Platform;
+  active: boolean;
+  onClick: () => void;
+}) {
+  const { icon: Icon, label } = platformMeta[platform];
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all ${
+        active
+          ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+          : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
+      }`}
+    >
+      <Icon className="h-4 w-4" />
+      {label}
+    </button>
+  );
+}
+
+// ── Feed section ──────────────────────────────────────────────────────────────
+
+function PlatformFeed({ platform }: { platform: Platform }) {
+  const [posts, setPosts] = useState<UnifiedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<UnifiedPost | null>(null);
 
-  const openPreview = (post: InstagramPost) => {
-    setSelectedPost(post);
-  };
+  const fetchPosts = useCallback(async () => {
+    setLoading(true);
+    setError(null);
 
-  const closePreview = () => {
-    setSelectedPost(null);
-  };
+    const endpoint =
+      platform === 'Instagram'
+        ? '/api/instagram'
+        : platform === 'Facebook'
+        ? '/api/facebook'
+        : '/api/tiktok';
+
+    try {
+      const res = await fetch(endpoint);
+      const json = await res.json();
+
+      if (json.error) {
+        setError(json.error);
+        setPosts([]);
+        return;
+      }
+
+      const raw: UnifiedPost[] =
+        platform === 'Instagram'
+          ? (json.data ?? []).map(normalizeInstagram)
+          : platform === 'Facebook'
+          ? (json.data ?? []).map(normalizeFacebook)
+          : (json.data ?? []).map(normalizeTikTok);
+
+      setPosts(raw);
+    } catch {
+      setError('Could not load posts.');
+    } finally {
+      setLoading(false);
+    }
+  }, [platform]);
 
   useEffect(() => {
-    fetch('/api/instagram')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setPosts(data.data ?? []);
-        }
-      })
-      .catch(() => setError('Could not load Instagram posts.'))
-      .finally(() => setLoading(false));
-  }, []);
+    fetchPosts();
+  }, [fetchPosts]);
+
+  const { icon: Icon } = platformMeta[platform];
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <PostSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <Icon className="h-12 w-12 text-muted-foreground mb-4" />
+        <p className="text-muted-foreground text-lg">
+          <Translatable text="Posts unavailable right now." />
+        </p>
+        <p className="text-sm text-muted-foreground mt-1">{error}</p>
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <Icon className="h-12 w-12 text-muted-foreground mb-4" />
+        <p className="text-muted-foreground text-lg">
+          <Translatable text="No posts to display yet." />
+        </p>
+        {platform === 'TikTok' && (
+          <p className="text-sm text-muted-foreground mt-2 max-w-sm">
+            Add your TikTok video URLs to <code className="font-mono text-xs">.env.local</code> as{' '}
+            <code className="font-mono text-xs">TIKTOK_VIDEO_URLS</code>.
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} onPreview={setSelected} />
+        ))}
+      </div>
+
+      {selected && (
+        <Dialog open onOpenChange={(open) => !open && setSelected(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{selected.caption ? 'Post Preview' : 'Blog Preview'}</DialogTitle>
+              <DialogDescription>
+                Click a post card to open this preview, then use the link below to visit{' '}
+                {selected.platform}.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="grid gap-6">
+              <div className="relative h-80 overflow-hidden rounded-lg bg-muted">
+                {selected.imageUrl ? (
+                  <Image
+                    src={selected.imageUrl}
+                    alt={selected.caption ?? 'Post preview'}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 768px"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <ImageIcon className="h-12 w-12 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                {selected.timestamp && (
+                  <p className="text-sm text-muted-foreground">{formatDate(selected.timestamp)}</p>
+                )}
+
+                <div className="space-y-3 text-sm leading-relaxed text-foreground">
+                  {selected.caption ? (
+                    <p>{selected.caption}</p>
+                  ) : (
+                    <p className="italic text-muted-foreground">No caption available.</p>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">{selected.mediaType}</Badge>
+                  <Button asChild variant="outline" size="sm">
+                    <Link
+                      href={selected.permalink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2"
+                    >
+                      Open on {selected.platform}
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
+export default function BlogPage() {
+  const [activePlatform, setActivePlatform] = useState<Platform>('Instagram');
+  const { icon: ActiveIcon, handle, profileUrl } = platformMeta[activePlatform];
 
   return (
     <>
@@ -176,7 +446,7 @@ export default function InstagramBlogPage() {
         <div className="absolute inset-0 bg-black/55" />
         <div className="container relative mx-auto px-4 text-center">
           <div className="mb-3 flex items-center justify-center gap-2">
-            <Instagram className="h-7 w-7 text-white/80" />
+            <ActiveIcon className="h-7 w-7 text-white/80" />
             <h1 className="text-4xl font-bold font-headline md:text-5xl">
               <Translatable text="Our Blog" />
             </h1>
@@ -185,13 +455,13 @@ export default function InstagramBlogPage() {
             <Translatable text="Follow along as we explore the beauty of South Africa — landscapes, wildlife, culture, and hidden gems." />
           </p>
           <Link
-            href="https://instagram.com/travellingsouthafrica.co.za"
+            href={profileUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-5 inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white transition-colors"
           >
-            <Instagram className="h-4 w-4" />
-            <span>@travellingsouthafrica.co.za</span>
+            <ActiveIcon className="h-4 w-4" />
+            <span>{handle}</span>
             <ExternalLink className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -200,112 +470,22 @@ export default function InstagramBlogPage() {
       {/* Posts */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          {loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <PostSkeleton key={i} />
-              ))}
-            </div>
-          )}
+          {/* Platform tabs */}
+          <div className="flex flex-wrap gap-3 mb-10">
+            {platforms.map((p) => (
+              <PlatformTab
+                key={p}
+                platform={p}
+                active={activePlatform === p}
+                onClick={() => setActivePlatform(p)}
+              />
+            ))}
+          </div>
 
-          {error && (
-            <div className="flex flex-col items-center justify-center py-24 text-center">
-              <Instagram className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-muted-foreground text-lg">
-                <Translatable text="Blog posts unavailable right now." />
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">{error}</p>
-            </div>
-          )}
-
-          {!loading && !error && posts.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-24 text-center">
-              <Instagram className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-muted-foreground text-lg">
-                <Translatable text="No posts to display yet." />
-              </p>
-            </div>
-          )}
-
-          {!loading && posts.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} onPreview={openPreview} />
-              ))}
-            </div>
-          )}
+          {/* Feed — keyed by platform so state resets on tab switch */}
+          <PlatformFeed key={activePlatform} platform={activePlatform} />
         </div>
       </section>
-
-      {selectedPost && (
-        <Dialog open={Boolean(selectedPost)} onOpenChange={(open) => !open && closePreview()}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{selectedPost.caption ? 'Post Preview' : 'Blog Preview'}</DialogTitle>
-              <DialogDescription>
-                Click a post card to open this preview, then use the link below to visit Instagram.
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="grid gap-6">
-              <div className="relative h-80 overflow-hidden rounded-lg bg-muted">
-                {selectedPost.media_url ? (
-                  <Image
-                    src={selectedPost.media_type === 'VIDEO' ? selectedPost.thumbnail_url ?? selectedPost.media_url : selectedPost.media_url}
-                    alt={selectedPost.caption ?? 'Blog post preview'}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 768px"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <ImageIcon className="h-12 w-12 text-muted-foreground" />
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-4">
-                {selectedPost.timestamp && (
-                  <p className="text-sm text-muted-foreground">
-                    {formatDate(selectedPost.timestamp)}
-                  </p>
-                )}
-
-                <div className="space-y-3 text-sm leading-relaxed text-foreground">
-                  {selectedPost.caption ? (
-                    <p>{selectedPost.caption}</p>
-                  ) : (
-                    <p className="italic text-muted-foreground">No caption available.</p>
-                  )}
-                </div>
-
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary">{selectedPost.media_type}</Badge>
-                    {selectedPost.permalink && (
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="sm"
-                      >
-                        <Link
-                          href={selectedPost.permalink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2"
-                        >
-                          Open on Instagram
-                          <ExternalLink className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </>
   );
 }
