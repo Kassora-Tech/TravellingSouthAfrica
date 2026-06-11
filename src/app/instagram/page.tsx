@@ -18,6 +18,7 @@ import {
 import type { InstagramPost } from '@/app/api/instagram/route';
 import type { FacebookPost } from '@/app/api/facebook/route';
 import type { TikTokPost } from '@/app/api/tiktok/route';
+import { TikTokVideo } from '@/components/tiktok-video';
 
 // ── Platform types ────────────────────────────────────────────────────────────
 
@@ -57,6 +58,7 @@ interface UnifiedPost {
   imageUrl?: string;
   caption?: string;
   timestamp?: string;
+  username?: string;
   permalink: string;
   mediaType: 'photo' | 'video' | 'carousel';
 }
@@ -100,6 +102,7 @@ function normalizeTikTok(post: TikTokPost): UnifiedPost {
     imageUrl: undefined,
     caption: undefined,
     timestamp: undefined,
+    username: post.username,
     permalink: post.videoUrl,
     mediaType: 'video',
   };
@@ -142,17 +145,11 @@ function PostSkeleton() {
 function TikTokEmbedCard({ post }: { post: UnifiedPost }) {
   return (
     <Card className="overflow-hidden flex flex-col">
-      {/* Native TikTok player — portrait 9:16 */}
-      <div className="relative w-full" style={{ paddingBottom: '177.77%' }}>
-        <iframe
-          src={`https://www.tiktok.com/embed/v2/${post.id}`}
-          className="absolute inset-0 h-full w-full border-0"
-          title={`TikTok video ${post.id}`}
-          allowFullScreen
-          allow="encrypted-media"
-          loading="lazy"
-        />
-      </div>
+      {/* Native TikTok embed */}
+      <TikTokVideo
+        username={post.username ?? 'travellingsouthaf'}
+        videoId={post.id}
+      />
       <div className="p-4">
         <Link
           href={post.permalink}
@@ -378,8 +375,8 @@ function PlatformFeed({ platform }: { platform: Platform }) {
         </p>
         {platform === 'TikTok' && (
           <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-            Add your TikTok video URLs to <code className="font-mono text-xs">.env.local</code> as{' '}
-            <code className="font-mono text-xs">TIKTOK_VIDEO_URLS</code>.
+            Add your TikTok video URLs to{' '}
+            <code className="font-mono text-xs">src/lib/tiktok-videos.ts</code>.
           </p>
         )}
       </div>
