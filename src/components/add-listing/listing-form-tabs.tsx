@@ -249,7 +249,7 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
         let imageUrls: string[] = [];
         if (imageFiles.length > 0) {
             const uploadPromises = imageFiles.map(async (file) => {
-                const storageRef = ref(storage, `listings/${user.uid}/${Date.now()}_${file.name}`);
+                const storageRef = ref(storage, `submissions/${collectionName}/${user.uid}/${Date.now()}_${file.name}`);
                 await uploadBytes(storageRef, file);
                 return getDownloadURL(storageRef);
             });
