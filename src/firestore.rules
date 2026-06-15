@@ -1,110 +1,64 @@
 rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
+service firebase.storage {
+  match /b/{bucket}/o {
 
     // ---- HELPER FUNCTIONS ----
     function isSignedIn() {
       return request.auth != null;
     }
 
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
     function isAdmin() {
-      return isSignedIn() && request.auth.token.email in ['maryke@travellingsouthafrica.co.za', 'tristan@industrialgrowthhub.com'];
+      return isSignedIn() && request.auth.token.email in [
+        'maryke@travellingsouthafrica.co.za',
+        'tristan@industrialgrowthhub.com'
+      ];
     }
 
-    // ---- USERS ----
-    match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isOwner(userId);
-
-      match /trips/{tripId} {
-        allow get, list, create, update, delete: if isOwner(userId);
-      }
-
-      match /bookings/{bookingId} {
-        allow get, list, create, update, delete: if isOwner(userId);
-      }
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*')
+          && request.resource.size < 10 * 1024 * 1024; // 10MB max
     }
 
-    // ---- PUBLIC CONTENT ----
-    match /provinces/{docId} {
+    // ---- SUBMISSION IMAGES (signed-in users upload, admins manage) ----
+    // Matches: /submissions/accommodations/{docId}/filename.jpg
+    match /submissions/{listingType}/{docId}/{fileName} {
+      allow read: if true;                          // Public can view approved images
+      allow create: if isSignedIn() && isValidImage(); // Signed-in users upload
+      allow delete: if isAdmin();                   // Only admins can delete
+      allow update: if false;                       // No overwrites - delete & re-upload
+    }
+
+    // ---- ADMIN-MANAGED LISTING IMAGES (approved/published listings) ----
+    // Matches: /listings/accommodations/{docId}/filename.jpg
+    match /listings/{listingType}/{docId}/{fileName} {
+      allow read: if true;       // Public can read
+      allow write: if isAdmin(); // Only admins can write
+    }
+
+    // ---- PROVINCE / TOWN / SIGHT IMAGES (admin only) ----
+    match /provinces/{fileName} {
       allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
+      allow write: if isAdmin();
     }
 
-    match /towns/{docId} {
+    match /towns/{fileName} {
       allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
+      allow write: if isAdmin();
     }
 
-    match /sights/{docId} {
+    match /sights/{fileName} {
       allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
+      allow write: if isAdmin();
     }
 
-    match /routes/{docId} {
+    match /routes/{fileName} {
       allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
+      allow write: if isAdmin();
     }
 
-    match /routeHighlightLinks/{docId} {
-      allow read: if true;
-      allow write: if false; // Admin write via Cloud Function
-    }
-
-    // ---- LISTINGS (PUBLIC - READ ONLY) ----
-    match /accommodations/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    match /restaurants/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    match /service_providers/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    match /attractions/{docId} {
-      allow read: if true;
-      allow write: if false;
-    }
-
-    // ---- SUBMISSIONS (PRIVATE - CREATE ONLY for users) ----
-    match /accommodations_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false; // All updates/deletes via Cloud Function
-    }
-    match /restaurants_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false;
-    }
-    match /service_providers_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false;
-    }
-    match /attractions_submissions/{docId} {
-      allow read: if isAdmin();
-      allow create: if isSignedIn();
-      allow write: if false;
-    }
-    
-    // ---- CONTACTS ----
-    match /contactMessages/{messageId} {
-      allow read: if isAdmin();
-      allow create: if true;
-      allow update, delete: if isAdmin();
+    // ---- DENY EVERYTHING ELSE ----
+    match /{allPaths=**} {
+      allow read, write: if false;
     }
   }
 }
-
-    
