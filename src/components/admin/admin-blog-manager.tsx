@@ -49,6 +49,7 @@ const initialFormData: FormData = {
 export function AdminBlogManager() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -56,7 +57,6 @@ export function AdminBlogManager() {
   const [showForm, setShowForm] = useState(false);
   const { toast } = useToast();
 
-  // Fetch all blog posts on mount
   useEffect(() => {
     fetchBlogPosts();
   }, []);
@@ -100,13 +100,12 @@ export function AdminBlogManager() {
       return;
     }
 
-    // Check if user is authenticated
     const auth = getAuth();
     if (!auth.currentUser) {
       toast({
         variant: 'destructive',
         title: 'Authentication required',
-        description: 'You must be logged in as an admin to publish blog posts',
+        description: 'You must be logged in as an admin to upload images',
       });
       return;
     }
@@ -115,7 +114,6 @@ export function AdminBlogManager() {
     setUploadProgress(0);
 
     try {
-      // Simulate progress for UX (uploadBlogImage completes quickly)
       const progressInterval = setInterval(() => {
         setUploadProgress(prev => (prev < 90 ? prev + 10 : prev));
       }, 100);
@@ -155,13 +153,12 @@ export function AdminBlogManager() {
       return;
     }
 
-    // Check if user is authenticated
     const auth = getAuth();
     if (!auth.currentUser) {
       toast({
         variant: 'destructive',
         title: 'Authentication required',
-        description: 'You must be logged in as an admin to publish blog posts',
+        description: 'You must be logged in as an admin to manage blog posts',
       });
       return;
     }
@@ -169,33 +166,62 @@ export function AdminBlogManager() {
     setIsLoading(true);
 
     try {
-      await createBlogPost({
-        title: formData.title,
-        caption: formData.caption,
-        content: formData.content,
-        author: formData.author,
-        imageUrl: formData.imageUrl,
-        published: formData.published,
-      });
-
-      toast({
-        title: 'Success',
-        description: 'Blog post created successfully',
-      });
+      if (editingPost) {
+        await updateBlogPost(editingPost.id, {
+          title: formData.title,
+          caption: formData.caption,
+          content: formData.content,
+          author: formData.author,
+          imageUrl: formData.imageUrl,
+          published: formData.published,
+        });
+        toast({
+          title: 'Success',
+          description: 'Blog post updated successfully',
+        });
+        setEditingPost(null);
+      } else {
+        await createBlogPost({
+          title: formData.title,
+          caption: formData.caption,
+          content: formData.content,
+          author: formData.author,
+          imageUrl: formData.imageUrl,
+          published: formData.published,
+        });
+        toast({
+          title: 'Success',
+          description: 'Blog post created successfully',
+        });
+      }
 
       setFormData(initialFormData);
       setShowForm(false);
       await fetchBlogPosts();
     } catch (error: any) {
-      console.error('Error creating blog post:', error);
+      console.error('Error saving blog post:', error);
       toast({
         variant: 'destructive',
-        title: 'Failed to create post',
+        title: editingPost ? 'Failed to update post' : 'Failed to create post',
         description: error.message || 'An error occurred',
       });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleEdit = (post: BlogPost) => {
+    setEditingPost(post);
+    setFormData({
+      title: post.title,
+      caption: post.caption,
+      content: post.content,
+      author: post.author,
+      imageUrl: post.imageUrl,
+      published: post.published,
+    });
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePublishToggle = async (id: string, currentPublished: boolean) => {
@@ -220,12 +246,10 @@ export function AdminBlogManager() {
     if (!confirm(`Are you sure you want to delete "${post.title}"?`)) return;
 
     try {
-      // Delete image from storage
       if (post.imageUrl) {
         await deleteBlogImage(post.imageUrl);
       }
 
-      // Delete blog post from Firestore
       await deleteBlogPost(post.id);
 
       toast({
@@ -252,7 +276,18 @@ export function AdminBlogManager() {
           <h2 className="text-3xl font-bold tracking-tight">Blog Management</h2>
           <p className="text-muted-foreground mt-1">Create, edit, and manage blog posts</p>
         </div>
-        <Button onClick={() => setShowForm(!showForm)} variant={showForm ? 'outline' : 'default'}>
+        <Button
+          onClick={() => {
+            if (showForm) {
+              setShowForm(false);
+              setEditingPost(null);
+              setFormData(initialFormData);
+            } else {
+              setShowForm(true);
+            }
+          }}
+          variant={showForm ? 'outline' : 'default'}
+        >
           {showForm ? 'Cancel' : '+ New Post'}
         </Button>
       </div>
@@ -261,8 +296,10 @@ export function AdminBlogManager() {
       {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>Create New Blog Post</CardTitle>
-            <CardDescription>Fill in all fields to create a new blog post</CardDescription>
+            <CardTitle>{editingPost ? 'Edit Blog Post' : 'Create New Blog Post'}</CardTitle>
+            <CardDescription>
+              {editingPost ? 'Update the fields below to edit this blog post' : 'Fill in all fields to create a new blog post'}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -373,7 +410,7 @@ export function AdminBlogManager() {
                   onCheckedChange={checked => setFormData(prev => ({ ...prev, published: checked as boolean }))}
                 />
                 <Label htmlFor="published" className="cursor-pointer">
-                  Publish immediately
+                  {editingPost ? 'Published' : 'Publish immediately'}
                 </Label>
               </div>
 
@@ -382,10 +419,10 @@ export function AdminBlogManager() {
                 {isLoading ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Creating post...
+                    {editingPost ? 'Saving changes...' : 'Creating post...'}
                   </>
                 ) : (
-                  'Create Post'
+                  editingPost ? 'Save Changes' : 'Create Post'
                 )}
               </Button>
             </form>
@@ -445,6 +482,15 @@ export function AdminBlogManager() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 mt-4 pt-4 border-t">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(post)}
+                    >
+                      <Edit2 className="h-4 w-4 mr-1" />
+                      Edit
+                    </Button>
+
                     <Button
                       variant="outline"
                       size="sm"
