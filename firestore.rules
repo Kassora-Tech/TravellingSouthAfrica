@@ -106,6 +106,12 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // 10. Blog Posts - public read for published, authenticated users for drafts and write access
+    match /blogPosts/{postId} {
+      allow read: if resource.data.published == true || isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
     // ---- LEGACY COLLECTIONS (For backward compatibility, public read / admin write) ----
     match /accommodations/{docId} {
       allow read: if true;

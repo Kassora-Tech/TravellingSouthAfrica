@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ExternalLink, Instagram, ImageIcon, Film, Calendar, ArrowRight, Music2, Facebook } from 'lucide-react';
+import { ExternalLink, Instagram, ImageIcon, Film, Calendar, ArrowRight, Music2, Facebook, BookOpen } from 'lucide-react';
 import { Translatable } from '@/components/translatable';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -19,12 +19,13 @@ import type { InstagramPost } from '@/app/api/instagram/route';
 import type { FacebookPost } from '@/app/api/facebook/route';
 import type { TikTokPost } from '@/app/api/tiktok/route';
 import { TikTokVideo } from '@/components/tiktok-video';
+import { OurBlog } from '@/components/Blog/OurBlog';
 
 // ── Platform types ────────────────────────────────────────────────────────────
 
-type Platform = 'Instagram' | 'TikTok' | 'Facebook';
+type Platform = 'Instagram' | 'TikTok' | 'Facebook' | 'OurBlog';
 
-const platforms: Platform[] = ['Instagram', 'TikTok', 'Facebook'];
+const platforms: Platform[] = ['Instagram', 'TikTok', 'Facebook', 'OurBlog'];
 
 const platformMeta: Record<
   Platform,
@@ -47,6 +48,12 @@ const platformMeta: Record<
     label: 'Facebook',
     handle: 'travellingsouthafrica.co.za',
     profileUrl: 'https://www.facebook.com/travellingsouthafrica.co.za',
+  },
+  OurBlog: {
+    icon: BookOpen,
+    label: 'Our Blog',
+    handle: 'travellingsouthafrica.co.za',
+    profileUrl: 'https://travellingsouthafrica.co.za/instagram',
   },
 };
 
@@ -297,6 +304,11 @@ function PlatformTab({
 // ── Feed section ──────────────────────────────────────────────────────────────
 
 function PlatformFeed({ platform }: { platform: Platform }) {
+  // Handle OurBlog separately — just render the component
+  if (platform === 'OurBlog') {
+    return <OurBlog />;
+  }
+
   const [posts, setPosts] = useState<UnifiedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
