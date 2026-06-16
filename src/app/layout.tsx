@@ -6,6 +6,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { LanguageProvider } from '@/contexts/language-context';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { FirestoreErrorBoundary } from '@/firebase/firestore/firestore-error-boundary';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -151,14 +152,16 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased text-base">
         <FirebaseClientProvider>
-          <LanguageProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-          </LanguageProvider>
+          <FirestoreErrorBoundary>
+            <LanguageProvider>
+              <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex-grow">{children}</main>
+                <Footer />
+              </div>
+              <Toaster />
+            </LanguageProvider>
+          </FirestoreErrorBoundary>
         </FirebaseClientProvider>
       </body>
     </html>
