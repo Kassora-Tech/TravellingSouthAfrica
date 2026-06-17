@@ -91,7 +91,7 @@ export function SiteTrafficPanel() {
           <iframe
             width="100%"
             height="600"
-            src="https://lookerstudio.google.com/embed/reporting/42ba8004-aa57-4b85-afe5-8d04ca8aa5dd/page/WJptF"
+            src="https://datastudio.google.com/embed/reporting/2f16c839-82ce-4118-9c17-147a53d56f86/page/ePY1F" 
             frameBorder="0"
             style={{ border: 0 }}
             allowFullScreen
