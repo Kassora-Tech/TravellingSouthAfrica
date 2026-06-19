@@ -25,7 +25,7 @@ export default function CurrencyConverterPage() {
       setError(null);
       
       try {
-        const response = await fetch(`https://api.frankfurter.app/latest?from=${fromCurrency}&to=ZAR`);
+        const response = await fetch(`/api/exchange-rate?from=${fromCurrency}`);
         if (!response.ok) {
           throw new Error('Failed to fetch exchange rates.');
         }
