@@ -1,3 +1,4 @@
+import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import { initializeApp } from "firebase-admin/app";
@@ -87,3 +88,75 @@ export const deleteListingSubmission = onCall(async (request) => {
 
   return { success: true, message: "Submission has been deleted." };
 });
+
+const sendNotificationEmail = async (to: string[], subject: string, html: string) => {
+  await adminDb.collection("mail").add({ to, message: { subject, html } });
+};
+
+const defineListingNotification = (collectionName: string) => {
+  return onDocumentCreated(
+    { document: `${collectionName}_submissions/{listingId}` },
+    async (event) => {
+      const snap = event.data;
+      if (!snap) return;
+
+      const listing = snap.data();
+      const listingId = event.params.listingId;
+
+      if (
+        listing.status === "approved" ||
+        (listing.ownerEmail && ADMIN_EMAILS.includes(listing.ownerEmail))
+      ) {
+        logger.info(`Listing ${listingId} submitted by admin — no notification sent.`);
+        return;
+      }
+
+      const listingType = collectionName
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (l) => l.toUpperCase());
+
+      await sendNotificationEmail(
+        ADMIN_EMAILS,
+        `New Listing Submission: ${listing.name}`,
+        `
+          <p>A new <strong>${listingType}</strong> listing has been submitted for review.</p>
+          <p><strong>Name:</strong> ${listing.name}</p>
+          <p><strong>Town:</strong> ${listing.townSlug || "N/A"}</p>
+          <p><strong>Submitted by:</strong> ${listing.ownerEmail || "Unknown"}</p>
+          <p>Please log in to the admin panel to review and approve this listing.</p>
+        `
+      );
+
+      logger.info(`Notification email queued for listing ${listingId} in ${collectionName}_submissions.`);
+    }
+  );
+};
+
+export const onAccommodationsSubmission = defineListingNotification("accommodations");
+export const onRestaurantsSubmission = defineListingNotification("restaurants");
+export const onServiceProvidersSubmission = defineListingNotification("service_providers");
+export const onAttractionsSubmission = defineListingNotification("attractions");
+
+export const onContactMessageCreate = onDocumentCreated(
+  { document: "contactMessages/{messageId}" },
+  async (event) => {
+    const snap = event.data;
+    if (!snap) return;
+
+    const message = snap.data();
+
+    await sendNotificationEmail(
+      ADMIN_EMAILS,
+      `New Contact Message from ${message.name}: ${message.subject}`,
+      `
+        <p>You have received a new contact message.</p>
+        <p><strong>Name:</strong> ${message.name}</p>
+        <p><strong>Email:</strong> ${message.email}</p>
+        <p><strong>Subject:</strong> ${message.subject}</p>
+        <p><strong>Message:</strong> ${message.userMessage}</p>
+      `
+    );
+
+    logger.info(`Contact notification email queued for message ${event.params.messageId}.`);
+  }
+);

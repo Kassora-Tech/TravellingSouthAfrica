@@ -157,7 +157,8 @@ export const onContactMessageCreate = onDocumentCreated(
         <p>You have received a new contact message.</p>
         <p><strong>Name:</strong> ${message.name}</p>
         <p><strong>Email:</strong> ${message.email}</p>
-        <p><strong>Message:</strong> ${message.message}</p>
+        <p><strong>Subject:</strong> ${message.subject}</p>
+        <p><strong>Message:</strong> ${message.userMessage}</p>
       `
     );
 

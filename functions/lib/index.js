@@ -33,14 +33,15 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteListingSubmission = exports.unapproveListing = exports.approveListing = void 0;
+exports.onContactMessageCreate = exports.onAttractionsSubmission = exports.onServiceProvidersSubmission = exports.onRestaurantsSubmission = exports.onAccommodationsSubmission = exports.deleteListingSubmission = exports.unapproveListing = exports.approveListing = void 0;
+const firestore_1 = require("firebase-functions/v2/firestore");
 const https_1 = require("firebase-functions/v2/https");
 const logger = __importStar(require("firebase-functions/logger"));
 const app_1 = require("firebase-admin/app");
-const firestore_1 = require("firebase-admin/firestore");
+const firestore_2 = require("firebase-admin/firestore");
 // Initialize Firebase Admin SDK
 (0, app_1.initializeApp)();
-const adminDb = (0, firestore_1.getFirestore)();
+const adminDb = (0, firestore_2.getFirestore)();
 const ADMIN_EMAILS = [
     "maryke@travellingsouthafrica.co.za",
     "tristan@industrialgrowthhub.com",
@@ -70,7 +71,7 @@ exports.approveListing = (0, https_1.onCall)(async (request) => {
     await adminDb.collection(collectionName).doc(submissionId).set({
         ...data,
         approved: true,
-        approvedAt: firestore_1.FieldValue.serverTimestamp(),
+        approvedAt: firestore_2.FieldValue.serverTimestamp(),
         approvedBy: userEmail,
     });
     await submissionRef.update({ status: "approved" });
@@ -100,5 +101,51 @@ exports.deleteListingSubmission = (0, https_1.onCall)(async (request) => {
     await adminDb.collection(collectionName).doc(docId).delete().catch(() => { });
     await adminDb.collection(`${collectionName}_submissions`).doc(docId).delete();
     return { success: true, message: "Submission has been deleted." };
+});
+const sendNotificationEmail = async (to, subject, html) => {
+    await adminDb.collection("mail").add({ to, message: { subject, html } });
+};
+const defineListingNotification = (collectionName) => {
+    return (0, firestore_1.onDocumentCreated)({ document: `${collectionName}_submissions/{listingId}` }, async (event) => {
+        const snap = event.data;
+        if (!snap)
+            return;
+        const listing = snap.data();
+        const listingId = event.params.listingId;
+        if (listing.status === "approved" ||
+            (listing.ownerEmail && ADMIN_EMAILS.includes(listing.ownerEmail))) {
+            logger.info(`Listing ${listingId} submitted by admin — no notification sent.`);
+            return;
+        }
+        const listingType = collectionName
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (l) => l.toUpperCase());
+        await sendNotificationEmail(ADMIN_EMAILS, `New Listing Submission: ${listing.name}`, `
+          <p>A new <strong>${listingType}</strong> listing has been submitted for review.</p>
+          <p><strong>Name:</strong> ${listing.name}</p>
+          <p><strong>Town:</strong> ${listing.townSlug || "N/A"}</p>
+          <p><strong>Submitted by:</strong> ${listing.ownerEmail || "Unknown"}</p>
+          <p>Please log in to the admin panel to review and approve this listing.</p>
+        `);
+        logger.info(`Notification email queued for listing ${listingId} in ${collectionName}_submissions.`);
+    });
+};
+exports.onAccommodationsSubmission = defineListingNotification("accommodations");
+exports.onRestaurantsSubmission = defineListingNotification("restaurants");
+exports.onServiceProvidersSubmission = defineListingNotification("service_providers");
+exports.onAttractionsSubmission = defineListingNotification("attractions");
+exports.onContactMessageCreate = (0, firestore_1.onDocumentCreated)({ document: "contactMessages/{messageId}" }, async (event) => {
+    const snap = event.data;
+    if (!snap)
+        return;
+    const message = snap.data();
+    await sendNotificationEmail(ADMIN_EMAILS, `New Contact Message from ${message.name}: ${message.subject}`, `
+        <p>You have received a new contact message.</p>
+        <p><strong>Name:</strong> ${message.name}</p>
+        <p><strong>Email:</strong> ${message.email}</p>
+        <p><strong>Subject:</strong> ${message.subject}</p>
+        <p><strong>Message:</strong> ${message.userMessage}</p>
+      `);
+    logger.info(`Contact notification email queued for message ${event.params.messageId}.`);
 });
 //# sourceMappingURL=index.js.map

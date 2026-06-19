@@ -25,13 +25,13 @@ export default function CurrencyConverterPage() {
       setError(null);
       
       try {
-        const response = await fetch(`https://www.floatrates.com/daily/${fromCurrency.toLowerCase()}.json`);
+        const response = await fetch(`https://api.frankfurter.app/latest?from=${fromCurrency}&to=ZAR`);
         if (!response.ok) {
           throw new Error('Failed to fetch exchange rates.');
         }
         const data = await response.json();
-        if (data.zar) {
-          setRate(data.zar.rate);
+        if (data.rates?.ZAR) {
+          setRate(data.rates.ZAR);
         } else {
           throw new Error(`Could not find ZAR rate for ${fromCurrency}.`);
         }

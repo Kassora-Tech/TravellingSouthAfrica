@@ -45,6 +45,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // 4b. Route Highlight Links - public read, admin write
+    match /routeHighlightLinks/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // 5. Listings - approved listings are public read, logged-in users can create (status auto-sets to pending), admin can approve/reject.
     // Fields: category (accommodation/restaurant/attraction/service_provider), name, description, town, province, address, phone, website, images array, coverImage, status, submittedBy, submittedAt, approvedBy, approvedAt, expiresAt
     match /listings/{listingId} {
