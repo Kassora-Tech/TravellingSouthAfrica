@@ -1,15 +1,19 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFirestore, useFunctions } from '@/firebase';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import { approveListing, unapproveListing, deleteListingSubmission } from '@/firebase/firestore/admin-actions';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '../ui/badge';
 import { format } from 'date-fns';
 import Image from 'next/image';
-import { ChevronDown, ChevronUp, Mail, Phone, Globe, MapPin, Tag, User, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronUp, Mail, Phone, Globe, MapPin, Tag, User, ExternalLink, ChevronLeft, ChevronRight, Settings, Trash2, Plus, Loader2 } from 'lucide-react';
 
 interface Listing {
   id: string;
@@ -73,6 +77,144 @@ function ImageGallery({ images }: { images: string[] }) {
   );
 }
 
+function ManageListingDialog({
+  listing,
+  collectionName,
+  open,
+  onClose,
+}: {
+  listing: Listing;
+  collectionName: string;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const firestore = useFirestore();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const [physicalAddress, setPhysicalAddress] = useState(listing.physicalAddress || '');
+  const [contactPhone, setContactPhone] = useState(listing.contactPhone || '');
+  const [contactEmail, setContactEmail] = useState(listing.contactEmail || '');
+  const [websiteUrl, setWebsiteUrl] = useState(listing.websiteUrl || '');
+  const [bookingSiteUrl, setBookingSiteUrl] = useState(listing.bookingSiteUrl || '');
+  const [imageUrls, setImageUrls] = useState<string[]>(listing.imageUrls || []);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const docRef = doc(firestore, `${collectionName}_submissions`, listing.id);
+      await updateDoc(docRef, { physicalAddress, contactPhone, contactEmail, websiteUrl, bookingSiteUrl, imageUrls });
+      toast({ title: 'Listing updated successfully' });
+      onClose();
+    } catch (error: any) {
+      toast({ variant: 'destructive', title: 'Update Failed', description: error.message });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setIsUploading(true);
+    try {
+      const storage = getStorage();
+      const urls: string[] = [];
+      for (const file of files) {
+        const storageRef = ref(storage, `listings/${collectionName}/${listing.id}/${Date.now()}_${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        urls.push(url);
+      }
+      setImageUrls(prev => [...prev, ...urls]);
+    } catch (error: any) {
+      toast({ variant: 'destructive', title: 'Upload Failed', description: error.message });
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveImage = (idx: number) => {
+    setImageUrls(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={v => { if (!v) onClose(); }}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Manage: {listing.name}</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          <div className="grid grid-cols-1 gap-4">
+            <div className="space-y-1">
+              <Label>Physical Address</Label>
+              <Input value={physicalAddress} onChange={e => setPhysicalAddress(e.target.value)} placeholder="Enter address" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <Label>Contact Phone</Label>
+                <Input value={contactPhone} onChange={e => setContactPhone(e.target.value)} placeholder="+27 ..." />
+              </div>
+              <div className="space-y-1">
+                <Label>Contact Email</Label>
+                <Input value={contactEmail} onChange={e => setContactEmail(e.target.value)} placeholder="email@example.com" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <Label>Website URL</Label>
+                <Input value={websiteUrl} onChange={e => setWebsiteUrl(e.target.value)} placeholder="https://..." />
+              </div>
+              <div className="space-y-1">
+                <Label>Booking Site URL</Label>
+                <Input value={bookingSiteUrl} onChange={e => setBookingSiteUrl(e.target.value)} placeholder="https://..." />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Images</Label>
+            {imageUrls.length > 0 ? (
+              <div className="grid grid-cols-3 gap-2">
+                {imageUrls.map((url, idx) => (
+                  <div key={idx} className="relative group aspect-video rounded-lg overflow-hidden border">
+                    <Image src={url} alt={`Image ${idx + 1}`} fill sizes="200px" className="object-cover" />
+                    <button
+                      onClick={() => handleRemoveImage(idx)}
+                      className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">No images. Upload some below.</p>
+            )}
+            <div>
+              <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
+              <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                {isUploading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Uploading...</> : <><Plus className="h-4 w-4 mr-2" />Add Images</>}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSave} disabled={isSaving}>
+            {isSaving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Saving...</> : 'Save Changes'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function ListingCard({
   listing,
   onApprove,
@@ -87,6 +229,7 @@ function ListingCard({
   collectionName: string;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [managing, setManaging] = useState(false);
   const isPending = !listing.status || listing.status === 'pending';
 
   return (
@@ -195,9 +338,21 @@ function ListingCard({
           ) : (
             <Button variant="outline" size="sm" onClick={() => onUnapprove(collectionName, listing.id)}>Un-approve</Button>
           )}
+          <Button variant="outline" size="sm" onClick={() => setManaging(true)}>
+            <Settings className="h-4 w-4 mr-1" />Manage
+          </Button>
           <Button variant="destructive" size="sm" onClick={() => onDelete(collectionName, listing.id)}>Delete</Button>
         </div>
       </CardFooter>
+
+      {managing && (
+        <ManageListingDialog
+          listing={listing}
+          collectionName={collectionName}
+          open={managing}
+          onClose={() => setManaging(false)}
+        />
+      )}
     </Card>
   );
 }
