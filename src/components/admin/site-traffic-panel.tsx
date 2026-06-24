@@ -20,7 +20,7 @@ export function SiteTrafficPanel() {
             <CardDescription><Translatable text="Real-time" /></CardDescription>
           </CardHeader>
           <CardContent>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/realtime/overview" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/realtime/overview" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
               <Translatable text="View in Google Analytics" />
               <ExternalLink className="h-3 w-3" />
             </a>
@@ -36,7 +36,7 @@ export function SiteTrafficPanel() {
             <CardDescription><Translatable text="Last 30 days" /></CardDescription>
           </CardHeader>
           <CardContent>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/reports/reportinghub" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/reports/reportinghub" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
               <Translatable text="View in Google Analytics" />
               <ExternalLink className="h-3 w-3" />
             </a>
@@ -52,7 +52,7 @@ export function SiteTrafficPanel() {
             <CardDescription><Translatable text="Last 30 days" /></CardDescription>
           </CardHeader>
           <CardContent>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/reports/acquisition-overview" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/reports/acquisition-overview" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
               <Translatable text="View in Google Analytics" />
               <ExternalLink className="h-3 w-3" />
             </a>
@@ -68,7 +68,7 @@ export function SiteTrafficPanel() {
             <CardDescription><Translatable text="Last 30 days" /></CardDescription>
           </CardHeader>
           <CardContent>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/reports/engagement-pages-and-screens" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/reports/engagement-pages-and-screens" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm flex items-center gap-1">
               <Translatable text="View in Google Analytics" />
               <ExternalLink className="h-3 w-3" />
             </a>
@@ -108,22 +108,22 @@ export function SiteTrafficPanel() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 md:grid-cols-2">
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/realtime/overview" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/realtime/overview" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
               <Users className="h-4 w-4 text-primary shrink-0" />
               <span>Realtime Overview</span>
               <ExternalLink className="h-3 w-3 ml-auto text-muted-foreground" />
             </a>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/reports/reportinghub" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/reports/reportinghub" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
               <BarChart2 className="h-4 w-4 text-primary shrink-0" />
               <span>Reports Overview</span>
               <ExternalLink className="h-3 w-3 ml-auto text-muted-foreground" />
             </a>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/reports/acquisition-overview" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/reports/acquisition-overview" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
               <TrendingUp className="h-4 w-4 text-primary shrink-0" />
               <span>Acquisition Overview</span>
               <ExternalLink className="h-3 w-3 ml-auto text-muted-foreground" />
             </a>
-            <a href="https://analytics.google.com/analytics/web/#/p528832553/reports/engagement-pages-and-screens" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
+            <a href="https://analytics.google.com/analytics/web/#/p542119803/reports/engagement-pages-and-screens" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-lg border hover:bg-muted transition-colors text-sm">
               <Eye className="h-4 w-4 text-primary shrink-0" />
               <span>Pages and Screens</span>
               <ExternalLink className="h-3 w-3 ml-auto text-muted-foreground" />
@@ -134,7 +134,7 @@ export function SiteTrafficPanel() {
 
       <div className="text-center">
         <Button asChild size="lg">
-          <a href="https://analytics.google.com/analytics/web/#/p528832553" target="_blank" rel="noopener noreferrer">
+          <a href="https://analytics.google.com/analytics/web/#/p542119803" target="_blank" rel="noopener noreferrer">
             <ExternalLink className="mr-2 h-4 w-4" />
             <Translatable text="Open Full Google Analytics Dashboard" />
           </a>

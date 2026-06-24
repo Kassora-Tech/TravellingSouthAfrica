@@ -110,6 +110,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* GA4 direct tag (Measurement ID: G-PZS244GVLR). Replaced a previous GTM container
+            (GTM-05SCK85RK9) that was removed — do not reintroduce GTM here alongside this. */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-PZS244GVLR"
           strategy="afterInteractive"
