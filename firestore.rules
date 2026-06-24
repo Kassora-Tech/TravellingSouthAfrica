@@ -103,6 +103,12 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // 8b. Mail (Trigger Email extension) - anyone can create, admin read/manage
+    match /mail/{mailId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
     // 9. Payments - admin read, owner can read own
     match /payments/{paymentId} {
       // Admin read, owner can read own (checking userId or submittedBy)
