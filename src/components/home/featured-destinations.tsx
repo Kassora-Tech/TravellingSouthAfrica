@@ -20,31 +20,36 @@ const featured = [
     id: 'featured-1',
     title: 'Cape Town',
     province: 'Western Cape',
-    imageId: 'cape-town-featured',
+    imageId: 'featured-1',
+    href: '/towns/cape-town',
   },
   {
     id: 'featured-2',
     title: 'Kruger National Park',
     province: 'Mpumalanga',
-    imageId: 'kruger-featured',
+    imageId: 'featured-2',
+    href: '/sights/kruger-national-park',
   },
   {
     id: 'featured-3',
     title: 'Drakensberg',
     province: 'KwaZulu-Natal',
-    imageId: 'drakensberg-featured',
+    imageId: 'featured-3',
+    href: '/sights/drakensberg-mountains',
   },
   {
     id: 'featured-4',
     title: 'Johannesburg',
     province: 'Gauteng',
-    imageId: 'johannesburg-featured',
+    imageId: 'featured-4',
+    href: '/towns/johannesburg',
   },
   {
     id: 'featured-5',
     title: 'Garden Route',
     province: 'Western Cape',
-    imageId: 'garden-route-featured',
+    imageId: 'featured-5',
+    href: '/routes/garden-route',
   },
 ];
 
@@ -62,31 +67,33 @@ export function FeaturedDestinations() {
               return (
                 <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-1">
-                    <Card className="group overflow-hidden">
-                      <CardContent className="p-0">
-                        <div className="relative h-64">
-                          {image && (
-                            <Image
-                              src={image.imageUrl}
-                              alt={image.description}
-                              fill
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              data-ai-hint={image.imageHint}
-                            />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                          <div className="absolute bottom-0 left-0 p-6 text-white">
-                            <h3 className="text-2xl font-bold font-headline">
-                              <Translatable text={item.title} />
-                            </h3>
-                            <p className="text-sm">
-                              <Translatable text={item.province} />
-                            </p>
+                    <Link href={item.href}>
+                      <Card className="group overflow-hidden">
+                        <CardContent className="p-0">
+                          <div className="relative h-64">
+                            {image && (
+                              <Image
+                                src={image.imageUrl}
+                                alt={image.description}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                data-ai-hint={image.imageHint}
+                              />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            <div className="absolute bottom-0 left-0 p-6 text-white">
+                              <h3 className="text-2xl font-bold font-headline">
+                                <Translatable text={item.title} />
+                              </h3>
+                              <p className="text-sm">
+                                <Translatable text={item.province} />
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   </div>
                 </CarouselItem>
               );
