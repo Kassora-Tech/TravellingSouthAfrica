@@ -53,23 +53,6 @@ const accommodationSchema = z.object({
   }),
 });
 
-const restaurantSchema = z.object({
-  name: z.string().min(1, 'Restaurant name is required'),
-  townSlug: z.string().min(1, 'Town is required'),
-  physicalAddress: z.string().optional().or(z.literal('')),
-  cuisine: z.string().min(1, 'Cuisine type is required'),
-  websiteUrl: z.string().url().optional().or(z.literal('')),
-  contactEmail: z.string().email(),
-  contactPhone: z.string().min(1, 'Phone number is required'),
-  description: z.string().min(1, 'Description is required').max(500),
-  terms: z.literal(true, {
-    errorMap: () => ({ message: "You must agree to the listing fee." }),
-  }),
-  termsAndConditions: z.literal(true, {
-    errorMap: () => ({ message: "You must agree to the Terms & Conditions." }),
-  }),
-});
-
 const serviceProviderSchema = z.object({
   name: z.string().min(1, 'Service name is required'),
   townSlug: z.string().min(1, 'Town is required'),
@@ -103,18 +86,16 @@ const attractionSchema = z.object({
   }),
 });
 
-type FormSchema = z.infer<typeof accommodationSchema> | z.infer<typeof restaurantSchema> | z.infer<typeof serviceProviderSchema> | z.infer<typeof attractionSchema>;
+type FormSchema = z.infer<typeof accommodationSchema> | z.infer<typeof serviceProviderSchema> | z.infer<typeof attractionSchema>;
 
 const accommodationCategories = ['Hotel', 'Guesthouse', 'Self-Catering', 'B&B', 'Lodge', 'Backpackers', 'Other'];
-const restaurantCuisines = ['South African', 'Italian', 'Seafood', 'Steakhouse', 'Fine Dining', 'Cafe', 'Other'];
 const attractionCategories = ['Nature', 'Culture', 'Adventure', 'Historical', 'Other'];
 
 export function ListingFormTabs({ user, isAdmin }: ListingFormTabsProps) {
   return (
     <Tabs defaultValue="accommodation" className="w-full">
-      <TabsList className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 h-auto">
+      <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto">
         <TabsTrigger value="accommodation"><Translatable text="Accommodation" /></TabsTrigger>
-        <TabsTrigger value="restaurant"><Translatable text="Restaurant" /></TabsTrigger>
         <TabsTrigger value="service"><Translatable text="Service Provider" /></TabsTrigger>
         <TabsTrigger value="attraction"><Translatable text="Attraction/Sight" /></TabsTrigger>
       </TabsList>
@@ -133,22 +114,8 @@ export function ListingFormTabs({ user, isAdmin }: ListingFormTabsProps) {
           ]}
         />
       </TabsContent>
-      <TabsContent value="restaurant">
-        <ListingForm key="restaurant" user={user} isAdmin={isAdmin} collectionName="restaurants" formSchema={restaurantSchema} title="Restaurant" description="Add your restaurant, cafe, or eatery to our listings."
-          fields={[
-            { name: 'name', label: 'Restaurant Name', type: 'text' },
-            { name: 'townSlug', label: 'Town', type: 'combobox' },
-            { name: 'physicalAddress', label: 'Physical Address (optional)', type: 'textarea', optional: true, placeholder: "Enter the full physical address" },
-            { name: 'cuisine', label: 'Cuisine Type', type: 'select', options: restaurantCuisines.map(c => ({ value: c, label: c })) },
-            { name: 'websiteUrl', label: 'Website URL', type: 'url', optional: true },
-            { name: 'contactEmail', label: 'Contact Email', type: 'email' },
-            { name: 'contactPhone', label: 'Contact Phone', type: 'tel' },
-            { name: 'description', label: 'Description', type: 'textarea' },
-          ]}
-        />
-      </TabsContent>
       <TabsContent value="service">
-        <ListingForm key="service" user={user} isAdmin={isAdmin} collectionName="service_providers" formSchema={serviceProviderSchema} title="Service Provider" description="List your tour, car rental, guide, or other travel service."
+        <ListingForm key="service" user={user} isAdmin={isAdmin} collectionName="service_providers" formSchema={serviceProviderSchema} title="Service Provider" description="List your restaurant, tour, car rental, guide, or other travel service."
           fields={[
             { name: 'name', label: 'Service Name', type: 'text' },
             { name: 'townSlug', label: 'Town', type: 'combobox' },

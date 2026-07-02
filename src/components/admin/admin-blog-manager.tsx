@@ -400,6 +400,9 @@ export function AdminBlogManager() {
                   rows={8}
                   required
                 />
+                <p className="text-xs text-muted-foreground">
+                  Tip: To add a clickable link, write <code className="font-mono">[Link Text](https://example.com)</code>. Plain URLs (starting with https://) are also turned into clickable links automatically.
+                </p>
               </div>
 
               {/* Published Toggle */}

@@ -47,9 +47,8 @@ export default function AdminPage() {
         </Button>
       </div>
       <Tabs defaultValue="accommodations" className="mt-8">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-7">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6">
           <TabsTrigger value="accommodations">Accommodations</TabsTrigger>
-          <TabsTrigger value="restaurants">Restaurants</TabsTrigger>
           <TabsTrigger value="service_providers">Services</TabsTrigger>
           <TabsTrigger value="attractions">Attractions</TabsTrigger>
           <TabsTrigger value="site-traffic">Site Traffic</TabsTrigger>
@@ -58,9 +57,6 @@ export default function AdminPage() {
         </TabsList>
         <TabsContent value="accommodations">
           <AdminListingsPanel collectionName="accommodations" />
-        </TabsContent>
-        <TabsContent value="restaurants">
-          <AdminListingsPanel collectionName="restaurants" />
         </TabsContent>
         <TabsContent value="service_providers">
           <AdminListingsPanel collectionName="service_providers" />

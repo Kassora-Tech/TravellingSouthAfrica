@@ -54,6 +54,57 @@ function truncateCaption(caption: string | undefined, maxLength = 100) {
   return caption.slice(0, maxLength).trimEnd() + '…';
 }
 
+// Renders plain text as React nodes, turning Markdown-style [label](url) links
+// and bare https:// URLs into clickable <a> tags. Avoids dangerouslySetInnerHTML.
+function renderContentWithLinks(text: string | undefined): React.ReactNode {
+  if (!text) return null;
+
+  const pattern = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<]+)/g;
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = pattern.exec(text)) !== null) {
+    let matchEnd = match.index + match[0].length;
+    let url = match[2];
+    let label = match[1];
+
+    if (!url && match[3]) {
+      // Bare URL — trim trailing punctuation that's likely part of the sentence, not the link.
+      const trimmed = match[3].replace(/[.,!?;:'")\]]+$/, '');
+      matchEnd = match.index + trimmed.length;
+      url = trimmed;
+      label = trimmed;
+    }
+
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+
+    nodes.push(
+      <a
+        key={`link-${key++}`}
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-primary underline underline-offset-2 hover:text-primary/80"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {label}
+      </a>
+    );
+
+    lastIndex = matchEnd;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+
+  return nodes;
+}
+
 interface PostCardProps {
   post: BlogPost;
   onPreview: (post: BlogPost) => void;
@@ -207,7 +258,7 @@ export function OurBlog() {
             }
           }}
         >
-          <DialogContent className="max-w-xl w-full max-h-[85vh] overflow-y-auto p-0 gap-0 rounded-xl">
+          <DialogContent className="max-w-2xl w-full max-h-[85vh] overflow-y-auto p-0 gap-0 rounded-xl">
             {/* Required for screen reader accessibility */}
             <VisuallyHidden>
               <DialogTitle>{selectedPost.title}</DialogTitle>
@@ -255,17 +306,17 @@ export function OurBlog() {
 
               {/* Caption */}
               {selectedPost.caption && (
-                <p className="text-sm font-medium text-foreground italic border-l-2 border-primary pl-3">
+                <p className="text-base font-medium text-foreground italic border-l-2 border-primary pl-3">
                   {selectedPost.caption}
                 </p>
               )}
 
               {/* Content */}
-              <div className="text-sm leading-relaxed text-foreground">
+              <div className="text-lg leading-loose text-foreground">
                 {expandedContent ? (
-                  <p className="whitespace-pre-wrap">{selectedPost.content}</p>
+                  <p className="whitespace-pre-wrap">{renderContentWithLinks(selectedPost.content)}</p>
                 ) : (
-                  <p className="line-clamp-5 whitespace-pre-wrap">{selectedPost.content}</p>
+                  <p className="line-clamp-5 whitespace-pre-wrap">{renderContentWithLinks(selectedPost.content)}</p>
                 )}
               </div>
 
