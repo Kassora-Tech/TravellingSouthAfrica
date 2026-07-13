@@ -14,6 +14,10 @@ import {
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Translatable } from '@/components/translatable';
 import { getPublishedBlogPosts } from '@/services/blogService';
+import DOMPurify from 'isomorphic-dompurify';
+
+// Posts written with the rich text editor are stored as HTML; older posts are plain text.
+const isHtmlContent = (content: string | undefined) => !!content && /<\/?[a-z][\s\S]*>/i.test(content);
 
 interface BlogPost {
   id: string;
@@ -258,21 +262,22 @@ export function OurBlog() {
             }
           }}
         >
-          <DialogContent className="max-w-2xl w-full max-h-[85vh] overflow-y-auto p-0 gap-0 rounded-xl">
+          <DialogContent className="max-w-6xl w-[95vw] h-[92vh] max-h-[92vh] overflow-y-auto p-0 gap-0 rounded-xl">
             {/* Required for screen reader accessibility */}
             <VisuallyHidden>
               <DialogTitle>{selectedPost.title}</DialogTitle>
             </VisuallyHidden>
 
-            {/* Modal Image — shorter, sits at the top flush */}
-            <div className="relative h-52 w-full overflow-hidden rounded-t-xl bg-muted flex-shrink-0">
+            {/* Modal Image — large hero, sits at the top flush */}
+            <div className="relative h-[45vh] min-h-[320px] w-full overflow-hidden rounded-t-xl bg-muted flex-shrink-0">
               {selectedPost.imageUrl ? (
                 <Image
                   src={selectedPost.imageUrl}
                   alt={selectedPost.title}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 576px"
+                  sizes="95vw"
+                  priority
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
@@ -281,16 +286,16 @@ export function OurBlog() {
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               {/* Title overlay on image */}
-              <div className="absolute bottom-0 left-0 right-0 p-4">
+              <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge variant="secondary" className="text-[11px] mb-2">Article</Badge>
-                <h2 className="text-white font-bold text-lg leading-tight drop-shadow-sm">
+                <h2 className="text-white font-bold text-2xl md:text-3xl leading-tight drop-shadow-sm">
                   {selectedPost.title}
                 </h2>
               </div>
             </div>
 
             {/* Modal Body */}
-            <div className="p-5 space-y-4">
+            <div className="p-6 md:p-8 space-y-4 max-w-3xl mx-auto">
               {/* Meta */}
               <div className="flex items-center gap-3 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
@@ -312,13 +317,30 @@ export function OurBlog() {
               )}
 
               {/* Content */}
-              <div className="text-lg leading-loose text-foreground">
-                {expandedContent ? (
-                  <p className="whitespace-pre-wrap">{renderContentWithLinks(selectedPost.content)}</p>
-                ) : (
-                  <p className="line-clamp-5 whitespace-pre-wrap">{renderContentWithLinks(selectedPost.content)}</p>
-                )}
-              </div>
+              {isHtmlContent(selectedPost.content) ? (
+                <div
+                  className={`relative text-lg leading-loose text-foreground [&_p]:my-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-3 [&_h3]:mb-2 [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_blockquote]:border-l-2 [&_blockquote]:border-primary [&_blockquote]:pl-3 [&_blockquote]:italic ${
+                    expandedContent ? '' : 'max-h-52 overflow-hidden'
+                  }`}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(selectedPost.content, { ADD_ATTR: ['target', 'rel', 'style'] }),
+                    }}
+                  />
+                  {!expandedContent && (
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent" />
+                  )}
+                </div>
+              ) : (
+                <div className="text-lg leading-loose text-foreground">
+                  {expandedContent ? (
+                    <p className="whitespace-pre-wrap">{renderContentWithLinks(selectedPost.content)}</p>
+                  ) : (
+                    <p className="line-clamp-5 whitespace-pre-wrap">{renderContentWithLinks(selectedPost.content)}</p>
+                  )}
+                </div>
+              )}
 
               {/* Show More / Less */}
               {selectedPost.content && selectedPost.content.length > 300 && (

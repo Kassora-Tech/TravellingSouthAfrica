@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { RichTextEditor } from '@/components/editor/rich-text-editor';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
@@ -392,16 +392,13 @@ export function AdminBlogManager() {
               {/* Content */}
               <div className="space-y-2">
                 <Label htmlFor="content">Content *</Label>
-                <Textarea
-                  id="content"
-                  placeholder="Full blog post content"
+                <RichTextEditor
                   value={formData.content}
-                  onChange={e => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                  rows={8}
-                  required
+                  onChange={html => setFormData(prev => ({ ...prev, content: html }))}
+                  placeholder="Write your blog post..."
                 />
                 <p className="text-xs text-muted-foreground">
-                  Tip: To add a clickable link, write <code className="font-mono">[Link Text](https://example.com)</code>. Plain URLs (starting with https://) are also turned into clickable links automatically.
+                  Use the toolbar to change font size, color, and add bold, italic or underlined text — just like Word.
                 </p>
               </div>
 
