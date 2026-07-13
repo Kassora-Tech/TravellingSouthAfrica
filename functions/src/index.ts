@@ -11,6 +11,7 @@ const adminDb = adminGetFirestore();
 const ADMIN_EMAILS = [
     "maryke@travellingsouthafrica.co.za",
     "tristan@industrialgrowthhub.com",
+    "charles@travellingsouthafrica.co.za",
 ];
 
 const isAdminByEmail = (email?: string) => {

@@ -3,6 +3,7 @@ import type { User } from 'firebase/auth';
 const ADMIN_EMAILS = [
   'maryke@travellingsouthafrica.co.za',
   'tristan@industrialgrowthhub.com',
+  'charles@travellingsouthafrica.co.za',
 ];
 
 export const isAdmin = (user: User | null): boolean => {
