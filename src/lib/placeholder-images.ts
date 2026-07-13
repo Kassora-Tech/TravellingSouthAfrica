@@ -9,27 +9,27 @@ export type ImagePlaceholder = {
 export const PlaceHolderImages: ImagePlaceholder[] = [
     {
       "id": "hero-1",
-      "description": "A stunning landscape of South Africa, possibly Drakensberg mountains.",
-      "imageUrl": "https://i.ibb.co/nNDFjwr0/Why-2025-Is-Africas-Year-for-Travellers-1140x530.jpg",
-      "imageHint": "south africa landscape"
+      "description": "A tree in the South African landscape.",
+      "imageUrl": "/Images/hero1.png",
+      "imageHint": "south africa tree landscape"
     },
     {
       "id": "hero-slide-town",
-      "description": "Colorful houses in Bo-Kaap, Cape Town",
-      "imageUrl": "https://i.ibb.co/5QPJqP2/pexels-jvdm-4552408.jpg",
-      "imageHint": "bo-kaap cape town"
+      "description": "Buildings in a South African town.",
+      "imageUrl": "/Images/hero2.png",
+      "imageHint": "south africa buildings"
     },
     {
       "id": "hero-slide-paragliding",
       "description": "Paraglider in flight.",
-      "imageUrl": "https://i.ibb.co/mVMRsSxc/unnamed.jpg",
+      "imageUrl": "/Images/hero3.png",
       "imageHint": "paragliding flight"
     },
     {
       "id": "hero-slide-wildlife",
-      "description": "Wildlife gathering at a waterhole in Talamati during a drought.",
-      "imageUrl": "https://i.ibb.co/1Ytrm7Dw/stock-photo-talamati-waterhole-during-a-drought-mixed-game-gather-at-a-waterhole-during-a-long-droug.jpg",
-      "imageHint": "wildlife waterhole"
+      "description": "Animals in nature in South Africa.",
+      "imageUrl": "/Images/hero4.png",
+      "imageHint": "wildlife animals nature"
     },
     {
       "id": "featured-1",

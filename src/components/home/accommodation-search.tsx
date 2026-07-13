@@ -44,7 +44,7 @@ export function AccommodationSearch() {
   };
 
   return (
-    <section className="relative py-8 md:py-12 text-white bg-cover bg-center" style={{ backgroundImage: "url('https://i.ibb.co/0yspg012/south-africa-travel-facts-banner.jpg')" }}>
+    <section className="relative py-8 md:py-12 text-white bg-cover bg-center" style={{ backgroundImage: "url('/Images/mountain.png')" }}>
       <div className="absolute inset-0 bg-black/40" />
       <div className="container relative mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold font-headline">
