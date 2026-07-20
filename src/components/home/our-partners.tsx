@@ -3,12 +3,22 @@ import { Translatable } from '@/components/translatable';
 
 const partners = [
   {
-    name: 'Life&Leisure Club',
+    alt: 'Life&Leisure Club logo',
     image: '/Images/partners/life-and-leisure-club.jpg',
+    width: 240,
+    height: 240,
   },
   {
-    name: 'ontbyt SAKE and super SAKE',
-    image: '/Images/partners/ontbyt-sake-super-sake.jpg',
+    alt: 'ontbyt SAKE logo',
+    image: '/Images/partners/ontbyt SAKE.jpeg',
+    width: 222,
+    height: 300,
+  },
+  {
+    alt: 'super SAKE logo',
+    image: '/Images/partners/super SAKE.jpeg',
+    width: 223,
+    height: 300,
   },
 ];
 
@@ -28,24 +38,19 @@ export function OurPartners() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
           {partners.map((partner) => (
             <div
-              key={partner.name}
-              className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 flex flex-col items-center w-64"
+              key={partner.image}
+              className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 flex items-center justify-center"
             >
-              <div className="relative w-44 h-44">
-                <Image
-                  src={partner.image}
-                  alt={`${partner.name} logo`}
-                  fill
-                  sizes="176px"
-                  className="object-contain"
-                />
-              </div>
-              <p className="mt-4 font-semibold text-gray-900 text-center">
-                <Translatable text={partner.name} />
-              </p>
+              <Image
+                src={partner.image}
+                alt={partner.alt}
+                width={partner.width}
+                height={partner.height}
+                className="h-28 w-auto object-contain"
+              />
             </div>
           ))}
         </div>

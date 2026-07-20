@@ -16,6 +16,7 @@ import {
 import Link from 'next/link';
 import { ArrowRight, MapPin } from 'lucide-react';
 import type { Metadata } from 'next';
+import { fetchTownPhotoMap, getServerFirestore, resolveTownImage } from '@/lib/town-image';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -70,6 +71,7 @@ export default async function ProvinceDetailPage(props: { params: Promise<{ slug
 
   const provinceTowns = allTowns.filter(t => t.provinceSlug === province.slug).slice(0, 10);
   const provinceSights = allSights.filter(s => s.provinceSlug === province.slug).slice(0, 5);
+  const townPhotos = await fetchTownPhotoMap(getServerFirestore());
 
   const heroImage = PlaceHolderImages.find((p) => p.id === province.imageId);
 
@@ -224,20 +226,20 @@ export default async function ProvinceDetailPage(props: { params: Promise<{ slug
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {provinceTowns.map((town) => {
-                    const image = PlaceHolderImages.find((p) => p.id === town.imageId);
+                    const { url: imageUrl, hint: imageHint } = resolveTownImage(town, townPhotos.get(town.slug));
                     const altText = `A view of ${town.name}, a town in the ${province.name} province`;
                     return (
                         <Link href={`/towns/${town.slug}`} key={town.slug}>
                             <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
-                                {image && (
+                                {imageUrl && (
                                     <div className="relative h-40 w-full">
                                         <Image
-                                            src={image.imageUrl}
+                                            src={imageUrl}
                                             alt={altText}
                                             fill
                                             className="object-cover"
                                             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                            data-ai-hint={image.imageHint}
+                                            data-ai-hint={imageHint}
                                         />
                                     </div>
                                 )}

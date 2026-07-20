@@ -3,15 +3,16 @@
 import { Translatable } from '@/components/translatable';
 import { towns } from '@/lib/data/towns';
 import { provinces } from '@/lib/data/provinces';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { SearchInput } from '@/components/SearchInput';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Script from 'next/script';
+import { useFirestore } from '@/firebase';
+import { fetchTownPhotoMap, resolveTownImage } from '@/lib/town-image';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -19,6 +20,19 @@ export default function TownsClient() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProvince, setSelectedProvince] = useState('all');
   const [sortOrder, setSortOrder] = useState('alphabetical');
+  const [townPhotos, setTownPhotos] = useState<Map<string, string>>(new Map());
+  const firestore = useFirestore();
+
+  useEffect(() => {
+    if (!firestore) return;
+    let cancelled = false;
+    fetchTownPhotoMap(firestore).then((map) => {
+      if (!cancelled) setTownPhotos(map);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [firestore]);
 
   const filteredTowns = useMemo(() => {
     let filtered = towns.filter(town => 
@@ -111,20 +125,20 @@ export default function TownsClient() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {filteredTowns.map((town) => {
                     const province = provinces.find(p => p.slug === town.provinceSlug);
-                    const image = PlaceHolderImages.find(p => p.id === town.imageId);
+                    const { url: imageUrl, hint: imageHint } = resolveTownImage(town, townPhotos.get(town.slug));
                     const altText = `View of ${town.name}, a town in ${province?.name || 'South Africa'}`;
                     return (
                         <Link href={`/towns/${town.slug}`} key={town.slug}>
                             <Card className="group overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 h-full">
-                                {image && (
+                                {imageUrl && (
                                     <div className="relative h-40 w-full">
                                         <Image
-                                            src={image.imageUrl}
+                                            src={imageUrl}
                                             alt={altText}
                                             fill
                                             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                             className="object-cover"
-                                            data-ai-hint={image.imageHint}
+                                            data-ai-hint={imageHint}
                                         />
                                     </div>
                                 )}

@@ -4,8 +4,8 @@ import { towns as staticTowns } from '@/lib/data/towns';
 import { provinces } from '@/lib/data/provinces';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Translatable } from '@/components/translatable';
+import { pickSubmittedTownPhoto, resolveTownImage } from '@/lib/town-image';
 import { MapPin, Users, Edit } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
@@ -56,14 +56,11 @@ export default function TownDetailPage() {
   }
   
   const province = provinces.find(p => p.slug === staticTown.provinceSlug);
-  const heroImage = PlaceHolderImages.find((p) => p.id === staticTown.imageId);
 
   // Prefer the real photo submitted with the town's description as the main image,
   // falling back to the generic placeholder when none was uploaded.
-  const submittedHeroImage = townData
-    ? [townData.photo1, townData.photo2, townData.photo3, townData.photo4, townData.photo5, townData.photo6].find(Boolean)
-    : undefined;
-  const heroImageUrl = submittedHeroImage || heroImage?.imageUrl;
+  const submittedHeroImage = pickSubmittedTownPhoto(townData);
+  const { url: heroImageUrl, hint: heroImageHint } = resolveTownImage(staticTown, submittedHeroImage);
 
   // Helper to render highlights. Entries may be saved as "- item", "• item" or plain lines.
   const renderHighlights = (highlights: string | undefined) => {
@@ -135,7 +132,7 @@ export default function TownDetailPage() {
             sizes="100vw"
             className="object-cover"
             priority
-            data-ai-hint={submittedHeroImage ? undefined : heroImage?.imageHint}
+            data-ai-hint={heroImageHint}
           />
         )}
         <div className="absolute inset-0 bg-black/50" />
