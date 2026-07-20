@@ -16,6 +16,7 @@ import { doc } from 'firebase/firestore';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import Script from 'next/script';
+import { TownListings } from '@/components/towns/town-listings';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -57,17 +58,26 @@ export default function TownDetailPage() {
   const province = provinces.find(p => p.slug === staticTown.provinceSlug);
   const heroImage = PlaceHolderImages.find((p) => p.id === staticTown.imageId);
 
-  // Helper to render highlights
+  // Prefer the real photo submitted with the town's description as the main image,
+  // falling back to the generic placeholder when none was uploaded.
+  const submittedHeroImage = townData
+    ? [townData.photo1, townData.photo2, townData.photo3, townData.photo4, townData.photo5, townData.photo6].find(Boolean)
+    : undefined;
+  const heroImageUrl = submittedHeroImage || heroImage?.imageUrl;
+
+  // Helper to render highlights. Entries may be saved as "- item", "• item" or plain lines.
   const renderHighlights = (highlights: string | undefined) => {
     if (!highlights) return null;
+    const items = highlights
+        .split('\n')
+        .map((line) => line.trim().replace(/^[-•*]\s*/, ''))
+        .filter(Boolean);
+    if (items.length === 0) return null;
     return (
         <ul className="list-disc list-inside space-y-2">
-            {highlights.split('\n').map((line, index) => {
-                if (line.startsWith('-')) {
-                    return <li key={index}>{line.substring(1).trim()}</li>
-                }
-                return null;
-            }).filter(Boolean)}
+            {items.map((item, index) => (
+                <li key={index}>{item}</li>
+            ))}
         </ul>
     )
   }
@@ -102,7 +112,7 @@ export default function TownDetailPage() {
     '@type': 'City',
     name: staticTown.name,
     description: townData?.longDescription || staticTown.description,
-    image: heroImage?.imageUrl,
+    image: heroImageUrl,
     address: {
         '@type': 'PostalAddress',
         addressLocality: staticTown.name,
@@ -117,15 +127,15 @@ export default function TownDetailPage() {
         <Script id="town-breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <Script id="town-city-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(citySchema) }} />
       <section className="relative h-[50vh] text-white">
-        {heroImage && (
+        {heroImageUrl && (
           <Image
-            src={heroImage.imageUrl}
+            src={heroImageUrl}
             alt={`A scenic view of ${staticTown.name}, ${province?.name || 'South Africa'}`}
             fill
             sizes="100vw"
             className="object-cover"
             priority
-            data-ai-hint={heroImage.imageHint}
+            data-ai-hint={submittedHeroImage ? undefined : heroImage?.imageHint}
           />
         )}
         <div className="absolute inset-0 bg-black/50" />
@@ -202,6 +212,8 @@ export default function TownDetailPage() {
                 </div>
               </div>
            </div>
+
+           <TownListings townSlug={staticTown.slug} townName={staticTown.name} />
 
             {staticTown.mapEmbed && (
                 <div className="mt-12">

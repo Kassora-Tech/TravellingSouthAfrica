@@ -40,6 +40,9 @@ next-env.d.ts
 .genkit/*
 .env*
 
+# data exports for client (never commit)
+/exports
+
 # firebase
 firebase-debug.log
 firestore-debug.log

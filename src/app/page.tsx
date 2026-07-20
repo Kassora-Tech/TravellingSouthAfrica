@@ -6,6 +6,7 @@ import { CallToActions } from '@/components/home/call-to-actions';
 import { AnimatedStats } from '@/components/home/animated-stats';
 import { PromotionalBanner } from '@/components/home/promotional-banner';
 import { AccommodationSearch } from '@/components/home/accommodation-search';
+import { OurPartners } from '@/components/home/our-partners';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <AnimatedStats />
       <FeaturedDestinations />
       <CallToActions />
+      <OurPartners />
     </>
   );
 }

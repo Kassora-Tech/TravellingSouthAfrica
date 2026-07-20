@@ -68,7 +68,7 @@ async function getServiceProviders(firestore: Firestore, category?: string) {
   }
 }
 
-function ServiceProviderCard({ listing }: { listing: any }) {
+export function ServiceProviderCard({ listing }: { listing: any }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = listing.imageUrls || [];
 

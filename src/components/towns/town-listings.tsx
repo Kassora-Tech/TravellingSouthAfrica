@@ -1,0 +1,121 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Building2, Wrench, ArrowRight } from 'lucide-react';
+import { AccommodationGrid } from '@/components/accommodations/accommodation-grid';
+import { ServiceProviderCard } from '@/components/service-providers/service-provider-listings';
+import { Translatable } from '@/components/translatable';
+
+function EmptyState({ message }: { message: string }) {
+  return (
+    <Card className="text-center">
+      <CardContent className="p-8">
+        <Building2 className="mx-auto h-12 w-12 text-muted-foreground" />
+        <p className="mt-6 text-muted-foreground">
+          <Translatable text={message} />
+        </p>
+        <Button asChild className="mt-6">
+          <Link href="/add-your-listing">
+            <Translatable text="List your business here" />
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function TownListings({ townSlug, townName }: { townSlug: string; townName: string }) {
+  const firestore = useFirestore();
+  const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [serviceProviders, setServiceProviders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!firestore) return;
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const [accSnap, spSnap] = await Promise.all([
+          getDocs(query(collection(firestore, 'accommodations'), where('townSlug', '==', townSlug))),
+          getDocs(query(collection(firestore, 'service_providers'), where('townSlug', '==', townSlug))),
+        ]);
+        if (cancelled) return;
+        setAccommodations(accSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setServiceProviders(spSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } catch (error) {
+        console.error('Error fetching town listings:', error);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [firestore, townSlug]);
+
+  return (
+    <div className="mt-12 border-t pt-8">
+      <h2 className="font-headline text-2xl font-bold mb-4">
+        <Translatable text="Accommodation & Service Listings" />
+      </h2>
+
+      {isLoading ? (
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-64" />
+          <Skeleton className="h-40 w-full" />
+        </div>
+      ) : (
+        <Tabs defaultValue="accommodation">
+          <TabsList>
+            <TabsTrigger value="accommodation">
+              <Translatable text="Accommodation" /> ({accommodations.length})
+            </TabsTrigger>
+            <TabsTrigger value="services">
+              <Translatable text="Service Providers" /> ({serviceProviders.length})
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="accommodation" className="mt-6">
+            {accommodations.length > 0 ? (
+              <>
+                <AccommodationGrid listings={accommodations} />
+                <div className="mt-6">
+                  <Button asChild variant="outline">
+                    <Link href={`/accommodations?town=${encodeURIComponent(townSlug)}`}>
+                      <Translatable text={`View all accommodation in ${townName}`} />
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <EmptyState message={`There are currently no accommodation listings in ${townName} yet.`} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="services" className="mt-6">
+            {serviceProviders.length > 0 ? (
+              <div className="grid gap-8 md:grid-cols-2">
+                {serviceProviders.map((listing) => (
+                  <ServiceProviderCard key={listing.id} listing={listing} />
+                ))}
+              </div>
+            ) : (
+              <EmptyState message={`There are currently no service listings in ${townName} yet.`} />
+            )}
+          </TabsContent>
+        </Tabs>
+      )}
+    </div>
+  );
+}
