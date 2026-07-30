@@ -25,7 +25,7 @@ import { OurBlog } from '@/components/Blog/OurBlog';
 
 type Platform = 'Instagram' | 'TikTok' | 'Facebook' | 'OurBlog';
 
-const platforms: Platform[] = ['Instagram', 'TikTok', 'Facebook', 'OurBlog'];
+const platforms: Platform[] = ['OurBlog', 'Instagram', 'TikTok', 'Facebook'];
 
 const platformMeta: Record<
   Platform,
@@ -304,11 +304,15 @@ function PlatformTab({
 // ── Feed section ──────────────────────────────────────────────────────────────
 
 function PlatformFeed({ platform }: { platform: Platform }) {
-  // Handle OurBlog separately — just render the component
+  // Our Blog has its own component; the social platforms share the fetching feed below.
+  // Keeping them in separate components means no hook is called conditionally.
   if (platform === 'OurBlog') {
     return <OurBlog />;
   }
+  return <SocialFeed platform={platform} />;
+}
 
+function SocialFeed({ platform }: { platform: Exclude<Platform, 'OurBlog'> }) {
   const [posts, setPosts] = useState<UnifiedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -479,7 +483,7 @@ function PlatformFeed({ platform }: { platform: Platform }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function BlogPage() {
-  const [activePlatform, setActivePlatform] = useState<Platform>('Instagram');
+  const [activePlatform, setActivePlatform] = useState<Platform>('OurBlog');
   const { icon: ActiveIcon, handle, profileUrl } = platformMeta[activePlatform];
 
   return (

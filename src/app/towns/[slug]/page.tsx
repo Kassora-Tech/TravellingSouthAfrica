@@ -62,6 +62,25 @@ export default function TownDetailPage() {
   const submittedHeroImage = pickSubmittedTownPhoto(townData);
   const { url: heroImageUrl, hint: heroImageHint } = resolveTownImage(staticTown, submittedHeroImage);
 
+  // The town description is saved as free text with blank lines between paragraphs.
+  // Rendering it in a single <p> collapses those breaks into one wall of text, so
+  // split it back into paragraphs and let the container's rhythm space them.
+  const renderDescription = (description: string | undefined) => {
+    if (!description) return null;
+    const paragraphs = description
+      .split(/\n\s*\n/)
+      .map((block) => block.replace(/\s*\n\s*/g, ' ').trim())
+      .filter(Boolean);
+    if (paragraphs.length === 0) return null;
+    return (
+      <div className="space-y-4 text-lg text-muted-foreground">
+        {paragraphs.map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
+        ))}
+      </div>
+    );
+  };
+
   // Helper to render highlights. Entries may be saved as "- item", "• item" or plain lines.
   const renderHighlights = (highlights: string | undefined) => {
     if (!highlights) return null;
@@ -78,6 +97,19 @@ export default function TownDetailPage() {
         </ul>
     )
   }
+
+  // The lead copy: the CMS long description first, then the shorter description, then the static one.
+  const descriptionText = townData?.longDescription || townData?.description || staticTown.description;
+
+  // A town doc that exists but has every content field blank should read as "coming soon"
+  // rather than rendering an empty page body.
+  const hasTownContent = Boolean(
+    descriptionText ||
+      townData?.highlights ||
+      townData?.bestTimeToVisit ||
+      townData?.signatureAttractions ||
+      submittedHeroImage
+  );
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -156,31 +188,33 @@ export default function TownDetailPage() {
               <Skeleton className="h-20 w-full" />
               <Skeleton className="h-40 w-full" />
             </div>
-          ) : townData ? (
-             <div className="prose lg:prose-lg max-w-none space-y-8">
-                {townData.longDescription ? <p className="lead text-lg text-muted-foreground">{townData.longDescription}</p> : <p className="lead text-lg text-muted-foreground">{staticTown.description}</p>}
-                
+          ) : townData && hasTownContent ? (
+             <div className="max-w-none space-y-10">
+                {renderDescription(descriptionText)}
+
                 {townData.highlights && (
                     <div>
-                        <h2 className="font-headline text-2xl font-bold">Key Highlights</h2>
+                        <h2 className="font-headline text-2xl font-bold mb-4">Key Highlights</h2>
                         {renderHighlights(townData.highlights)}
                     </div>
                 )}
 
                  {(townData.bestTimeToVisit || townData.signatureAttractions) && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t pt-8">
-                        {townData.bestTimeToVisit && <div><h3 className="font-headline text-xl font-bold">Best Time to Visit</h3><p>{townData.bestTimeToVisit}</p></div>}
-                        {townData.signatureAttractions && <div><h3 className="font-headline text-xl font-bold">Signature Attractions</h3><p>{townData.signatureAttractions}</p></div>}
+                        {townData.bestTimeToVisit && <div><h3 className="font-headline text-xl font-bold mb-2">Best Time to Visit</h3><p>{townData.bestTimeToVisit}</p></div>}
+                        {townData.signatureAttractions && <div><h3 className="font-headline text-xl font-bold mb-2">Signature Attractions</h3><p>{townData.signatureAttractions}</p></div>}
                     </div>
                  )}
-                 
-                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 not-prose">
-                    {[townData.photo1, townData.photo2, townData.photo3, townData.photo4, townData.photo5, townData.photo6].map((photo, index) => photo && (
-                        <div key={index} className="relative aspect-video">
-                            <Image src={photo} alt={`${staticTown.name} photo ${index + 1}`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover rounded-lg"/>
-                        </div>
-                    ))}
-                 </div>
+
+                 {submittedHeroImage && (
+                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                      {[townData.photo1, townData.photo2, townData.photo3, townData.photo4, townData.photo5, townData.photo6].map((photo, index) => photo && (
+                          <div key={index} className="relative aspect-video">
+                              <Image src={photo} alt={`${staticTown.name} photo ${index + 1}`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover rounded-lg"/>
+                          </div>
+                      ))}
+                   </div>
+                 )}
              </div>
           ) : (
              <Card className="text-center">
@@ -213,8 +247,8 @@ export default function TownDetailPage() {
            <TownListings townSlug={staticTown.slug} townName={staticTown.name} />
 
             {staticTown.mapEmbed && (
-                <div className="mt-12">
-                <h2 className="text-center font-headline text-3xl font-bold mb-8"><Translatable text="Location on Map" /></h2>
+                <div className="mt-12 border-t pt-8">
+                <h2 className="font-headline text-2xl font-bold mb-4"><Translatable text="Location on Map" /></h2>
                 <div className="aspect-video overflow-hidden rounded-lg border">
                     <iframe
                     src={staticTown.mapEmbed}

@@ -1,24 +1,34 @@
 import Link from 'next/link';
 import { Translatable } from '@/components/translatable';
 
+const headlineText = '🎉 FREE 60-Day Trial!';
+const bodyText =
+  'List your accommodation, restaurants & must-see services today. Only R350/year after your trial.';
+const linkText = 'Click here';
+
+function BannerMessage() {
+  return (
+    <p className="mx-8 py-3 text-sm font-semibold sm:text-base">
+      <span className="font-bold text-accent">
+        <Translatable text={headlineText} />
+      </span>
+      <span className="ml-2 text-white">
+        <Translatable text={bodyText} />
+      </span>
+      <span className="ml-2 font-bold text-accent group-hover:underline">
+        <Translatable text={linkText} />
+      </span>
+    </p>
+  );
+}
+
 export function PromotionalBanner() {
-  const bannerText = "For a limited time, advertise your accommodation, restaurants & must-see services in your town for only R350 per year.";
   return (
     <Link href="/add-your-listing" className="group block w-full overflow-x-hidden bg-blue-900">
       <div className="flex h-12 items-center">
         <div className="flex animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
-          <p className="mx-8 py-3 text-sm font-semibold text-white sm:text-base">
-            <Translatable text={bannerText} />
-            <span className="ml-2 font-bold text-accent group-hover:underline">
-              <Translatable text="Click here" />
-            </span>
-          </p>
-          <p className="mx-8 py-3 text-sm font-semibold text-white sm:text-base">
-            <Translatable text={bannerText} />
-            <span className="ml-2 font-bold text-accent group-hover:underline">
-              <Translatable text="Click here" />
-            </span>
-          </p>
+          <BannerMessage />
+          <BannerMessage />
         </div>
       </div>
     </Link>
