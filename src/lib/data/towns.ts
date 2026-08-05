@@ -2960,6 +2960,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'heidelberg-western-cape',
+    name: 'Heidelberg',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A quiet farming town on the Duiwenhoks River, set between the Langeberg mountains and the N2 on the western edge of the Garden Route. Heidelberg is a gateway to the Grootvadersbosch Nature Reserve and the Boosmansbos Wilderness Area.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'heilbron',
     name: 'Heilbron',
     provinceSlug: 'free-state',
@@ -3510,6 +3520,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'kalk-bay',
+    name: 'Kalk Bay',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A historic fishing village on the False Bay coast of the Cape Peninsula, known for its working harbour, antique and book shops, and seaside cafes. The harbour wall is a favourite spot to watch the fishing boats come in and the resident Cape fur seals.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'kamieskroon',
     name: 'Kamieskroon',
     provinceSlug: 'northern-cape',
@@ -3536,6 +3556,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'kariega',
+    name: 'Kariega (Uitenhage)',
+    provinceSlug: 'eastern-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'Renamed from Uitenhage in 2021, Kariega lies in the Nelson Mandela Bay metro on the banks of the Swartkops River. It is one of South Africa\'s major motor manufacturing centres and is home to the Springs Nature Reserve and a well-preserved Victorian town centre.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -3926,6 +3956,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'kommetjie',
+    name: 'Kommetjie',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A relaxed village on the Atlantic side of the Cape Peninsula, built around a natural rock pool and backed by the Slangkop Lighthouse, the tallest cast-iron lighthouse in South Africa. Long Beach draws surfers and walkers year round.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -4680,6 +4720,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'marloth-park',
+    name: 'Marloth Park',
+    provinceSlug: 'mpumalanga',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A wildlife holiday township on the southern bank of the Crocodile River, sharing an unfenced boundary with the Kruger National Park. Impala, kudu, zebra, warthog and giraffe roam freely between the holiday houses and lodges.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'marquard',
     name: 'Marquard',
     provinceSlug: 'free-state',
@@ -4716,6 +4766,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'mazeppa-bay',
+    name: 'Mazeppa Bay',
+    provinceSlug: 'eastern-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A remote Wild Coast retreat in the former Transkei, reached by gravel road and known for its three islands, one of which is linked to the mainland by a suspension bridge. It is a long-standing favourite for rock and surf angling, hiking and unspoilt beaches.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -5196,6 +5256,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'muizenberg',
+    name: 'Muizenberg',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A False Bay beachfront suburb of Cape Town widely regarded as the birthplace of South African surfing. Surfer\'s Corner, the row of brightly painted Victorian bathing boxes and the warm, gently shelving beach make it one of the most photographed stretches of coast in the country.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -6000,6 +6070,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'port-alfred',
+    name: 'Port Alfred',
+    provinceSlug: 'eastern-cape',
+    population: 'N/A',
+    imageId: 'town-port-alfred',
+    description: 'A Sunshine Coast holiday town at the mouth of the Kowie River, roughly midway between Gqeberha and East London. Its marina, river cruises, golf courses and long swimming beaches make it one of the Eastern Cape\'s busiest coastal destinations.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'port-beaufort',
     name: 'Port Beaufort',
     provinceSlug: 'western-cape',
@@ -6610,6 +6690,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'scarborough',
+    name: 'Scarborough',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A small, secluded conservation village on the Atlantic coast of the Cape Peninsula, just north of Cape Point. Its wide white beach, fynbos-covered slopes and strict building guidelines have kept it one of the quietest settlements near Cape Town.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'schweizer-reneke',
     name: 'Schweizer-Reneke',
     provinceSlug: 'north-west',
@@ -7006,6 +7096,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'storms-river',
+    name: 'Storms River',
+    provinceSlug: 'eastern-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A tiny forest village in the heart of the Tsitsikamma, and the gateway to the Storms River Mouth section of the Garden Route National Park. The suspension bridge over the river mouth, the Otter Trail and the Bloukrans bungy jump are all within easy reach.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -7826,6 +7926,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'vleesbaai',
+    name: 'Vleesbaai (Vlees Bay)',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A small private coastal village on the Garden Route between Mossel Bay and Gouritsmond, sheltered in a bay that faces west across St Sebastian Bay. Together with neighbouring Boggomsbaai it is known for calm swimming water, shore angling and seasonal whale watching.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
