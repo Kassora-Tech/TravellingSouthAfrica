@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import Script from 'next/script';
 import { TownListings } from '@/components/towns/town-listings';
+import { TownSights } from '@/components/towns/town-sights';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://travellingsouthafrica.co.za';
 
@@ -243,6 +244,8 @@ export default function TownDetailPage() {
                 </div>
               </div>
            </div>
+
+           <TownSights townSlug={staticTown.slug} townName={staticTown.name} />
 
            <TownListings townSlug={staticTown.slug} townName={staticTown.name} />
 
