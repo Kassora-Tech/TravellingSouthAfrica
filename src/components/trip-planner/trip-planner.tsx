@@ -1154,6 +1154,30 @@ export function TripPlanner({ user }: { user: User }) {
         serviceProvidersData = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
     }
 
+    // Sights added from the trip planner can come from either the static sights
+    // data (slug id) or the Firestore `attractions` collection (doc id) — the
+    // same two sources AvailableSights merges when listing them for selection.
+    let sightsData: any[] = [];
+    if (selectedTrip.sightIds && selectedTrip.sightIds.length > 0) {
+        const staticSightMatches = selectedTrip.sightIds
+            .map(sightId => sights.find(s => s.slug === sightId))
+            .filter((s): s is typeof sights[number] => Boolean(s));
+
+        const unmatchedSightIds = selectedTrip.sightIds.filter(
+            sightId => !sights.some(s => s.slug === sightId)
+        );
+
+        let firestoreSightMatches: any[] = [];
+        if (unmatchedSightIds.length > 0) {
+            const attractionsRef = collection(firestore, 'attractions');
+            const q = query(attractionsRef, where('__name__', 'in', unmatchedSightIds.slice(0, 10)));
+            const snapshot = await getDocs(q);
+            firestoreSightMatches = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        }
+
+        sightsData = [...staticSightMatches, ...firestoreSightMatches];
+    }
+
     const doc = new jsPDF();
     const pageHeight = doc.internal.pageSize.height;
     const pageWidth = doc.internal.pageSize.width;
@@ -1229,7 +1253,7 @@ export function TripPlanner({ user }: { user: User }) {
     }
 
     // Sights
-    if (selectedTrip.sightIds && selectedTrip.sightIds.length > 0) {
+    if (sightsData.length > 0) {
         cursorY += 5;
         if (cursorY > pageHeight - 40) {
             doc.addPage();
@@ -1242,15 +1266,26 @@ export function TripPlanner({ user }: { user: User }) {
 
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        selectedTrip.sightIds.forEach(sightId => {
-            const sight = sights.find(s => s.slug === sightId);
-            if (sight) {
-                if (cursorY > pageHeight - 20) {
-                    doc.addPage();
-                    cursorY = margin;
-                }
-                doc.text(`- ${sight.name} (${sight.location})`, margin + 5, cursorY);
-                cursorY += 5;
+        sightsData.forEach(sight => {
+            const location = sight.location || towns.find(t => t.slug === sight.townSlug)?.name || 'N/A';
+
+            if (cursorY > pageHeight - 20) {
+                doc.addPage();
+                cursorY = margin;
+            }
+            doc.text(`- ${sight.name} (${location})`, margin + 5, cursorY);
+            cursorY += 5;
+
+            if (sight.description) {
+                const descLines = doc.splitTextToSize(sight.description, pageWidth - margin * 2 - 10);
+                descLines.forEach((line: string) => {
+                    if (cursorY > pageHeight - 20) {
+                        doc.addPage();
+                        cursorY = margin;
+                    }
+                    doc.text(line, margin + 10, cursorY);
+                    cursorY += 5;
+                });
             }
         });
     }
