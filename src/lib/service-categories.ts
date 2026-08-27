@@ -1,24 +1,25 @@
-import { Car, Briefcase, Compass, Waves, PartyPopper, ShoppingBag, Utensils, Plane } from 'lucide-react';
+import { Car, Briefcase, Compass, Waves, PartyPopper, ShoppingBag, Utensils, Wine } from 'lucide-react';
 
 export const serviceCategories = [
-    'Airlines',
+    'Activities',
     'Car Hire & Transport',
     'Tour Operator',
     'Spa & Wellness',
     'Night Life',
     'Shops',
     'Restaurant',
-    
+    'Food & Beverage Experiences',
+
   ];
-  
+
 export const serviceCategoriesMap: { [key: string]: { icon: React.ElementType, description: string, buttonText: string, href: string } } = {
-    'Airlines': {
-        icon: Plane,
-        description: 'Find flights to and within South Africa from major carriers.',
-        buttonText: 'Browse Airlines',
-        href: '/service-providers/airlines',
+    'Activities': {
+        icon: Compass,
+        description: 'Discover activities and things to do across South Africa.',
+        buttonText: 'Browse Activities',
+        href: '/service-providers/activities',
     },
-    
+
     'Car Hire & Transport': {
         icon: Car,
         description: 'Find car hire, transport and vehicle rentals.',
@@ -54,6 +55,12 @@ export const serviceCategoriesMap: { [key: string]: { icon: React.ElementType, d
         description: 'Connect with expert tour operators to plan your perfect trip.',
         buttonText: 'Find an Operator',
         href: '/service-providers/travel-agents',
+    },
+    'Food & Beverage Experiences': {
+        icon: Wine,
+        description: 'Discover food and beverage experiences, from tastings to culinary tours.',
+        buttonText: 'Explore Experiences',
+        href: '/service-providers/food-beverage-experiences',
     },
 };
 
