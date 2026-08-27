@@ -618,6 +618,146 @@ function AccommodationCard({
 }
 
 
+// ── Sight detail modal ───────────────────────────────────────────────────────
+function SightDetailModal({
+  sight,
+  isSelected,
+  onToggle,
+  onClose,
+}: {
+  sight: any;
+  isSelected: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+}) {
+  const [idx, setIdx] = React.useState(0);
+  const images = sight.imageUrls || [];
+
+  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i - 1 + images.length) % images.length); };
+  const next = (e: React.MouseEvent) => { e.stopPropagation(); setIdx((i) => (i + 1) % images.length); };
+
+  return (
+    <Dialog open={true} onOpenChange={onClose}>
+      <AccessibleDialogContent
+        title={sight.name}
+        description={`Details for ${sight.name}`}
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Image gallery */}
+        <div className="relative w-full h-64 bg-muted overflow-hidden rounded-lg group -mt-2">
+          {images.length > 0 ? (
+            <>
+              <img
+                src={images[idx]}
+                alt={`${sight.name} photo ${idx + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {images.length > 1 && (
+                <>
+                  <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                    {images.map((_: string, i: number) => (
+                      <button key={i} onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                        className={`w-2 h-2 rounded-full transition-all ${i === idx ? 'bg-white scale-125' : 'bg-white/50'}`}
+                      />
+                    ))}
+                  </div>
+                  <span className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full z-10">
+                    {idx + 1} / {images.length}
+                  </span>
+                </>
+              )}
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Mountain className="h-16 w-16 text-muted-foreground" />
+            </div>
+          )}
+        </div>
+
+        {/* Thumbnail strip */}
+        {images.length > 1 && (
+          <div className="flex gap-2 pt-3 overflow-x-auto">
+            {images.map((url: string, i: number) => (
+              <button
+                key={i}
+                onClick={() => setIdx(i)}
+                className={`shrink-0 w-14 h-14 rounded-md overflow-hidden border-2 transition-all ${i === idx ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}
+              >
+                <img src={url} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="space-y-4 pt-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            {sight.category && (
+              <span className="bg-secondary text-xs px-2 py-0.5 rounded-full">{sight.category}</span>
+            )}
+            {sight.townSlug && (
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPin className="h-3 w-3" />
+                {sight.townSlug.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+              </span>
+            )}
+          </div>
+
+          {sight.description && (
+            <p className="text-sm text-muted-foreground leading-relaxed">{sight.description}</p>
+          )}
+
+          {(sight.contactEmail || sight.physicalAddress) && (
+            <div className="space-y-2 pt-2 border-t">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Contact</p>
+              {sight.contactEmail && (
+                <div className="flex items-center gap-2 text-sm">
+                  <Mail className="h-4 w-4 text-primary shrink-0" />
+                  <a href={`mailto:${sight.contactEmail}`} onClick={(e) => e.stopPropagation()} className="hover:underline truncate">
+                    {sight.contactEmail}
+                  </a>
+                </div>
+              )}
+              {sight.physicalAddress && (
+                <div className="flex items-start gap-2 text-sm">
+                  <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">{sight.physicalAddress}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-2 pt-2 border-t">
+            <Button
+              onClick={onToggle}
+              variant={isSelected ? 'default' : 'outline'}
+              size="sm"
+              className="flex-1"
+            >
+              {isSelected ? '✓ Selected' : '+ Add to Trip'}
+            </Button>
+            {sight.websiteUrl && (
+              <Button asChild variant="outline" size="sm" className="flex-1">
+                <a href={sight.websiteUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                  <Globe className="h-3.5 w-3.5 mr-1.5" /> Website
+                </a>
+              </Button>
+            )}
+          </div>
+        </div>
+      </AccessibleDialogContent>
+    </Dialog>
+  );
+}
+
 // SIGHTS CARD
 function AvailableSights({
   selectedTrip,
@@ -661,6 +801,9 @@ function AvailableSights({
             townSlug: data.townSlug,
             imageUrls: data.imageUrls || [],
             description: data.description,
+            contactEmail: data.contactEmail,
+            websiteUrl: data.websiteUrl,
+            physicalAddress: data.physicalAddress,
           };
         });
 
@@ -700,6 +843,8 @@ function AvailableSights({
   }, [firestore, townSlugs.join(','), toast]);
 
   const [selectedIds, setSelectedIds] = useState<string[]>(selectedTrip?.sightIds || []);
+  const [showAll, setShowAll] = useState(false);
+  const [detailSight, setDetailSight] = useState<any | null>(null);
 
   useEffect(() => {
     setSelectedIds(selectedTrip?.sightIds || []);
@@ -716,10 +861,12 @@ function AvailableSights({
       description: availableSights.find(s => s.id === id)?.name,
     });
   };
-  
+
   const townNameMap = useMemo(() => new Map(towns.map(t => [t.slug, t.name])), []);
+  const displayedSights = showAll ? availableSights : availableSights.slice(0, 4);
 
   return (
+    <>
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div className="flex items-center gap-2">
@@ -743,39 +890,102 @@ function AvailableSights({
           <p className="text-sm text-muted-foreground">No sights found for your selected towns.</p>
         )}
         {!isLoading && availableSights.length > 0 && (
+          <>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {availableSights.map((sight) => {
+            {displayedSights.map((sight) => {
               const isSelected = selectedIds.includes(sight.id);
               return (
                 <div
                   key={sight.id}
-                  className={`rounded-lg border overflow-hidden cursor-pointer transition-all hover:shadow-sm ${
-                    isSelected ? 'ring-2 ring-primary' : 'hover:border-primary/40'
+                  className={`rounded-xl border overflow-hidden cursor-pointer transition-all hover:shadow-md ${
+                    isSelected ? 'border-primary ring-2 ring-primary/30' : 'hover:border-primary/40'
                   }`}
-                  onClick={() => handleToggle(sight.id)}
                 >
-                  <div className="relative h-32 bg-muted">
-                    {sight.imageUrls && sight.imageUrls.length > 0 ? (
-                      <img src={sight.imageUrls[0]} alt={sight.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Mountain className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                    )}
+                  {/* Image carousel — click opens detail */}
+                  <div onClick={() => setDetailSight(sight)}>
+                    <MiniCarousel images={sight.imageUrls || []} name={sight.name} />
                   </div>
-                  <div className="p-3">
-                    <p className="font-semibold text-sm truncate">{sight.name}</p>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {sight.category} &bull; {townNameMap.get(sight.townSlug) || sight.townSlug}
+
+                  {/* Info */}
+                  <div className="p-3 space-y-1.5">
+                    <div className="flex items-start justify-between gap-1">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-sm truncate">{sight.name}</p>
+                        <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+                          {sight.category && (
+                            <span className="text-xs bg-secondary px-1.5 py-0.5 rounded-full">
+                              {sight.category}
+                            </span>
+                          )}
+                          <span className="text-xs text-muted-foreground flex items-center gap-0.5">
+                            <MapPin className="h-2.5 w-2.5" />
+                            {townNameMap.get(sight.townSlug) || sight.townSlug}
+                          </span>
+                        </div>
+                      </div>
+                      {isSelected && (
+                        <span className="shrink-0 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+                          ✓
+                        </span>
+                      )}
+                    </div>
+
+                    {sight.description && (
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {sight.description}
+                      </p>
+                    )}
+
+                    {/* Action row */}
+                    <div className="flex gap-2 pt-1">
+                      <Button
+                        size="sm"
+                        variant={isSelected ? 'default' : 'outline'}
+                        className="flex-1 h-7 text-xs"
+                        onClick={() => handleToggle(sight.id)}
+                      >
+                        {isSelected ? 'Remove' : '+ Select'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 text-xs px-2"
+                        onClick={() => setDetailSight(sight)}
+                      >
+                        Details
+                      </Button>
                     </div>
                   </div>
                 </div>
               );
             })}
           </div>
+
+          {availableSights.length > 4 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full mt-4"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? 'Show Less' : `Show ${availableSights.length - 4} More`}
+            </Button>
+          )}
+          </>
         )}
       </CardContent>
     </Card>
+
+    {/* Detail modal */}
+    {detailSight && (
+      <SightDetailModal
+        sight={detailSight}
+        isSelected={selectedIds.includes(detailSight.id)}
+        onToggle={() => handleToggle(detailSight.id)}
+        onClose={() => setDetailSight(null)}
+      />
+    )}
+    </>
   );
 }
 
