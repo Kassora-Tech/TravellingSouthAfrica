@@ -5,31 +5,13 @@ import Link from 'next/link';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useFirestore } from '@/firebase';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, Wrench, ArrowRight } from 'lucide-react';
+import { ArrowRight, Building2, Wrench } from 'lucide-react';
 import { AccommodationGrid } from '@/components/accommodations/accommodation-grid';
 import { ServiceProviderCard } from '@/components/service-providers/service-provider-listings';
 import { Translatable } from '@/components/translatable';
-
-function EmptyState({ message }: { message: string }) {
-  return (
-    <Card className="text-center">
-      <CardContent className="p-8">
-        <Building2 className="mx-auto h-12 w-12 text-muted-foreground" />
-        <p className="mt-6 text-muted-foreground">
-          <Translatable text={message} />
-        </p>
-        <Button asChild className="mt-6">
-          <Link href="/add-your-listing">
-            <Translatable text="List your business here" />
-          </Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
+import { ListingPromoCard } from '@/components/towns/listing-promo-card';
 
 export function TownListings({ townSlug, townName }: { townSlug: string; townName: string }) {
   const firestore = useFirestore();
@@ -99,7 +81,9 @@ export function TownListings({ townSlug, townName }: { townSlug: string; townNam
                 </div>
               </>
             ) : (
-              <EmptyState message={`There are currently no accommodation listings in ${townName} yet.`} />
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <ListingPromoCard icon={Building2} />
+              </div>
             )}
           </TabsContent>
 
@@ -111,7 +95,9 @@ export function TownListings({ townSlug, townName }: { townSlug: string; townNam
                 ))}
               </div>
             ) : (
-              <EmptyState message={`There are currently no service listings in ${townName} yet.`} />
+              <div className="grid gap-8 md:grid-cols-2">
+                <ListingPromoCard icon={Wrench} />
+              </div>
             )}
           </TabsContent>
         </Tabs>
