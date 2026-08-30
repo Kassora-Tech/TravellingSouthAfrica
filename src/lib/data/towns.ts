@@ -4780,6 +4780,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'mbazwana',
+    name: 'Mbazwana',
+    provinceSlug: 'kwazulu-natal',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A small town on the road to Sodwana Bay in northern KwaZulu-Natal, serving as a local service centre for the surrounding communities within the iSimangaliso Wetland Park area.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'mbhejeka',
     name: 'Mbhejeka',
     provinceSlug: 'mpumalanga',
@@ -6886,6 +6896,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'sodwana-bay',
+    name: 'Sodwana Bay',
+    provinceSlug: 'kwazulu-natal',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A coastal resort within the iSimangaliso Wetland Park, renowned for its coral reefs, scuba diving and snorkelling, and as a nesting site for loggerhead and leatherback turtles.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
