@@ -11,9 +11,10 @@ interface ImageUploadProps {
   label: string;
   value: string;
   onChange: (url: string) => void;
+  folder?: string;
 }
 
-export function ImageUpload({ label, value, onChange }: ImageUploadProps) {
+export function ImageUpload({ label, value, onChange, folder = 'towns' }: ImageUploadProps) {
   const storage = useStorage();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -38,7 +39,7 @@ export function ImageUpload({ label, value, onChange }: ImageUploadProps) {
     setUploading(true);
     setProgress(0);
 
-    const storageRef = ref(storage, `towns/${Date.now()}_${file.name}`);
+    const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

@@ -129,6 +129,12 @@ service cloud.firestore {
       allow create, update, delete: if isSignedIn();
     }
 
+    // 11. Events - public read, admin write
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // ---- LEGACY COLLECTIONS (For backward compatibility, public read / admin write) ----
     match /accommodations/{docId} {
       allow read: if true;

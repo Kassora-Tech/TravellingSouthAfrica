@@ -75,3 +75,33 @@ export async function deleteBlogImage(imageUrl) {
     throw new Error(`Failed to delete image: ${error.message}`);
   }
 }
+
+/**
+ * Deletes an event image from Firebase Storage using its download URL.
+ * Same download-URL-to-storage-path parsing as deleteBlogImage.
+ * @param {string} imageUrl - Public download URL of the image to delete
+ * @returns {Promise<void>}
+ * @throws {Error} - If deletion fails
+ */
+export async function deleteEventImage(imageUrl) {
+  try {
+    if (!imageUrl) {
+      throw new Error('No image URL provided');
+    }
+
+    const urlParts = imageUrl.split('/o/');
+    if (urlParts.length < 2) {
+      throw new Error('Invalid image URL format');
+    }
+
+    const encodedPath = urlParts[1].split('?')[0];
+    const decodedPath = decodeURIComponent(encodedPath);
+
+    const fileRef = ref(storage, decodedPath);
+    await deleteObject(fileRef);
+    console.log('Event image deleted successfully:', decodedPath);
+  } catch (error) {
+    console.error('Error deleting event image:', error);
+    throw new Error(`Failed to delete image: ${error.message}`);
+  }
+}
