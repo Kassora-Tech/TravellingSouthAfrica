@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
+import Link from 'next/link';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -400,12 +401,26 @@ function ListingForm({ user, collectionName, formSchema, title, description, fie
                 <Translatable text="Travelling South Africa reserves the right to decline any listing application if it is found not reputable or possibly harmful. Travelling South Africa does not bear any responsibility for any transactions made between guests/users and clients/advertisers." />
               </p>
               <FormField control={form.control} name="termsAndConditions" render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 pt-2">
+                <FormItem className="flex flex-row items-start space-x-3 pt-2">
                   <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mt-1" />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel><Translatable text="I have read and agree to the Terms & Conditions above" /></FormLabel>
+                    <FormLabel>
+                      <Translatable text="I have read and agree to the " />
+                      <Link
+                        href="/business-listing-terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-primary"
+                      >
+                        <Translatable text="Business Listing Terms & Conditions" />
+                      </Link>
+                      <Translatable text="." />
+                    </FormLabel>
+                    <p className="text-sm text-muted-foreground">
+                      <Translatable text="60-day free trial — no payment required. Before your trial ends, we'll contact you to see if you'd like to continue. If you choose to continue, the annual listing fee is R350." />
+                    </p>
                     <FormMessage />
                   </div>
                 </FormItem>
