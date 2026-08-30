@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Globe, Building, Mountain, Map, Wrench, ArrowRight } from 'lucide-react';
+import { Globe, Building, Mountain, Map, Wrench, ArrowRight, CalendarDays } from 'lucide-react';
 import { Translatable } from '@/components/translatable';
 import { motion } from 'framer-motion';
 
@@ -51,13 +51,22 @@ const navItems = [
     bg: 'bg-rose-50',
     border: 'hover:border-rose-200',
   },
+  {
+    icon: CalendarDays,
+    title: 'Upcoming Events',
+    description: "What's on",
+    href: '/events',
+    color: 'text-cyan-600',
+    bg: 'bg-cyan-50',
+    border: 'hover:border-cyan-200',
+  },
 ];
 
 export function QuickNav() {
   return (
     <section className="bg-white py-10 border-b border-gray-100">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
           {navItems.map((item, index) => (
             <motion.div
               key={item.title}
