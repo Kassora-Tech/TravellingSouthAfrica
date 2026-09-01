@@ -7,7 +7,7 @@ import { useFirestore } from '@/firebase';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, Building2, Wrench } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { AccommodationGrid } from '@/components/accommodations/accommodation-grid';
 import { ServiceProviderCard } from '@/components/service-providers/service-provider-listings';
 import { Translatable } from '@/components/translatable';
@@ -82,7 +82,7 @@ export function TownListings({ townSlug, townName }: { townSlug: string; townNam
               </>
             ) : (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <ListingPromoCard icon={Building2} />
+                <ListingPromoCard />
               </div>
             )}
           </TabsContent>
@@ -96,7 +96,7 @@ export function TownListings({ townSlug, townName }: { townSlug: string; townNam
               </div>
             ) : (
               <div className="grid gap-8 md:grid-cols-2">
-                <ListingPromoCard icon={Wrench} />
+                <ListingPromoCard />
               </div>
             )}
           </TabsContent>

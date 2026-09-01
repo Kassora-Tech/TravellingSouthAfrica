@@ -1,29 +1,37 @@
 import Link from 'next/link';
-import type { LucideIcon } from 'lucide-react';
 import { Star } from 'lucide-react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 
 const PROMO_TEXT = "If you were listed, this is where you'd be seen!";
 const ADD_LISTING_HREF = '/add-your-listing';
+const PROMO_IMAGE_SRC = '/Images/AD_IMAGE_FILENAME.jpeg';
 
 /**
  * "You could be here" promo tile shown in place of an empty accommodation or
  * service provider grid on a town page. Mirrors ServiceProviderCard's visual
  * structure (image area, heading + star row, divider, full-width button) so
- * both tabs render one consistent style - only the icon differs per listing
- * type. This is a dedicated component, not the real listing cards themselves,
- * so it can't drift the real cards' styling and won't render a category
- * badge with no category to show.
+ * both tabs render one consistent style. This is a dedicated component, not
+ * the real listing cards themselves, so it can't drift the real cards'
+ * styling and won't render a category badge with no category to show.
+ *
+ * The source creative is portrait (2:3), unlike the landscape aspect-video
+ * used by real listing cards, so the image area uses aspect-[2/3] to show it
+ * uncropped rather than forcing the wide crop and distorting/clipping it.
  */
-export function ListingPromoCard({ icon: Icon }: { icon: LucideIcon }) {
+export function ListingPromoCard() {
   return (
     <Card className="flex flex-col overflow-hidden bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       <CardHeader className="p-0">
-        <div className="relative aspect-video">
-          <div className="w-full h-full bg-muted flex items-center justify-center">
-            <Icon className="h-16 w-16 text-muted-foreground" />
-          </div>
+        <div className="relative aspect-[2/3] w-full bg-muted">
+          <ImageWithFallback
+            src={PROMO_IMAGE_SRC}
+            alt="Example ad placement - this is where your business listing would be seen"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
         </div>
       </CardHeader>
       <CardContent className="p-5 flex flex-col flex-1 space-y-4">
