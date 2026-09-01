@@ -440,6 +440,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'bantry-bay',
+    name: 'Bantry Bay',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A small, exclusive cliffside suburb between Sea Point and Clifton, known for its dramatic Atlantic wave-watching and uninterrupted sunset views.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'barberton',
     name: 'Barberton',
     provinceSlug: 'mpumalanga',
@@ -1140,6 +1150,16 @@ export const towns = [
     mapEmbed: ''
   },
   {
+    slug: 'camps-bay',
+    name: 'Camps Bay',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: "An iconic Atlantic Seaboard beach suburb beneath the Twelve Apostles mountain range, known for its white sand, palm-lined Victoria Road, and some of Cape Town's best sunset dining.",
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'cape-town',
     name: 'Cape Town',
     provinceSlug: 'western-cape',
@@ -1330,6 +1350,16 @@ export const towns = [
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28308.20455018608!2d28.406935!3d-28.513689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9c5b8f6a9a8c3d%3A0x8e8e8e8e8e8e8e8e!2sClarens!5e0!3m2!1sen!2sza!4v1678890001234!5m2!1sen!2sza'
   },
   {
+    slug: 'clifton',
+    name: 'Clifton',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'A cluster of four sheltered, granite-fringed beaches on Cape Town\'s Atlantic Seaboard, prized for calm turquoise water and some of the most valuable real estate in the country.',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
     slug: 'clocolan',
     name: 'Clocolan',
     provinceSlug: 'free-state',
@@ -1396,6 +1426,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'constantia',
+    name: 'Constantia',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: "Cape Town's oldest wine-producing valley, home to historic estates including Groot Constantia, set among oak-lined avenues on the forested southern slopes of Table Mountain.",
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -3796,6 +3836,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'kirstenbosch',
+    name: 'Kirstenbosch',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: 'One of the world\'s great botanical gardens, set on the eastern slopes of Table Mountain and showcasing the extraordinary plant diversity of the Cape Floral Kingdom.',
     nearbySightSlugs: [],
     mapEmbed: ''
   },
@@ -6726,6 +6776,16 @@ export const towns = [
     population: 'N/A',
     imageId: 'town-generic',
     description: '',
+    nearbySightSlugs: [],
+    mapEmbed: ''
+  },
+  {
+    slug: 'sea-point',
+    name: 'Sea Point',
+    provinceSlug: 'western-cape',
+    population: 'N/A',
+    imageId: 'town-generic',
+    description: "A densely populated Atlantic Seaboard suburb of Cape Town, known for its palm-lined promenade, the Sea Point Pavilion tidal pool, and sweeping sunset views over the ocean.",
     nearbySightSlugs: [],
     mapEmbed: ''
   },
