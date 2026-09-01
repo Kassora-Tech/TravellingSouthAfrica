@@ -714,23 +714,13 @@ function SightDetailModal({
             <p className="text-sm text-muted-foreground leading-relaxed">{sight.description}</p>
           )}
 
-          {(sight.contactEmail || sight.physicalAddress) && (
+          {sight.physicalAddress && (
             <div className="space-y-2 pt-2 border-t">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Contact</p>
-              {sight.contactEmail && (
-                <div className="flex items-center gap-2 text-sm">
-                  <Mail className="h-4 w-4 text-primary shrink-0" />
-                  <a href={`mailto:${sight.contactEmail}`} onClick={(e) => e.stopPropagation()} className="hover:underline truncate">
-                    {sight.contactEmail}
-                  </a>
-                </div>
-              )}
-              {sight.physicalAddress && (
-                <div className="flex items-start gap-2 text-sm">
-                  <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">{sight.physicalAddress}</span>
-                </div>
-              )}
+              <div className="flex items-start gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <span className="text-muted-foreground">{sight.physicalAddress}</span>
+              </div>
             </div>
           )}
 
@@ -801,7 +791,6 @@ function AvailableSights({
             townSlug: data.townSlug,
             imageUrls: data.imageUrls || [],
             description: data.description,
-            contactEmail: data.contactEmail,
             websiteUrl: data.websiteUrl,
             physicalAddress: data.physicalAddress,
           };
