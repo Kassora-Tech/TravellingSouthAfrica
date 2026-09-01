@@ -200,6 +200,21 @@ export function Hero() {
         </div>
       </div>
 
+      {/* Upcoming Events and Festivals badge - second entry point to /events, alongside the QuickNav card further down the page */}
+      <Link
+        href="/events"
+        aria-label="Upcoming Events and Festivals"
+        className="absolute left-4 top-4 z-30 w-[130px] transition-transform duration-300 hover:scale-105 md:left-8 md:top-8 md:w-[190px]"
+      >
+        <Image
+          src="/Images/upcoming-events-badge.png"
+          alt="Upcoming Events and Festivals"
+          width={2050}
+          height={767}
+          className="h-auto w-full drop-shadow-lg"
+        />
+      </Link>
+
       {/* Navigation Arrows */}
       <Button
         className="absolute left-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/40 border-white/50 border backdrop-blur-sm transition-all duration-300"
